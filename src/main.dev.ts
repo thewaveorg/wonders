@@ -121,7 +121,7 @@ export class WondersAPI {
 			},
 		});
 		
-		this.mainWindow.loadURL(`file://${__dirname}/index.html`);
+		this.mainWindow.loadURL(`file://${__dirname}/app/index.html`);
 
 		this.mainWindow.webContents.on('did-finish-load', () => {
 			if (!this.mainWindow) {

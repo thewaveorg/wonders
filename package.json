@@ -35,7 +35,7 @@
     "files": [
       "dist/",
       "node_modules/",
-      "index.html",
+      "app/index.html",
       "main.prod.js",
       "main.prod.js.map",
       "package.json"
