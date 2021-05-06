@@ -8,7 +8,7 @@ A rainmeter-like widget platform powered by Electron.
 - [ ] Add automatic widget discovery (both on development and production builds);
 - [ ] Create typings for widgets;
 - [ ] Load TypeScript widgets without the need to compile them to JS;
-- [ ] Optimize everything possible and not let Electron devour RAM. Perhaps change it for a better alternative.
+- [ ] Optimize everything possible and not let Electron devour RAM. Perhaps change it to a better alternative.
 - [ ] Documentation;
 
 ## How widgets work (for now)

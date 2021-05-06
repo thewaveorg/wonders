@@ -1,6 +1,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
+import { readdirSync } from 'fs';
 import path from 'path';
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
@@ -40,6 +41,7 @@ export class WondersAPI {
 		}
 
 		this.registerEvents();
+		this.loadWidgetsFromDirectory(path.resolve(__dirname, "../widgets"));
 	}
 
 	public async createAndRegisterWindowAsync(id: string, options: BrowserOptions | undefined): Promise<BrowserWindow> {
@@ -49,21 +51,32 @@ export class WondersAPI {
 		return window;
 	}
 
+	public async loadWidgetsFromDirectory(dir: string): Promise<void> {
+		var widgetFolders: string[] = readdirSync(dir, { withFileTypes: true })
+    		.filter(dirent => dirent.isDirectory() || dirent.isSymbolicLink())
+    		.map(folder => path.resolve(dir, folder.name));
+
+		console.log(widgetFolders);
+
+		for (const path of widgetFolders) {
+			await this.loadWidget(path);
+		}
+	}
+
 	public async loadWidget(p: string): Promise<void> {
 		var pluginInfo;
 		try {
-			pluginInfo = require(path.resolve(p, "./package.json"));
+			pluginInfo = require(path.resolve(p, "./wonders.json"));
 		} catch {
 			console.log(`Found no wonders.json at ${p}. Ignoring...`);
 			return;
 		}
 
-		if (!pluginInfo)
-		{
-			console.log(`Failed to read package.json.`);
+		if (!pluginInfo) {
+			console.log(`Failed to read wonders.json.`);
 			return;
 		}
-		var imported = require(p);
+		var imported = require(path.resolve(p, pluginInfo.entry));
 
 		var widgetObjectFactory: any = (typeof(imported) == "function") ? imported : imported["WONDERS"];
 		
