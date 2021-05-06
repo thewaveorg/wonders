@@ -5,7 +5,9 @@ A rainmeter-like widget platform powered by Electron.
 ## Goals
 
 - [ ] Finish the main (settings) window, which should let you load/unload widgets;
-- [ ] Add automatic widget discovery (both on development and production builds);
+- [x] Add automatic widget discovery on development;
+- [ ] Add automatic widget discovery on production;
+- [ ] Widget hot-realoding;
 - [ ] Create typings for widgets;
 - [ ] Load TypeScript widgets without the need to compile them to JS;
 - [ ] Optimize everything possible and not let Electron devour RAM. Perhaps change it to a better alternative.
