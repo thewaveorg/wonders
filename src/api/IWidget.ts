@@ -1,7 +1,7 @@
 export interface IWidget {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 
-    start(): Promise<void>;
-    stop(): Promise<void>;
+  start(): Promise<void>;
+  stop(): Promise<void>;
 }
