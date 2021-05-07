@@ -6,7 +6,6 @@ import path from 'path';
 import { app, BrowserWindow, ipcMain, Menu, shell, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import { PluginManager } from 'live-plugin-manager';
 
 import { IWidget } from './api/IWidget';
 
@@ -21,24 +20,48 @@ export class AppUpdater {
 type BrowserOptions = Electron.BrowserWindowConstructorOptions | undefined;
 
 export class WondersAPI {
-  public app: Electron.App = app;
+  private app: Electron.App = app;
+  private ipcMain: Electron.IpcMain = ipcMain;
+  private shell: Electron.Shell = shell;
+  private mainWindow: BrowserWindow | null = null;
+  private trayIcon: Tray | null = null;
+  private widgets: Map<string, IWidget> = new Map();
+  private windows: Map<string, BrowserWindow> = new Map();
 
-  public ipcMain: Electron.IpcMain = ipcMain;
-
-  public shell: Electron.Shell = shell;
-
-  public mainWindow: BrowserWindow | null = null;
-
-  public pluginManager: PluginManager = new PluginManager();
-
-  public trayIcon: Tray | null = null;
-
-  public widgets: Map<string, IWidget> = new Map();
-
-  public windows: Map<string, BrowserWindow> = new Map();
+  private widgetsDirectory = "";
 
   constructor() {
     this.start();
+  }
+
+  public getApp(): Electron.App {
+    return this.app;
+  }
+
+  public getIpc(): Electron.IpcMain {
+    return this.ipcMain;
+  }
+
+  public getShell(): Electron.Shell {
+    return this.shell;
+  }
+
+  public getRegisteredWidgets(): Map<string, IWidget> {
+    return this.widgets;
+  }
+
+  public getRegisteredWindows(): Map<string, BrowserWindow> {
+    return this.windows;
+  }
+  public getRegisteredWindow(id: string): BrowserWindow | undefined {
+    return this.windows.get(id);
+  }
+  public removeRegisteredWindow(id: string): void {
+    this.windows.delete(id);
+  }
+
+  public getWidgetsDirectory(): string {
+    return this.widgetsDirectory;
   }
 
   private start() {
@@ -47,8 +70,10 @@ export class WondersAPI {
       sourceMapSupport.install();
     }
 
+    this.widgetsDirectory = path.resolve(__dirname, '../widgets');
+
     this.registerEvents();
-    this.loadWidgetsFromDirectory(path.resolve(__dirname, '../widgets'));
+    this.loadWidgetsFromDirectory();
     this.createTrayIcon();
   }
 
@@ -87,12 +112,12 @@ export class WondersAPI {
     return window;
   }
 
-  public async loadWidgetsFromDirectory(dir: string): Promise<void> {
+  public async loadWidgetsFromDirectory(dir?: string): Promise<void> {
+    dir = dir || this.widgetsDirectory;
+
     const widgetFolders: string[] = readdirSync(dir, { withFileTypes: true })
       .filter((dirent) => dirent.isDirectory() || dirent.isSymbolicLink())
-      .map((folder) => path.resolve(dir, folder.name));
-
-    console.log(widgetFolders);
+      .map((folder) => path.resolve(dir!, folder.name));
 
     for (const wpath of widgetFolders) {
       await this.loadWidget(wpath);
@@ -188,9 +213,9 @@ export class WondersAPI {
 
     this.trayIcon = new Tray(path.resolve(__dirname, "../assets/icon.ico"));
     const contextMenu = Menu.buildFromTemplate([
-      { label: "Open Settings", click: () => this.createMainWindow(), type: "normal" },
+      { label: "⚙️ Open Settings", click: () => this.createMainWindow(), type: "normal" },
       { type: "separator" },
-      { label: "Quit", click: () => this.app.quit(), type: "normal" }
+      { label: "❌ Quit", click: () => this.app.quit(), type: "normal" }
     ]);
 
     this.trayIcon.setTitle("Wonders");
