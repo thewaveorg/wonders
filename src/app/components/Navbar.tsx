@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 /* Styles */
@@ -7,17 +7,26 @@ const NavStyle = styled.div`
   display: flex;
 	flex-wrap: wrap;
 	background-color: var(--main-background-color);
-	border-bottom: 1px solid var(--border-color);
+	/* border-bottom: 1px solid var(--border-color); */
   justify-content: space-between;
+
+  &::after {
+    content : "";
+    position: relative;
+    left: 1%;
+    bottom: 0;
+    height: 0px;
+    width: 98%;
+    border-bottom: 1px solid var(--border-color);
+  }
 `;
 
-const NavLinkStyle = styled(Link)`
+const NavLinkStyle = styled(NavLink)`
   color: #ffffff;
   cursor: pointer;
-  font-family: 'Inter';
+  font-family: 'Karla';
   font-size: 1em;
   font-weight: 100;
-  letter-spacing: .5px;
   margin: 0 0 0 16px;
   padding: 10px 10px;
   text-align: center;
@@ -41,46 +50,58 @@ const TrafficLights = styled.div`
 `;
 
 const TrafficLight = styled.button`
-    width: 14px;
-    margin-left: 10px;
-    height: 14px;
-    padding: 0;
-    border: 1px solid;
-    border-radius: 50%;
-    float: right;
-    -webkit-app-region: no-drag;
+  width: 14px;
+  margin-left: 10px;
+  height: 14px;
+  padding: 0;
+  border: 1px solid;
+  border-radius: 50%;
+  float: right;
+  -webkit-app-region: no-drag;
 
-    &:focus {
-        outline: none;
-        border: none;
-    }
+  &:focus {
+    outline: none;
+    border: none;
+  }
 `;
 
 const RedTrafficLight = styled(TrafficLight)`
-    background-color: #FF605C;
-    border-color: #FF605C;
+  background-color: #FF605C;
+  border-color: #FF605C;
 
-    &:hover, &::active, &:focus {
-        background-color: #770000;
-    };
+  &:hover, &:focus {
+    background-color: #770000;
+  };
+
+  &:active {
+    background-color: #550000;
+  }
 `;
 
 const YellowTrafficLight = styled(TrafficLight)`
-    background-color: #FFBD44;
-    border-color: #FFBD44;
+  background-color: #FFBD44;
+  border-color: #FFBD44;
 
-    &:hover, &::active, &:focus {
-        background-color: #777700;
-    };
+  &:hover, &:focus {
+    background-color: #774400;
+  };
+
+  &:active {
+    background-color: #552200;
+  }
 `;
 
 const GreenTrafficLight = styled(TrafficLight)`
-    background-color: #00CA4E;
-    border-color: #00CA4E;
+  background-color: #00CA4E;
+  border-color: #00CA4E;
 
-    &:hover, &::active, &:focus {
-        background-color: #007700;
-    };
+  &:hover, &:focus {
+    background-color: #007700;
+  };
+
+  &:active {
+    background-color: #005500;
+  }
 `;
 
 const ElectronDrag = styled.div`
@@ -90,12 +111,16 @@ const ElectronDrag = styled.div`
 
 
 /* Main Component */
-export const Navbar: React.FC = () => {
+interface INavbarProps {
+  ref: React.RefObject<HTMLDivElement>;
+}
+
+export const Navbar: React.FC<INavbarProps> = ({ ref }) => {
   return (
-    <NavStyle>
-      <NavLinkStyle to="/">Home</NavLinkStyle>
-      <NavLinkStyle to="/widgets">Widgets</NavLinkStyle>
-      <NavLinkStyle to="/settings">Settings</NavLinkStyle>
+    <NavStyle ref={ref}>
+      <NavLinkStyle style={{ marginLeft: '1%' }} activeStyle={{ color: '#bbb'}} to="/">Home</NavLinkStyle>
+      <NavLinkStyle activeStyle={{ color: '#bbb'}} to="/widgets">Widgets</NavLinkStyle>
+      <NavLinkStyle activeStyle={{ color: '#bbb'}} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
         <RedTrafficLight onClick={() => window.close()} />
