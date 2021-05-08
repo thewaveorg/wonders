@@ -186,6 +186,8 @@ export class WondersAPI {
       show: false,
       width: 1024,
       height: 728,
+      minHeight: 300,
+      minWidth: 600,
       frame: false,
       transparent: true,
       icon: getAssetPath('icon.png'),
