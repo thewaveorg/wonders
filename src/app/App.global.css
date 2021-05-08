@@ -2,57 +2,59 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600&display=swap');
 
 :root {
-	--main-background-color: #101010;
-	--border-color: rgba(123, 123, 123, .15);
-	--accent-color: #06f;
+  --main-background-color: #101010;
+  --different-background-color: #121212;
+  --border-color: rgba(123, 123, 123, .15);
+  --accent-color: #06f;
 }
 
 * {
-	-webkit-app-region: no-drag;
-	user-select: none;
+  -webkit-app-region: no-drag;
+  user-select: none;
 }
 
-html, body {
-	background: transparent;
+html,
+body {
+  background: transparent;
 }
 
 body {
-	color: #ffffff;
-	height: 100vh;
-	background: var(--main-background-color);
-	font-family: sans-serif;
-	overflow-y: hidden;
+  color: #ffffff;
+  height: 100vh;
+  background: var(--main-background-color);
+  font-family: sans-serif;
+  overflow-y: hidden;
 }
 
 button {
-	background-color: white;
-	padding: 10px 20px;
-	border-radius: 10px;
-	border: none;
-	appearance: none;
-	font-size: 1.3rem;
-	transition: transform ease-in 0.1s;
-	cursor: pointer;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  appearance: none;
+  font-size: 1.3rem;
+  transition: transform ease-in 0.1s;
+  cursor: pointer;
 }
 
 button:hover {
-	transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 li {
-	list-style: none;
+  list-style: none;
 }
 
 a {
-	text-decoration: none;
-	height: fit-content;
-	width: fit-content;
- 	margin: 10px;
+  text-decoration: none;
+  height: fit-content;
+  width: fit-content;
+  margin: 10px;
 }
 
 a:hover {
-	opacity: 1;
-	text-decoration: none;
+  opacity: 1;
+  text-decoration: none;
 }
 
 h1,
@@ -75,13 +77,13 @@ p {
 }
 
 #content-wrapper {
-	height: 100%;
-	width: 100%;
-	flex-direction: column;
-	border-radius: 10px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .electron-drag {
@@ -97,81 +99,12 @@ p {
 }
 
 #window-handle {
-	width: auto;
-	height: auto;
-	flex-grow: 1;
-}
-
-/* Tabs */
-
-.tab {
-	text-align: center;
-	font-size: 1em;
-	margin-left: 16px;
-	padding: 10px 10px;
-	cursor: pointer;
-}
-
-.tab:hover {
-	background-color: rgba(255,255,255,.1)
-}
-
-.tabs {
-	display: flex;
-	flex-wrap: wrap;
-	background-color: var(--main-background-color);
-	border-bottom: 1px solid var(--border-color);
+  width: auto;
+  height: auto;
+  flex-grow: 1;
 }
 
 /* Main Content */
 .homeMain {
-	margin-top: 40px;
-}
-
-.tabName {
-	margin: 3px;
-}
-
-.MenuBar {
-  background-color: rgba(255, 255, 255, 0.05);
-  margin: 0px;
-  padding-left: 1%;
-  padding-top: 1%;
-  width: 99%;
-  height: 30px;
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
-}
-
-.MenuP {
-  margin: 0;
-  float: left;
-  clear: both;
-  font-weight: bold;
-  font-style: italic;
-}
-
-.MenuButtons {
-  float: right;
-  margin-right: 15px;
-}
-
-.MenuBtn {
-  width: 15px;
-  margin-left: 10px;
-  height: 15px;
-  padding: 0;
-  border-radius: 50%;
-  float: right;
-  cursor: pointer;
-  -webkit-app-region: no-drag;
-}
-
-.MenuBtn:focus {
-  outline: none;
-  border: none;
-}
-
-.tabActive {
-  color: #77dd77;
+  margin-top: 40px;
 }
