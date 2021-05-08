@@ -9,7 +9,6 @@ const TitlebarStyle = styled.div`
   padding-top: 1%;
   width: 99%;
   height: 30px;
-  -webkit-user-select: none;
   -webkit-app-region: drag;
 
     & p.title {
