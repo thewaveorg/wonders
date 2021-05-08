@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 const { ipcRenderer } = window.require("electron");
 
+import constants from "../../util/constants";
+
 /* Styles */
 const NavStyle = styled.div`
   display: flex;
@@ -125,7 +127,7 @@ export const Navbar: React.FC<INavbarProps> = ({ ref }) => {
       <NavLinkStyle activeStyle={{ color: '#bbb'}} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
-        <RedTrafficLight onClick={() => ipcRenderer.send("request-close-main-window")} />
+        <RedTrafficLight onClick={() => ipcRenderer.send(constants.CLOSE_MAIN_WINDOW)} />
         <YellowTrafficLight onClick={() => window.moveTo( -100000, -100000 )} />
         <GreenTrafficLight />
       </TrafficLights>

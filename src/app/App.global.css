@@ -79,12 +79,12 @@ h1, h2, h3, h4, h5, h6, p {
 ::-webkit-scrollbar {
 	width: 5px;
 }
-  
+
 ::-webkit-scrollbar-track {
 	background: transparent;
 	border-radius: 10px;
 }
-  
+
 ::-webkit-scrollbar-thumb {
 	background: rgba(255, 255, 255, .15);
 	border-radius: 10px;

@@ -6,7 +6,7 @@ import path from 'path';
 // @ts-ignore
 import { app, BrowserWindow, ipcMain, Menu, shell, Tray, ipcRenderer } from 'electron';
 // @ts-ignore ignore so ts will quit yelling
-import { GET_WIDGETS, UNLOAD_WIDGET, LOAD_WIDGET } from "./app/util/constants";
+import constants from "./util/constants";
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 
@@ -186,9 +186,9 @@ export class WondersAPI {
     this.mainWindow = new BrowserWindow({
       show: false,
       width: 1024,
-      minWidth: 1024,
       height: 728,
-      minHeight: 728,
+      minHeight: 300,
+      minWidth: 600,
       frame: false,
       transparent: true,
       icon: getAssetPath('icon.png'),
@@ -243,12 +243,12 @@ export class WondersAPI {
   }
 
   private linkIpcEvents() {
-    this.ipcMain.on("request-loaded-widgets", (event, arg) => {
-      event.reply("reply-loaded-widgets", this.widgets);
+    this.ipcMain.on(constants.GET_WIDGETS, (event) => {
+      event.reply(constants.RECEIVE_WIDGETS, this.widgets);
     });
 
-    this.ipcMain.on("request-close-main-window", (event, arg) => {
-      console.log("received close window request");
+    this.ipcMain.on(constants.CLOSE_MAIN_WINDOW, () => {
+      console.log("Received CLOSE_MAIN_WINDOW request.");
       this.mainWindow?.close();
     });
   }
@@ -266,3 +266,4 @@ export class WondersAPI {
 }
 
 export default new WondersAPI();
+
