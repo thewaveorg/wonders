@@ -19,15 +19,6 @@ export default class Home extends React.Component {
 
   render(): any {
     const { tab } = this.props;
-
-    return (
-      <>
-        <div className="homeMain">{this.renderTab(tab)}</div>
-      </>
-    );
-  }
-
-  renderTab(tab: string) {
     switch (tab) {
       case 'home':
         return <Landing />
@@ -39,5 +30,4 @@ export default class Home extends React.Component {
         return <h1>wtf did you do</h1>
     }
   }
-
 }
