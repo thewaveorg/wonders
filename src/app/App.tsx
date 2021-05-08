@@ -1,12 +1,11 @@
 import React from 'react';
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import LandingPage from './pages/Landing';
-import SettingsPage from './pages/Settings';
-import WidgetsPage from './pages/Widgets';
+import {Landing as LandingPage} from './pages/Landing';
+import {Settings as SettingsPage} from './pages/Settings';
+import { Widgets as WidgetsPage } from './pages/Widgets';
 
 import { Navbar } from "./components/Navbar";
-import { Titlebar } from './components/Titlebar';
 
 import './App.global.css';
 import './styles/normalize.css';

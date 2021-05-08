@@ -75,36 +75,3 @@ p {
   height: 100%;
   width: 100%;
 }
-
-#content-wrapper {
-  height: 100%;
-  width: 100%;
-  flex-direction: column;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.electron-drag {
-  -webkit-app-region: drag;
-}
-
-/* Titlebar */
-#electron-titlebar {
-  position: fixed !important;
-  top: 0;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.0125);
-}
-
-#window-handle {
-  width: auto;
-  height: auto;
-  flex-grow: 1;
-}
-
-/* Main Content */
-.homeMain {
-  margin-top: 40px;
-}

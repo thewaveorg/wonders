@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-export default class Landing extends Component {
-  render() {
-    return (
-      <>
-        <div id="content-wrapper" style={{ height: '100%', width: '100%' }}>
-          <h1 style={{ fontSize: '3rem' }}>Welcome to Wonders!</h1>
-          <p style={{ fontSize: '1.25rem' }}>
-            A widget and desktop customization platform powered by Electron!
-          </p>
-        </div>
-      </>
-    );
-  }
+
+import { Page } from "../components/Page";
+
+export const Landing: React.FC = () => {
+  return (
+    <>
+      <Page>
+        <h1 style={{ fontSize: '3rem' }}>Welcome to Wonders!</h1>
+        <p style={{ fontSize: '1.25rem' }}>
+          A widget and desktop customization platform powered by Electron!
+        </p>
+      </Page>
+    </>
+  );
 }
