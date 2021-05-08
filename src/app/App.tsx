@@ -1,8 +1,8 @@
 import React from 'react';
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import {Landing as LandingPage} from './pages/Landing';
-import {Settings as SettingsPage} from './pages/Settings';
+import { Landing as LandingPage } from './pages/Landing';
+import { Settings as SettingsPage } from './pages/Settings';
 import { Widgets as WidgetsPage } from './pages/Widgets';
 
 import { Navbar } from "./components/Navbar";
