@@ -116,16 +116,18 @@ interface INavbarProps {
 }
 
 export const Navbar: React.FC<INavbarProps> = ({ ref }) => {
+  const activeStyle = { color: '#bbb' };
+
   return (
     <NavStyle ref={ref}>
-      <NavLinkStyle style={{ marginLeft: '1%' }} activeStyle={{ color: '#bbb'}} to="/">Home</NavLinkStyle>
-      <NavLinkStyle activeStyle={{ color: '#bbb'}} to="/widgets">Widgets</NavLinkStyle>
-      <NavLinkStyle activeStyle={{ color: '#bbb'}} to="/settings">Settings</NavLinkStyle>
+      <NavLinkStyle activeStyle={activeStyle} to="/" style={{ marginLeft: '1%' }}>Home</NavLinkStyle>
+      <NavLinkStyle activeStyle={activeStyle} to="/widgets">Widgets</NavLinkStyle>
+      <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
         <RedTrafficLight onClick={() => ipcRenderer.send(constants.CLOSE_MAIN_WINDOW)} />
-        <YellowTrafficLight onClick={() => window.moveTo( -100000, -100000 )} />
-        <GreenTrafficLight />
+        <YellowTrafficLight onClick={() => ipcRenderer.send(constants.MAXIMIZE_MAIN_WINDOW)} />
+        <GreenTrafficLight onClick={() => ipcRenderer.send(constants.MINIMIZE_MAIN_WINDOW)} />
       </TrafficLights>
     </NavStyle>
   );

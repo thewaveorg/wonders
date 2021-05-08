@@ -1,16 +1,17 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
+import { app, BrowserWindow, ipcMain, Menu, shell, Tray } from 'electron';
+// @ts-ignore ignore so ts will quit yelling
+import { autoUpdater } from 'electron-updater';
+import windowStateKeeper from 'electron-window-state';
+import log from 'electron-log';
 import { readdirSync } from 'fs';
 import path from 'path';
-// @ts-ignore
-import { app, BrowserWindow, ipcMain, Menu, shell, Tray, ipcRenderer } from 'electron';
-// @ts-ignore ignore so ts will quit yelling
-import constants from "./util/constants";
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
 
 import { IWidget } from './api/IWidget';
+
+import constants from "./util/constants";
 
 export class AppUpdater {
   constructor() {
@@ -27,6 +28,7 @@ export class WondersAPI {
   private ipcMain: Electron.IpcMain = ipcMain;
   private shell: Electron.Shell = shell;
   private mainWindow: BrowserWindow | null = null;
+  private mainWindowState: windowStateKeeper.State | null = null;
   private trayIcon: Tray | null = null;
   private widgets: Map<string, IWidget> = new Map();
   private windows: Map<string, BrowserWindow> = new Map();
@@ -88,6 +90,7 @@ export class WondersAPI {
     options = options ?? {};
     options.frame = false;
     options.skipTaskbar = true;
+    options.webPreferences = { ...options.webPreferences, contextIsolation: false } ?? { };
 
     const window = new BrowserWindow(options);
     this.windows.set(id, window);
@@ -153,7 +156,7 @@ export class WondersAPI {
       typeof imported === 'function' ? imported : imported.WONDERS;
 
     if (typeof widgetObjectFactory !== 'function') {
-      console.log("Widget doesn't have any start point for Wonders.");
+      console.log("Widget doesn't have any entry point for Wonders.");
       return;
     }
 
@@ -182,23 +185,31 @@ export class WondersAPI {
       return path.join(RESOURCES_PATH, ...paths);
     };
 
+    this.mainWindowState = windowStateKeeper({
+      defaultHeight: 728,
+      defaultWidth: 1024,
+    });
+
     await app.whenReady();
     this.mainWindow = new BrowserWindow({
       show: false,
-      width: 1024,
-      height: 728,
-      minHeight: 300,
-      minWidth: 600,
+      x: this.mainWindowState.x,
+      y: this.mainWindowState.y,
+      height: this.mainWindowState.height,
+      width: this.mainWindowState.width,
+      minHeight: 700,
+      minWidth: 1000,
       frame: false,
       transparent: true,
       icon: getAssetPath('icon.png'),
       webPreferences: {
         nodeIntegration: true,
         enableRemoteModule: true,
+        contextIsolation: false,
       },
     });
 
-    this.mainWindow.loadURL(`file://${__dirname}/app/index.html`);
+    this.mainWindow.loadURL(`file://${this.app.getAppPath()}/app/index.html`);
 
     this.mainWindow.webContents.on('did-finish-load', () => {
       if (!this.mainWindow) {
@@ -221,7 +232,7 @@ export class WondersAPI {
       shell.openExternal(url);
     });
 
-    new AppUpdater();
+    this.mainWindowState.manage(this.mainWindow);
   }
 
   private async createTrayIcon() {
@@ -248,8 +259,23 @@ export class WondersAPI {
     });
 
     this.ipcMain.on(constants.CLOSE_MAIN_WINDOW, () => {
-      console.log("Received CLOSE_MAIN_WINDOW request.");
       this.mainWindow?.close();
+    });
+
+    this.ipcMain.on(constants.MAXIMIZE_MAIN_WINDOW, () => {
+      if (!this.mainWindow?.maximizable)
+        return;
+      
+      if (this.mainWindow.isMaximized())
+        this.mainWindow.restore();
+
+      if (!this.mainWindow.isMaximized())
+        this.mainWindow.maximize();
+    });
+
+    this.ipcMain.on(constants.MINIMIZE_MAIN_WINDOW, () => {
+      if (this.mainWindow?.minimizable)
+        this.mainWindow.minimize();
     });
   }
 
