@@ -17,9 +17,9 @@ export default () => {
       <HashRouter>
         <Navbar/>
         <Switch>
-          <Route path="/settings" component={SettingsPage} />
-          <Route path="/widgets" component={WidgetsPage} />
-          <Route path="/" component={LandingPage} />
+          <Route exact path="/" component={() => <LandingPage/>} />
+          <Route path="/settings" component={() => <SettingsPage/>} />
+          <Route path="/widgets" component={() => <WidgetsPage/>} />
         </Switch>
       </HashRouter>
     </>
