@@ -112,10 +112,10 @@ const ElectronDrag = styled.div`
 
 /* Main Component */
 interface INavbarProps {
-  ref: React.MutableRefObject<HTMLDivElement> | React.RefObject<HTMLDivElement>;
+  [key: string]: any
 }
 
-export const Navbar: React.FC<INavbarProps> = ({ ref }) => {
+export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((props, ref) => {
   const activeStyle = { color: '#bbb' };
 
   return (
@@ -131,4 +131,4 @@ export const Navbar: React.FC<INavbarProps> = ({ ref }) => {
       </TrafficLights>
     </NavStyle>
   );
-}
+});
