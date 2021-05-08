@@ -132,15 +132,15 @@ export class App {
   }
 
   private linkIpcEvents() {
-    ipcMain.on(constants.GET_WIDGETS, (event) => {
-      event.reply(constants.RECEIVE_WIDGETS, []);
+    ipcMain.on(constants.ipcMessages.GET_WIDGETS, (event) => {
+      event.reply(constants.ipcMessages.RECEIVE_WIDGETS, []);
     });
 
-    ipcMain.on(constants.CLOSE_MAIN_WINDOW, () => {
+    ipcMain.on(constants.ipcMessages.CLOSE_MAIN_WINDOW, () => {
       this.windowManager.getMainWindow()?.close();
     });
 
-    ipcMain.on(constants.MAXIMIZE_MAIN_WINDOW, () => {
+    ipcMain.on(constants.ipcMessages.MAXIMIZE_MAIN_WINDOW, () => {
       let mainWindow = this.windowManager.getMainWindow();
       if (!mainWindow?.maximizable)
         return;
@@ -152,7 +152,7 @@ export class App {
         mainWindow.maximize();
     });
 
-    ipcMain.on(constants.MINIMIZE_MAIN_WINDOW, () => {
+    ipcMain.on(constants.ipcMessages.MINIMIZE_MAIN_WINDOW, () => {
       let mainWindow = this.windowManager.getMainWindow();
       if (mainWindow?.minimizable)
         mainWindow.minimize();

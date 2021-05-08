@@ -125,9 +125,9 @@ export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((props, ref
       <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
-        <RedTrafficLight onClick={() => ipcRenderer.send(constants.CLOSE_MAIN_WINDOW)} />
-        <YellowTrafficLight onClick={() => ipcRenderer.send(constants.MAXIMIZE_MAIN_WINDOW)} />
-        <GreenTrafficLight onClick={() => ipcRenderer.send(constants.MINIMIZE_MAIN_WINDOW)} />
+        <RedTrafficLight onClick={() => ipcRenderer.send(constants.ipcMessages.CLOSE_MAIN_WINDOW)} />
+        <YellowTrafficLight onClick={() => ipcRenderer.send(constants.ipcMessages.MAXIMIZE_MAIN_WINDOW)} />
+        <GreenTrafficLight onClick={() => ipcRenderer.send(constants.ipcMessages.MINIMIZE_MAIN_WINDOW)} />
       </TrafficLights>
     </NavStyle>
   );
