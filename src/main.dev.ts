@@ -124,6 +124,12 @@ export class WondersAPI {
     }
   }
 
+
+
+  /**
+   * Load a widget
+   * @param p Path to wonder widget
+   */
   public async loadWidget(p: string): Promise<void> {
     let pluginInfo;
     try {
@@ -152,6 +158,10 @@ export class WondersAPI {
     widgetObject.start();
   }
 
+    /**
+   * Unload a widget
+   * @param name Name of wonder widget
+   */
   public async unloadWidget(name: string): Promise<void> {
     const widget = this.widgets.get(name);
     widget?.stop();
