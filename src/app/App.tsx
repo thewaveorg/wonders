@@ -21,6 +21,7 @@ export default () => {
   return (
     <>
       <HashRouter>
+        {/* @ts-ignore shut the up */}
         <Navbar ref={navbarRef}/>
         <Page style={{ height: `calc(100% - ${height}px)` }}>
           <Switch>
