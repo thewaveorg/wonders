@@ -10,7 +10,7 @@ import { Page } from './components/Page';
 
 import { useResize } from '../util/useResize';
 
-import './App.global.css';
+import './ReactApp.global.css';
 import './styles/normalize.css';
 
 
