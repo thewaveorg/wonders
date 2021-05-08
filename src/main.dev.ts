@@ -75,6 +75,7 @@ export class WondersAPI {
 
     this.widgetsDirectory = path.resolve(__dirname, '../widgets');
 
+    this.linkIpcEvents();
     this.registerEvents();
     this.loadWidgetsFromDirectory();
     this.createTrayIcon();
@@ -185,7 +186,9 @@ export class WondersAPI {
     this.mainWindow = new BrowserWindow({
       show: false,
       width: 1024,
+      minWidth: 1024,
       height: 728,
+      minHeight: 728,
       frame: false,
       transparent: true,
       icon: getAssetPath('icon.png'),
@@ -237,6 +240,17 @@ export class WondersAPI {
 
     this.trayIcon.on("click", () => this.createMainWindow());
     this.trayIcon.on("right-click", () => this.trayIcon?.popUpContextMenu());
+  }
+
+  private linkIpcEvents() {
+    this.ipcMain.on("request-loaded-widgets", (event, arg) => {
+      event.reply("reply-loaded-widgets", this.widgets);
+    });
+
+    this.ipcMain.on("request-close-main-window", (event, arg) => {
+      console.log("received close window request");
+      this.mainWindow?.close();
+    });
   }
 
   private registerEvents() {

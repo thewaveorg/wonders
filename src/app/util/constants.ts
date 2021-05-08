@@ -1,5 +1,5 @@
-module.exports = {
+export default {
   GET_WIDGETS: "get-widgets",
   UNLOAD_WIDGET: "unload-widget",
   LOAD_WIDGET: "load-widget"
-}
+};

@@ -2,6 +2,8 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
+const { ipcRenderer } = window.require("electron");
+
 /* Styles */
 const NavStyle = styled.div`
   display: flex;
@@ -112,7 +114,7 @@ const ElectronDrag = styled.div`
 
 /* Main Component */
 interface INavbarProps {
-  ref: React.RefObject<HTMLDivElement>;
+  ref: React.MutableRefObject<HTMLDivElement> | React.RefObject<HTMLDivElement>;
 }
 
 export const Navbar: React.FC<INavbarProps> = ({ ref }) => {
@@ -123,7 +125,7 @@ export const Navbar: React.FC<INavbarProps> = ({ ref }) => {
       <NavLinkStyle activeStyle={{ color: '#bbb'}} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
-        <RedTrafficLight onClick={() => window.close()} />
+        <RedTrafficLight onClick={() => ipcRenderer.send("request-close-main-window")} />
         <YellowTrafficLight onClick={() => window.moveTo( -100000, -100000 )} />
         <GreenTrafficLight />
       </TrafficLights>
