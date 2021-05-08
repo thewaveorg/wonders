@@ -1,9 +1,9 @@
 import React from 'react';
 
 // tabs
-import Landing from "./tabs/landing";
-import Settings from "./tabs/settings";
-import Widgets from "./tabs/widgets";
+import { Landing } from "./Landing";
+import { Settings } from "./Settings";
+import { Widgets } from "./Widgets";
 
 
 export default class Home extends React.Component {
