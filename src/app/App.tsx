@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 
 // components
-import Nav from "./components/nav.tsx";
+import Nav from "./components/nav";
 
 import './App.global.css';
 import './styles/normalize.css';
@@ -32,7 +32,7 @@ export default class App extends React.Component {
           <button className="MenuBtn" style={{backgroundColor: "#00CA4E"}}></button>
         </div>
       </div>
-      <Nav cb={(data: string) => this.switchTab(data)}/>
+      <Nav active={this.state.tab} cb={(data: string) => this.switchTab(data)}/>
       <Router>
         <Switch>
           <Route path="/" component={() => <Home tab={this.state.tab}/>} />

@@ -77,7 +77,7 @@ export class WondersAPI {
     this.createTrayIcon();
   }
 
-  public async createWidgetWindowAsync(id: string, options: BrowserOptions | undefined): Promise<BrowserWindow> {
+  public async createWidgetWindowAsync(id: string, options?: BrowserOptions): Promise<BrowserWindow> {
     await app.whenReady();
 
     // Override certain options.

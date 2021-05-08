@@ -9,17 +9,17 @@ export default class Nav extends Component {
   }
 
   render() {
-    const { cb } = this.props;
+    const { cb, active } = this.props;
     return (
       <>
           <div className="tabs">
-          <div className="tab" onClick={() => cb('home')}>
+          <div className={`tab ${active === "home" ? "tabActive" : ""}`} onClick={() => cb('home')}>
             <p className="tabName">Home</p>
           </div>
-          <div className="tab" onClick={() => cb('widgets')}>
+          <div className={`tab ${active === "widgets" ? "tabActive" : ""}`} onClick={() => cb('widgets')}>
             <p className="tabName">Widgets</p>
           </div>
-          <div className="tab" onClick={() => cb('settings')}>
+          <div className={`tab ${active === "settings" ? "tabActive" : ""}`} onClick={() => cb('settings')}>
             <p className="tabName">Settings</p>
           </div>
         </div>
