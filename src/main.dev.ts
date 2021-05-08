@@ -3,7 +3,10 @@ import 'regenerator-runtime/runtime';
 
 import { readdirSync } from 'fs';
 import path from 'path';
-import { app, BrowserWindow, ipcMain, Menu, shell, Tray } from 'electron';
+// @ts-ignore
+import { app, BrowserWindow, ipcMain, Menu, shell, Tray, ipcRenderer } from 'electron';
+// @ts-ignore ignore so ts will quit yelling
+import { GET_WIDGETS, UNLOAD_WIDGET, LOAD_WIDGET } from "./app/util/constants";
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 
@@ -119,7 +122,7 @@ export class WondersAPI {
       .filter((dirent) => dirent.isDirectory() || dirent.isSymbolicLink())
       .map((folder) => path.resolve(dir!, folder.name));
 
-    for (const wpath of widgetFolders) {
+    for await (const wpath of widgetFolders) {
       await this.loadWidget(wpath);
     }
   }
