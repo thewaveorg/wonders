@@ -1,7 +1,14 @@
 import React, { Component } from "react";
-
 export default class Widgets extends Component {
+  state: any;
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      widgets: []
+    }
+  }
 render() {
+  console.log(this.state)
   return (
     <>
       <div />

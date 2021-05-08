@@ -1,11 +1,17 @@
+
 import React, {Component} from "react";
 
 export default class Settings extends Component {
   props: any;
+  state: any;
   constructor(props: any) {
     super(props);
     this.props = props;
   }
+
+
+
+
   render() {
     // const { widgets, enable, disable } = this.props;
     return (
@@ -22,3 +28,4 @@ export default class Settings extends Component {
     );
   }
 }
+

@@ -6,7 +6,6 @@ import SettingsPage from './pages/tabs/settings';
 import WidgetsPage from './pages/tabs/widgets';
 
 import { Navbar } from "./components/Navbar";
-import { Titlebar } from './components/Titlebar';
 
 import './App.global.css';
 import './styles/normalize.css';
@@ -18,10 +17,9 @@ export default () => {
       <HashRouter>
         <Navbar/>
         <Switch>
-          <Route exact path="/" component={LandingPage} />
-          <Route path="/" component={LandingPage} />
-          <Route path="/settings" component={SettingsPage} />
-          <Route path="/widgets" component={WidgetsPage} />
+          <Route exact path="/" component={ () => <LandingPage />} />
+          <Route path="/settings" component={() => <SettingsPage />} />
+          <Route path="/widgets" component={() => <WidgetsPage />} />
         </Switch>
       </HashRouter>
     </>

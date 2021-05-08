@@ -21,6 +21,10 @@ const NavLinkStyle = styled(NavLink)`
   padding: 10px 10px;
   text-align: center;
 
+  &:focus {
+    color: #00CA4E;
+  }
+
   &:hover {
     background-color: rgba(255, 255, 255, .1);
   }
