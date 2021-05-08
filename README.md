@@ -16,11 +16,24 @@ A rainmeter-like widget platform powered by Electron.
 ## How widgets work (for now)
 
 A widget is, basically, a NPM package, which returns a factory function for the main class.
+
 ```js
 module.exports = (Wonders) => new WidgetClass(Wonders);
 ```
+
 If needed, it can also return an object with a `WONDERS` property: the factory function.
+
 ```js
 module.exports = { WONDERS: (Wonders) => new WidgetClass(Wonders), ... }
 ```
+
 The main widget class has to implement the IWidget interface, although it's not currently enforced via linting.
+
+## Installation
+
+```
+git clone https://github.com/gspalato/wonders
+cd wonders
+yarn install
+yarn start
+```

@@ -1,84 +1,90 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600&display=swap');
 
-html, body {
-	background: transparent;
+html,
+body {
+  background: transparent;
 }
 
 body {
-  	color: #ffffff;
-  	height: 100vh;
-  	background: #141414;
-  	font-family: sans-serif;
-  	overflow-y: hidden;
+  color: #ffffff;
+  height: 100vh;
+  background: #141414;
+  font-family: sans-serif;
+  overflow-y: hidden;
 }
 
 button {
-  	background-color: white;
-  	padding: 10px 20px;
-  	border-radius: 10px;
-  	border: none;
-  	appearance: none;
-  	font-size: 1.3rem;
-  	transition: transform ease-in 0.1s;
-  	cursor: pointer;
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  appearance: none;
+  font-size: 1.3rem;
+  transition: transform ease-in 0.1s;
+  cursor: pointer;
 }
 
 button:hover {
-  	transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 li {
-  	list-style: none;
+  list-style: none;
 }
 
 a {
-  	text-decoration: none;
-  	height: fit-content;
-  	width: fit-content;
- 	margin: 10px;
+  text-decoration: none;
+  height: fit-content;
+  width: fit-content;
+  margin: 10px;
 }
 
 a:hover {
-  	opacity: 1;
-  	text-decoration: none;
+  opacity: 1;
+  text-decoration: none;
 }
 
-h1, h2, h3, h4, h5 {
-	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 p {
-	font-family: 'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Karla', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #root {
-	height: 100%;
-	width: 100%;
+  height: 100%;
+  width: 100%;
 }
 
 #content-wrapper {
-	height: 100%;
-	width: 100%;
-	flex-direction: column;
-	border-radius: 10px;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .electron-drag {
-	-webkit-app-region: drag;
+  -webkit-app-region: drag;
 }
 
 /* Titlebar */
 #electron-titlebar {
-	position: fixed !important;
-	top: 0;
-	width: 100%;
-	background: rgba(255, 255, 255, .0125);
+  position: fixed !important;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.0125);
 }
-
 
 /* Tabs */
 
@@ -91,14 +97,13 @@ p {
 }
 
 .tab:hover {
-  background-color: rgba(255,255,255,.1)
+  background-color: rgba(255, 255, 255, 0.1);
 }
-
 
 .tabs {
   display: flex;
   flex-wrap: wrap;
-  background-color: rgba(255,255,255,.05);
+  background-color: rgba(255, 255, 255, 0.05);
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -108,7 +113,46 @@ p {
   margin-top: 40px;
 }
 
-
 .tabName {
   margin: 3px;
+}
+
+.MenuBar {
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 0px;
+  padding-left: 1%;
+  padding-top: 1%;
+  width: 99%;
+  height: 30px;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+
+.MenuP {
+  margin: 0;
+  float: left;
+  clear: both;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.MenuButtons {
+  float: right;
+  margin-right: 15px;
+}
+
+.MenuBtn {
+  width: 15px;
+  margin-left: 10px;
+  height: 15px;
+  padding: 0;
+  border-radius: 50%;
+  float: right;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.MenuBtn:focus {
+  outline: none;
+  border: none;
 }

@@ -1,108 +1,43 @@
-import React from "react";
+import React from 'react';
 
-export default class extends React.Component {
+// tabs
+import Landing from "./tabs/landing";
+import Settings from "./tabs/settings";
+import Widgets from "./tabs/widgets";
+
+
+export default class Home extends React.Component {
   state: any;
+  props: any;
   constructor(props: any) {
     super(props);
+    this.props = props;
     this.state = {
-      tab: "home",
+      tab: 'home',
     };
   }
 
   render(): any {
-    const { tab } = this.state;
+    const { tab } = this.props;
 
     return (
       <>
-        <div className="tabs">
-          <div className="tab" onClick={() => this.switchTab("home")}>
-            <p className="tabName">Home</p>
-          </div>
-          <div className="tab" onClick={() => this.switchTab("settings")}>
-            <p className="tabName">Settings</p>
-          </div>
-        </div>
-        <div className="homeMain">
-          {this.renderTab(tab)}
-        </div>
+        <div className="homeMain">{this.renderTab(tab)}</div>
       </>
     );
-  }
-
-  switchTab(tab: string) {
-    this.setState({ tab: tab });
   }
 
   renderTab(tab: string) {
     switch (tab) {
-      case "home":
-        return this.renderHome();
-      case "settings":
-        return this.renderSettings();
+      case 'home':
+        return <Landing />
+      case 'settings':
+        return <Settings />
+      case 'widgets':
+        return <Widgets />
       default:
-        return this.renderError();
+        return <h1>wtf did you do</h1>
     }
   }
 
-  renderSettings() {
-    return (
-      <>
-        <div>
-        </div>
-        <div
-          id="content-wrapper"
-          className="electron-drag"
-          style={{ height: "100%", width: "100%" }}
-        >
-          <p style={{ fontSize: "4.25rem" }}>
-            WIP
-          </p>
-        </div>
-      </>
-    );
-  }
-
-  renderHome() {
-    return (
-      <>
-        <div>
-        </div>
-        <div
-          id="content-wrapper"
-          className="electron-drag"
-          style={{ height: "100%", width: "100%" }}
-        >
-          <h1 style={{ fontSize: "3rem" }}>Welcome to Wonders!</h1>
-          <p style={{ fontSize: "1.25rem" }}>
-            A widget and desktop customization platform powered by Electron!
-          </p>
-        </div>
-      </>
-    );
-  }
-
-  renderError() {
-    return (
-      <h1>wtf did you do</h1>
-    );
-  }
 }
-
-// export default () => {
-// return (
-//   <>
-//     <div>
-//     </div>
-//     <div
-//       id="content-wrapper"
-//       className="electron-drag"
-//       style={{ height: "100%", width: "100%" }}
-//     >
-//       <h1 style={{ fontSize: "3rem" }}>Welcome to Wonders!</h1>
-//       <p style={{ fontSize: "1.25rem" }}>
-//         A widget and desktop customization platform powered by Electron!
-//       </p>
-//     </div>
-//   </>
-// );
-// };
