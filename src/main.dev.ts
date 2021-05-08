@@ -7,8 +7,6 @@ import log from 'electron-log';
 import { container, DependencyContainer } from "tsyringe";
 
 import { App } from './services/App';
-import { WindowManager } from './services/WindowManager';
-import { WondersAPI } from './services/WondersAPI';
 
 export class AppUpdater {
   constructor() {

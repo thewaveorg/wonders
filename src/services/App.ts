@@ -56,7 +56,7 @@ export class App {
 
 		let mainWindow: BrowserWindow | null = new BrowserWindow({
 			show: false,
-			 x: windowState.x,
+			x: windowState.x,
 			y: windowState.y,
 			height: windowState.height,
 			width: windowState.width,
@@ -99,7 +99,7 @@ export class App {
       shell.openExternal(url);
     });
 
-    windowState.manage(mainWindow);
+    // windowState.manage(mainWindow);
 
     this.linkIpcEvents();
   }
@@ -109,7 +109,7 @@ export class App {
 
     this.trayIcon = new Tray(path.resolve(app.getAppPath(), "../assets/icon.ico"));
     const contextMenu = Menu.buildFromTemplate([{
-        label: "⚙️ Open Settings",
+        label: "⚙️ Settings",
         click: () => this.createMainWindow(),
         type: "normal"
       },
