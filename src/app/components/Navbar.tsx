@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 
@@ -11,12 +11,13 @@ const NavStyle = styled.div`
   justify-content: space-between;
 `;
 
-const NavLinkStyle = styled(NavLink)`
+const NavLinkStyle = styled(Link)`
   color: #ffffff;
   cursor: pointer;
-  font-family: 'Karla';
+  font-family: 'Inter';
   font-size: 1em;
-  margin-left: 16px;
+  font-weight: 100;
+  letter-spacing: .5px;
   margin: 0 0 0 16px;
   padding: 10px 10px;
   text-align: center;
@@ -32,7 +33,7 @@ const NavLinkStyle = styled(NavLink)`
 
 const TrafficLights = styled.div`
   align-self: center;
-  margin: 0 10px 0 0;
+  margin: 0 16px 0 0;
 `;
 
 const TrafficLight = styled.button`
