@@ -24,9 +24,8 @@ export class App {
 	}
 
 	public start() {
-		this.widgetManager.setDefaultWidgetsDirectory(path.resolve(__dirname, '../widgets'));
+		this.widgetManager.setDefaultWidgetsDirectory(path.resolve(app.getAppPath(), '../widgets'));
 
-    this.linkIpcEvents();
     this.registerEvents();
     this.createTrayIcon();
 
@@ -65,7 +64,7 @@ export class App {
 			minWidth: 1000,
 			frame: false,
 			transparent: true,
-			icon: getAssetPath('icon.png'),
+			icon: path.resolve(app.getAppPath(), "../assets"),
 			webPreferences: {
 				nodeIntegration: true,
 				enableRemoteModule: true,
@@ -101,12 +100,14 @@ export class App {
     });
 
     windowState.manage(mainWindow);
+
+    this.linkIpcEvents();
   }
 
   private async createTrayIcon() {
     await app.whenReady();
 
-    this.trayIcon = new Tray(path.resolve(__dirname, "../assets/icon.ico"));
+    this.trayIcon = new Tray(path.resolve(app.getAppPath(), "../assets/icon.ico"));
     const contextMenu = Menu.buildFromTemplate([{
         label: "⚙️ Open Settings",
         click: () => this.createMainWindow(),

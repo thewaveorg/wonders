@@ -33,9 +33,9 @@ export class Program {
   }
 
   private configureServices() {
-    this.services.register(WindowManager, { useClass: WindowManager });
-    this.services.register(WondersAPI, { useClass: WondersAPI });
-    this.services.register(App, { useClass: App });
+    // this.services.register(WindowManager, { useClass: WindowManager });
+    // this.services.register(WondersAPI, { useClass: WondersAPI });
+    // this.services.register(App, { useClass: App });
   }
 }
 

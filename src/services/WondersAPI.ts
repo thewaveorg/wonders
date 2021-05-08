@@ -19,7 +19,11 @@ export class WondersAPI {
 
   private trayIcon: Tray | null = null;
 
-  constructor(@inject(delay(() => App)) _app: App, _widgetManager: WidgetManager, _windowManager: WindowManager) {
+  constructor(
+    @inject(delay(() => App)) _app: App,
+    @inject(delay(() => WidgetManager)) _widgetManager: WidgetManager,
+    @inject(delay(() => WindowManager)) _windowManager: WindowManager
+  ) {
 		this.widgetManager = _widgetManager;
     this.windowManager = _windowManager;
     this.trayIcon = _app.getTrayIcon();

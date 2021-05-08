@@ -1,6 +1,6 @@
-import { readdirSync } from "fs";
+import fs, { fstat, readdirSync } from "fs";
 import path from "path";
-import { injectable, singleton } from "tsyringe";
+import { delay, inject, injectable, singleton } from "tsyringe";
 
 import { WondersAPI } from "./WondersAPI";
 
@@ -14,7 +14,7 @@ export class WidgetManager {
   private widgets: Map<string, IWidget>;
   private widgetsDirectory: string;
 	
-	constructor(_wondersApi: WondersAPI) {
+	constructor(@inject(delay(() => WondersAPI)) _wondersApi: WondersAPI) {
 		this.wondersApi = _wondersApi;
 
 		this.widgets = new Map();
@@ -29,6 +29,9 @@ export class WidgetManager {
 		return this.widgetsDirectory;
 	};
 	public setDefaultWidgetsDirectory(p: string) {
+    if (!fs.existsSync(p)) {
+      console.log("Provided widgets directory doesn't exist.");
+    }
 		this.widgetsDirectory = p;
 	};
 
