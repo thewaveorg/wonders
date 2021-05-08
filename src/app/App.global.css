@@ -1,47 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600&display=swap');
 
+:root {
+	--main-background-color: #101010;
+	--border-color: rgba(123, 123, 123, .15);
+	--accent-color: #06f;
+}
+
+* {
+	-webkit-app-region: no-drag;
+	user-select: none;
+}
+
 html, body {
 	background: transparent;
 }
 
 body {
-  	color: #ffffff;
-  	height: 100vh;
-  	background: #141414;
-  	font-family: sans-serif;
-  	overflow-y: hidden;
+	color: #ffffff;
+	height: 100vh;
+	background: var(--main-background-color);
+	font-family: sans-serif;
+	overflow-y: hidden;
 }
 
 button {
-  	background-color: white;
-  	padding: 10px 20px;
-  	border-radius: 10px;
-  	border: none;
-  	appearance: none;
-  	font-size: 1.3rem;
-  	transition: transform ease-in 0.1s;
-  	cursor: pointer;
+	background-color: white;
+	padding: 10px 20px;
+	border-radius: 10px;
+	border: none;
+	appearance: none;
+	font-size: 1.3rem;
+	transition: transform ease-in 0.1s;
+	cursor: pointer;
 }
 
 button:hover {
-  	transform: scale(1.05);
+	transform: scale(1.05);
 }
 
 li {
-  	list-style: none;
+	list-style: none;
 }
 
 a {
-  	text-decoration: none;
-  	height: fit-content;
-  	width: fit-content;
+	text-decoration: none;
+	height: fit-content;
+	width: fit-content;
  	margin: 10px;
 }
 
 a:hover {
-  	opacity: 1;
-  	text-decoration: none;
+	opacity: 1;
+	text-decoration: none;
 }
 
 h1, h2, h3, h4, h5 {
@@ -62,9 +73,9 @@ p {
 	width: 100%;
 	flex-direction: column;
 	border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .electron-drag {
@@ -79,36 +90,40 @@ p {
 	background: rgba(255, 255, 255, .0125);
 }
 
+#window-handle {
+	width: auto;
+	height: auto;
+	flex-grow: 1;
+}
 
 /* Tabs */
 
 .tab {
-  text-align: center;
-  font-size: 24px;
-  margin-left: 16px;
-  padding: 0px 10px;
-  border-radius: 10px;
+	text-align: center;
+	font-size: 1em;
+	margin-left: 16px;
+	padding: 10px 10px;
+	cursor: pointer;
 }
 
 .tab:hover {
-  background-color: rgba(255,255,255,.1)
+	background-color: rgba(255,255,255,.1)
 }
 
 
 .tabs {
-  display: flex;
-  flex-wrap: wrap;
-  background-color: rgba(255,255,255,.05);
-  padding-top: 10px;
-  padding-bottom: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	background-color: var(--main-background-color);
+	border-bottom: 1px solid var(--border-color);
 }
 
 /* Main Content */
 .homeMain {
-  margin-top: 40px;
+	margin-top: 40px;
 }
 
 
 .tabName {
-  margin: 3px;
+	margin: 3px;
 }

@@ -21,6 +21,7 @@ export default class extends React.Component {
           <div className="tab" onClick={() => this.switchTab("settings")}>
             <p className="tabName">Settings</p>
           </div>
+          <div id="window-handle" className="electron-drag"/>
         </div>
         <div className="homeMain">
           {this.renderTab(tab)}
@@ -51,7 +52,6 @@ export default class extends React.Component {
         </div>
         <div
           id="content-wrapper"
-          className="electron-drag"
           style={{ height: "100%", width: "100%" }}
         >
           <p style={{ fontSize: "4.25rem" }}>
