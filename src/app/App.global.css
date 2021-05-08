@@ -11,9 +11,6 @@ body {
   	background: #141414;
   	font-family: sans-serif;
   	overflow-y: hidden;
-  	display: flex;
-  	justify-content: center;
-  	align-items: center;
 }
 
 button {
@@ -56,21 +53,18 @@ p {
 }
 
 #root {
-	display: flex;
 	height: 100%;
 	width: 100%;
-	justify-content: center;
-	align-items: center;
 }
 
 #content-wrapper {
-	display: flex;
 	height: 100%;
 	width: 100%;
-	justify-content: center;
-	align-items: center;
 	flex-direction: column;
 	border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .electron-drag {
@@ -83,4 +77,38 @@ p {
 	top: 0;
 	width: 100%;
 	background: rgba(255, 255, 255, .0125);
+}
+
+
+/* Tabs */
+
+.tab {
+  text-align: center;
+  font-size: 24px;
+  margin-left: 16px;
+  padding: 0px 10px;
+  border-radius: 10px;
+}
+
+.tab:hover {
+  background-color: rgba(255,255,255,.1)
+}
+
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: rgba(255,255,255,.05);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* Main Content */
+.homeMain {
+  margin-top: 40px;
+}
+
+
+.tabName {
+  margin: 3px;
 }
