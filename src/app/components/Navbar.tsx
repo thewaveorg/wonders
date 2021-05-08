@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const { ipcRenderer } = window.require("electron");
 
-import constants from "../../util/constants";
+import constants from "../../api/Constants";
 
 /* Styles */
 const NavStyle = styled.div`

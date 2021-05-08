@@ -6,7 +6,7 @@ import { injectable, singleton } from "tsyringe";
 import { WidgetManager } from "./WidgetManager";
 import { WindowManager } from "./WindowManager";
 
-import constants from "../util/constants";
+import constants from "../api/Constants";
 
 @injectable()
 @singleton()
@@ -132,17 +132,16 @@ export class App {
   }
 
   private linkIpcEvents() {
-		const mainWindow = this.windowManager.getMainWindow();
-
     ipcMain.on(constants.GET_WIDGETS, (event) => {
       event.reply(constants.RECEIVE_WIDGETS, []);
     });
 
     ipcMain.on(constants.CLOSE_MAIN_WINDOW, () => {
-      mainWindow?.close();
+      this.windowManager.getMainWindow()?.close();
     });
 
     ipcMain.on(constants.MAXIMIZE_MAIN_WINDOW, () => {
+      let mainWindow = this.windowManager.getMainWindow();
       if (!mainWindow?.maximizable)
         return;
 
@@ -154,6 +153,7 @@ export class App {
     });
 
     ipcMain.on(constants.MINIMIZE_MAIN_WINDOW, () => {
+      let mainWindow = this.windowManager.getMainWindow();
       if (mainWindow?.minimizable)
         mainWindow.minimize();
     });
