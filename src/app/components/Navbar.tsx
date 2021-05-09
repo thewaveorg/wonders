@@ -120,7 +120,7 @@ export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((props, ref
 
   return (
     <NavStyle ref={ref}>
-      <NavLinkStyle activeStyle={activeStyle} to="/" style={{ marginLeft: '1%' }}>Home</NavLinkStyle>
+      <NavLinkStyle activeStyle={activeStyle} to="/" exact style={{ marginLeft: '1%' }}>Home</NavLinkStyle>
       <NavLinkStyle activeStyle={activeStyle} to="/widgets">Widgets</NavLinkStyle>
       <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
