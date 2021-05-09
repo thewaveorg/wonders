@@ -30,10 +30,20 @@ export const Widgets: React.FC = () => {
 
     ipcRenderer.send(constants.ipcChannels.MAIN_CHANNEL_ASYNC, [ constants.ipcMessages.GET_WIDGETS ]);
   }, [])
+  console.log(widgets);
 
-  return (
-    <>
-      {widgets.map((f: any) => <WidgetCard key={f.id} widget={f} />)}
-    </>
-  );
+  if(widgets.length === 0) {
+    return (
+      <>
+      <h1 style={{ fontSize: '4.25rem', paddingBottom: '.1em', textAlign: "center" }}>No Widgets Available</h1>
+      <p style={{ fontSize: '2.125rem', textAlign: "center" }}>Are you sure you have any widgets installed?</p>
+      </>
+    )
+  } else {
+    return (
+      <>
+        {widgets.map((f: any) => <WidgetCard key={f.id} widget={f} />)}
+      </>
+    );
+  }
 }

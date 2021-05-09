@@ -15,7 +15,6 @@ import { WidgetManager } from './WidgetManager';
 import { WindowManager } from './WindowManager';
 
 import constants from '../api/Constants';
-import { getIpcArguments } from '../utils/getIpcArguments';
 
 @injectable()
 @singleton()
@@ -179,10 +178,20 @@ export class App {
 
   private linkIpcEvents() {
     const channel = constants.ipcChannels.MAIN_CHANNEL_ASYNC;
-    ipcMain.on(channel, (event, a) => {
-      const { messageType, args } = getIpcArguments(a);
-      if (!messageType)
+    ipcMain.on(channel, (event, args) => {
+      if (!Array.isArray(args)) {
+        console.log(
+          `IPC events have to pass an array of args. (Got ${args})`
+          + "The array's first entry must be a string representing the message type.");
         return;
+      }
+
+      let messageType = args.shift();
+      if (!messageType) {
+        console.log("No IPC message type given. Ignoring...");
+      }
+
+      console.log("RECEIVED "+messageType);
 
       let msgs = constants.ipcMessages;
 
@@ -196,42 +205,43 @@ export class App {
         case msgs.GET_WIDGETS:
           {
             var arrToPush: any = [];
-            for (let w of this.widgetManager.getAllLoadedWidgets().values()) {
-              arrToPush.push({
-                id: w.id,
-                name: w.name,
-                description: w.manifest.description,
-                version: w.manifest.version,
-                author: w.manifest.author,
-                enabled: this.widgetManager.isActive(w.id)
-              });
-            }
-
+            Array.from(this.widgetManager.getAllLoadedWidgets().entries()).forEach(
+              (f) => {
+                arrToPush.push({
+                  id: f[1].id,
+                  name: f[1].name,
+                  description: f[1].manifest.description,
+                  version: f[1].manifest.version,
+                  author: f[1].manifest.author,
+                  enabled: this.widgetManager.isActive(f[1].id)
+                });
+              }
+            );
             event.reply(channel, [constants.ipcMessages.RECEIVE_WIDGETS, arrToPush]);
           }
           break;
 
         case msgs.GET_LOADED_WIDGET:
           {
-            event.reply(channel, [msgs.RECEIVE_LOADED_WIDGET, this.widgetManager.getAllLoadedWidgets().get(args![0])?.info]);
+            event.reply(channel, this.widgetManager.getAllLoadedWidgets().get(args[0]));
           }
           break;
 
         case msgs.GET_ACTIVE_WIDGET:
           {
-            event.reply(channel, [msgs.RECEIVE_ACTIVE_WIDGET, this.widgetManager.getAllActiveWidgets().get(args![0])?.info]);
+            event.reply(channel, this.widgetManager.getAllActiveWidgets().get(args[0]));
           }
           break;
 
         case msgs.ACTIVATE_WIDGET:
           {
-            this.widgetManager.activateWidget(args![0]);
+            this.widgetManager.activateWidget(args[0]);
           }
           break;
 
         case msgs.DEACTIVATE_WIDGET:
           {
-            this.widgetManager.deactivateWidget(args![0]);
+            this.widgetManager.deactivateWidget(args[0]);
           }
           break
 
