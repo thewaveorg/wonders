@@ -2,6 +2,9 @@
 logs
 *.log
 
+# Unignore Yarn.lock when you need to push;
+yarn.lock
+
 # Runtime data
 pids
 *.pid

@@ -265,7 +265,7 @@ export class WondersAPI {
     this.ipcMain.on(constants.MAXIMIZE_MAIN_WINDOW, () => {
       if (!this.mainWindow?.maximizable)
         return;
-      
+
       if (this.mainWindow.isMaximized())
         this.mainWindow.restore();
 
