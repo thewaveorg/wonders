@@ -23,6 +23,9 @@ export const Widgets: React.FC = () => {
     });
   }, [])
 
+  console.log("Retrieved widgets:");
+  console.log(widgets);
+
   if(widgets.length === 0) {
     return (
       <>

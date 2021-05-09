@@ -46,6 +46,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   const [isWidgetEnabled, setWidgetEnabled] = useState(widget.enabled ?? false);
 
   const messages = Constants.ipcMessages;
+
 /*
   useEffect(() => {
     ipcRenderer.callMain(messages.GET_ACTIVE_WIDGET, widget.id).then((w: any) => {
@@ -66,7 +67,6 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
     });
   }
 
-  console.log(widget);
   return (
     <WidgetBox id={widget.id}>
       <WidgetHeader>
@@ -75,7 +75,8 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
           checkedIcon={false}
           uncheckedIcon={false}
           onChange={onClick}
-          checked={isWidgetEnabled} />
+          checked={isWidgetEnabled}
+        />
       </WidgetHeader>
     </WidgetBox>
   );
