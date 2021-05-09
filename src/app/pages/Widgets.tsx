@@ -33,7 +33,7 @@ export const Widgets: React.FC = () => {
 
   return (
     <>
-      {widgets.map((f) => <WidgetCard widget={f} />)}
+      {widgets.map((f: any) => <WidgetCard widget={f} />)}
     </>
   );
 }

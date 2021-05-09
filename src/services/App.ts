@@ -204,6 +204,7 @@ export class App {
                   description: f[1].manifest.description,
                   version: f[1].manifest.version,
                   author: f[1].manifest.author,
+                  enabled: this.widgetManager.isActive(f[1].id)
                 });
               }
             );

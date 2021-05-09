@@ -32,6 +32,7 @@ export class Widget {
   private _name: string;
   private _manifest: any;
   private _object: IWidgetFormat;
+  public enabled?: boolean;
 
   get manifest() { return this._manifest }
 

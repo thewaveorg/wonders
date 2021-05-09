@@ -65,8 +65,9 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
 
   const onClick = (checked: boolean) => {
     setWidgetEnabled(checked);
-  };
+  }
 
+  console.log(widget);
   return (
     <WidgetBox id={widget.id} key={widget.id}>
       <WidgetHeader>
