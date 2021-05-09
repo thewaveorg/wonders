@@ -11,11 +11,13 @@
 * {
   -webkit-app-region: no-drag;
   user-select: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 html,
 body {
   background: transparent;
+  -webkit-scroll-behaviour: smooth;
 }
 
 body {

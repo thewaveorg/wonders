@@ -1,32 +1,69 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+const { ipcRenderer } = window.require('electron');
+
+import Switch from 'react-switch';
+
+import Constants from '../../api/Constants';
+import { Widget } from '../../api/Widget';
 
 const WidgetBox = styled.div`
-  width: 80%;
+  height: auto;
+  width: 18rem;
   background-color: rgba(255, 255, 255, 0.1);
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 10px;
   margin-top: 20px;
 `;
 
-const WidgetTitle = styled.div`
-  width: 98%;
+const WidgetHeader = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0 0.25%;
+`;
+
+const WidgetTitle = styled.h1`
+  font-family: 'Inter';
+  font-size: 3rem;
+  font-weight: 700;
   margin-left: 0.5%;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  padding: 5px;
   padding-top: 0px;
 `;
 
-export const WidgetCard: React.FC<{ widget: any }> = (props: any) => {
-  const { widget } = props;
-  console.log(widget);
+/* Main Component */
+
+interface IWidgetCard {
+  widget: Widget;
+}
+
+export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
+  const [isWidgetEnabled, setWidgetEnabled] = useState(false);
+
+  ipcRenderer.send(Constants.ipcMessages.GET_ACTIVE_WIDGET, widget.id);
+  ipcRenderer.on(Constants.ipcMessages.RECEIVE_ACTIVE_WIDGET, (event, arg) => {
+    setWidgetEnabled(!!arg);
+  });
+
+  const onClick = (checked: boolean) => {
+    setWidgetEnabled(checked);
+  };
+
   return (
-    <>
-      <WidgetBox>
-        <WidgetTitle>
-          <p>{widget.name}</p>
-        </WidgetTitle>
-      </WidgetBox>
-    </>
+    <WidgetBox id={widget.id} key={widget.id}>
+      <WidgetHeader>
+        <WidgetTitle>{widget.name}</WidgetTitle>
+        <Switch
+          checkedIcon={false}
+          uncheckedIcon={false}
+          onChange={onClick} 
+          checked={isWidgetEnabled} />
+      </WidgetHeader>
+    </WidgetBox>
   );
 };

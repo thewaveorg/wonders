@@ -1,8 +1,18 @@
 import React from "react";
+import styled from "styled-components";
 const { ipcRenderer } = window.require("electron");
+
+import { WidgetCard } from "../components/WidgetCard";
+
 import constants from "../../api/Constants";
 
-import {WidgetCard} from "../components/WidgetCard";
+const CardWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+`;
 
 export const Widgets: React.FC = () => {
 

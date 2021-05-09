@@ -193,6 +193,22 @@ export class App {
       event.reply(constants.ipcMessages.RECEIVE_WIDGETS, arrToPush);
     });
 
+    ipcMain.on(constants.ipcMessages.GET_LOADED_WIDGET, (event, arg) => {
+      event.reply(this.widgetManager.getAllLoadedWidgets().get(arg));
+    });
+
+    ipcMain.on(constants.ipcMessages.GET_ACTIVE_WIDGET, (event, arg) => {
+      event.reply(this.widgetManager.getAllActiveWidgets().get(arg));
+    });
+
+    ipcMain.on(constants.ipcMessages.ACTIVATE_WIDGET, (event, arg) => {
+      this.widgetManager.activateWidget(arg);
+    });
+
+    ipcMain.on(constants.ipcMessages.DEACTIVATE_WIDGET, (event, arg) => {
+      this.widgetManager.deactivateWidget(arg);
+    });
+
     ipcMain.on(constants.ipcMessages.CLOSE_MAIN_WINDOW, () => {
       this.windowManager.getMainWindow()?.close();
     });
@@ -201,7 +217,7 @@ export class App {
       let mainWindow = this.windowManager.getMainWindow();
       if (!mainWindow?.maximizable) return;
 
-      if (mainWindow.isMaximized()) mainWindow.restore();
+      if (mainWindow.isMaximized()) mainWindow.restore(); // Doesn't work as I expected.
 
       if (!mainWindow.isMaximized()) mainWindow.maximize();
     });
