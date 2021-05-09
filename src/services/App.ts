@@ -177,55 +177,98 @@ export class App {
   }
 
   private linkIpcEvents() {
-    ipcMain.on(constants.ipcMessages.GET_WIDGETS, (event) => {
-      var arrToPush: any = [];
-      Array.from(this.widgetManager.getAllLoadedWidgets().entries()).forEach(
-        (f) => {
-          arrToPush.push({
-            id: f[1].id,
-            name: f[1].name,
-            description: f[1].manifest.description,
-            version: f[1].manifest.version,
-            author: f[1].manifest.author,
-            enabled: this.widgetManager.isActive(f[1].id)
-          });
-        }
-      );
-      event.reply(constants.ipcMessages.RECEIVE_WIDGETS, arrToPush);
-    });
+    ipcMain.on(constants.ipcChannels.MAIN_CHANNEL_ASYNC, (event, args) => {
+      if (!Array.isArray(args)) {
+        console.log(
+          `IPC events have to pass an array of args. (Got ${args})`
+          + "The array's first entry must be a string representing the message type.");
+        return;
+      }
 
-    ipcMain.on(constants.ipcMessages.GET_LOADED_WIDGET, (event, arg) => {
-      event.reply(this.widgetManager.getAllLoadedWidgets().get(arg));
-    });
+      let messageType = args.shift();
+      if (!messageType) {
+        console.log("No IPC message type given. Ignoring...");
+      }
 
-    ipcMain.on(constants.ipcMessages.GET_ACTIVE_WIDGET, (event, arg) => {
-      event.reply(this.widgetManager.getAllActiveWidgets().get(arg));
-    });
+      let msgs = constants.ipcMessages;
 
-    ipcMain.on(constants.ipcMessages.ACTIVATE_WIDGET, (event, arg) => {
-      this.widgetManager.activateWidget(arg);
-    });
+      switch (messageType) {
+        default:
+          {
+            console.log(`Unknown IPC message type "${messageType}"`);
+          }
+          break;
 
-    ipcMain.on(constants.ipcMessages.DEACTIVATE_WIDGET, (event, arg) => {
-      this.widgetManager.deactivateWidget(arg);
-    });
+        case msgs.GET_WIDGETS:
+          {
+            var arrToPush: any = [];
+            Array.from(this.widgetManager.getAllLoadedWidgets().entries()).forEach(
+              (f) => {
+                arrToPush.push({
+                  id: f[1].id,
+                  name: f[1].name,
+                  description: f[1].manifest.description,
+                  version: f[1].manifest.version,
+                  author: f[1].manifest.author,
+                  enabled: this.widgetManager.isActive(f[1].id)
+                });
+              }
+            );
+            event.reply([constants.ipcMessages.RECEIVE_WIDGETS, arrToPush]);
+          }
+          break;
 
-    ipcMain.on(constants.ipcMessages.CLOSE_MAIN_WINDOW, () => {
-      this.windowManager.getMainWindow()?.close();
-    });
+        case msgs.GET_LOADED_WIDGET:
+          {
+            event.reply(this.widgetManager.getAllLoadedWidgets().get(args[0]));
+          }
+          break;
 
-    ipcMain.on(constants.ipcMessages.MAXIMIZE_MAIN_WINDOW, () => {
-      let mainWindow = this.windowManager.getMainWindow();
-      if (!mainWindow?.maximizable) return;
+        case msgs.GET_ACTIVE_WIDGET:
+          {
+            event.reply(this.widgetManager.getAllActiveWidgets().get(args[0]));
+          }
+          break;
 
-      if (mainWindow.isMaximized()) mainWindow.restore(); // Doesn't work as I expected.
+        case msgs.ACTIVATE_WIDGET:
+          {
+            this.widgetManager.activateWidget(args[0]);
+          }
+          break;
 
-      if (!mainWindow.isMaximized()) mainWindow.maximize();
-    });
+        case msgs.DEACTIVATE_WIDGET:
+          {
+            this.widgetManager.deactivateWidget(args[0]);
+          }
+          break
 
-    ipcMain.on(constants.ipcMessages.MINIMIZE_MAIN_WINDOW, () => {
-      let mainWindow = this.windowManager.getMainWindow();
-      if (mainWindow?.minimizable) mainWindow.minimize();
+        case msgs.CLOSE_MAIN_WINDOW:
+          {
+            this.windowManager.getMainWindow()?.close();
+          }
+          break
+
+        case msgs.MAXIMIZE_MAIN_WINDOW:
+          {
+            let mainWindow = this.windowManager.getMainWindow();
+            if (!mainWindow?.maximizable)
+              return;
+
+            if (mainWindow.isMaximized())
+              mainWindow.restore(); // Doesn't work as I expected.
+            else (!mainWindow.isMaximized())
+              mainWindow.maximize();
+          }
+          break
+
+        case msgs.MINIMIZE_MAIN_WINDOW:
+          {
+            let mainWindow = this.windowManager.getMainWindow();
+            if (mainWindow?.minimizable)
+              mainWindow.minimize();
+          }
+          break
+      }
     });
   }
 

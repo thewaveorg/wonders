@@ -43,19 +43,22 @@ interface IWidgetCard {
 }
 
 export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
-  // const [isWidgetEnabled, setWidgetEnabled] = useState(false);
+  const [isWidgetEnabled, setWidgetEnabled] = useState(false);
 
-  // ipcRenderer.send(Constants.ipcMessages.GET_ACTIVE_WIDGET, widget.id);
-  // ipcRenderer.once(Constants.ipcMessages.RECEIVE_ACTIVE_WIDGET, (event, arg) => {
-  //   setWidgetEnabled(!!arg);
-  // });
+  const channel = Constants.ipcChannels.MAIN_CHANNEL_ASYNC;
+  const messages = Constants.ipcMessages;
 
-  // const onClick = (checked: boolean) => {
-  //   setWidgetEnabled(checked);
-  // };
+  ipcRenderer.send(channel, [ messages.GET_ACTIVE_WIDGET, widget.id ]);
+  ipcRenderer.on(channel, (event, args) => {
+    if (args.shift() != messages.RECEIVE_ACTIVE_WIDGET)
+      return;
+
+    if (args[0]?.id == widget.id)
+      setWidgetEnabled(!!args[0]);
+  });
 
   const onClick = (checked: boolean) => {
-    widget.enabled = !checked;
+    setWidgetEnabled(checked);
   }
 
   console.log(widget);
@@ -67,7 +70,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
           checkedIcon={false}
           uncheckedIcon={false}
           onChange={onClick}
-          checked={widget.enabled} />
+          checked={isWidgetEnabled} />
       </WidgetHeader>
     </WidgetBox>
   );
