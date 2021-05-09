@@ -4,8 +4,10 @@ import styled from "styled-components";
 
 const { ipcRenderer } = window.require("electron");
 
-
 import constants from "../../api/Constants";
+
+const ipcChannels = constants.ipcChannels;
+const ipcMessages = constants.ipcMessages;
 
 /* Styles */
 const NavStyle = styled.div`
@@ -134,9 +136,15 @@ export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((props, ref
       <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
-        <RedTrafficLight onClick={() => ipcRenderer.send(constants.ipcMessages.CLOSE_MAIN_WINDOW)} />
-        <YellowTrafficLight onClick={() => ipcRenderer.send(constants.ipcMessages.MAXIMIZE_MAIN_WINDOW)} />
-        <GreenTrafficLight onClick={() => ipcRenderer.send(constants.ipcMessages.MINIMIZE_MAIN_WINDOW)} />
+        <RedTrafficLight
+          onClick={ () => ipcRenderer.send(ipcChannels.MAIN_CHANNEL_ASYNC, [ipcMessages.CLOSE_MAIN_WINDOW]) }
+        />
+        <YellowTrafficLight
+          onClick={ () => ipcRenderer.send(ipcChannels.MAIN_CHANNEL_ASYNC, [ipcMessages.MAXIMIZE_MAIN_WINDOW]) }
+        />
+        <GreenTrafficLight
+          onClick={ () => ipcRenderer.send(ipcChannels.MAIN_CHANNEL_ASYNC, [ipcMessages.MINIMIZE_MAIN_WINDOW]) }
+        />
       </TrafficLights>
     </NavStyle>
   );

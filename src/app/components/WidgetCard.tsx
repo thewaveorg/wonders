@@ -45,9 +45,15 @@ interface IWidgetCard {
 export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   const [isWidgetEnabled, setWidgetEnabled] = useState(false);
 
-  ipcRenderer.send(Constants.ipcMessages.GET_ACTIVE_WIDGET, widget.id);
-  ipcRenderer.on(Constants.ipcMessages.RECEIVE_ACTIVE_WIDGET, (event, arg) => {
-    setWidgetEnabled(!!arg);
+  const channel = Constants.ipcChannels.MAIN_CHANNEL_ASYNC;
+
+  ipcRenderer.send(channel, Constants.ipcMessages.GET_ACTIVE_WIDGET, widget.id);
+  ipcRenderer.on(channel, (event, args) => {
+    if (args.shift() != Constants.ipcMessages.RECEIVE_ACTIVE_WIDGET)
+      return;
+
+    if (args[0]?.id == widget.id)
+      setWidgetEnabled(!!args[0]);
   });
 
   const onClick = (checked: boolean) => {

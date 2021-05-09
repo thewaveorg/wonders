@@ -1,4 +1,7 @@
 export default {
+  ipcChannels: {
+    MAIN_CHANNEL_ASYNC: "main-process-async",
+  },
   ipcMessages: {
     GET_WIDGETS: "get-widgets",
     RECEIVE_WIDGETS: "receive-widgets",
