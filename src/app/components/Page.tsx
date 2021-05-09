@@ -1,6 +1,7 @@
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-export const Page = styled.div`
+export const Page = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;

@@ -41,6 +41,8 @@ const NavLinkStyle = styled(NavLink)`
   height: 100%;
   width: 80px;
 
+  transition: .125s ease;
+
   &:hover {
     background-color: rgba(255, 255, 255, .1);
   }

@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 
 import { Landing as LandingPage } from './pages/Landing';
 import { Settings as SettingsPage } from './pages/Settings';
@@ -10,7 +11,6 @@ import { Page } from './components/Page';
 
 import './ReactApp.global.css';
 import './styles/normalize.css';
-
 
 export default () => {
   const navbarRef = useRef<HTMLDivElement>();
@@ -29,11 +29,13 @@ export default () => {
         {/* @ts-ignore shut the up */}
         <Navbar ref={navbarRef}/>
         <Page style={{ height: `calc(100% - ${navbarHeight}px)` }}>
-          <Switch>
-            <Route exact path="/" component={() => <LandingPage/>} />
-            <Route path="/settings" component={() => <SettingsPage/>} />
-            <Route path="/widgets" component={() => <WidgetsPage/>} />
-          </Switch>
+          <AnimatePresence exitBeforeEnter initial={false}>
+            <Switch>
+              <Route exact path="/" component={() => <LandingPage/>} />
+              <Route path="/settings" component={() => <SettingsPage/>} />
+              <Route path="/widgets" component={() => <WidgetsPage/>} />
+            </Switch>
+          </AnimatePresence>
         </Page>
       </HashRouter>
     </>
