@@ -5,6 +5,7 @@ import { delay, inject, injectable, singleton } from "tsyringe";
 import { WondersAPI } from "./WondersAPI";
 
 import { Widget } from "../api/Widget";
+import { Console } from "console";
 
 @injectable()
 @singleton()
@@ -54,6 +55,17 @@ export class WidgetManager {
     }
   }
 
+  private hashID(name: string): number {
+    var hash = 0, i, chr, len;
+    if(name.length === 0) return hash;
+    for(i = 0, len = name.length; i < len; i++) {
+      chr = name.charCodeAt(i);
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0;
+    }
+    return hash;
+  }
+
   /**
    * Load a widget
    * @param p Path to wonder widget
@@ -63,6 +75,7 @@ export class WidgetManager {
     let pluginInfo;
     try {
       pluginInfo = require(path.resolve(p, './wonders.json'));
+      pluginInfo.id = this.hashID(pluginInfo.name);
     } catch {
       console.log(`Found no wonders.json at ${p}. Ignoring...`);
       return null;
@@ -72,7 +85,6 @@ export class WidgetManager {
       console.log(`Failed to read wonders.json.`);
       return null;
     }
-
     if (this.loadedWidgets.has(pluginInfo.id))
     {
       console.log(`Plugin ${pluginInfo.name} at ${p} has the same ID as another plugin. Ignoring...`);
