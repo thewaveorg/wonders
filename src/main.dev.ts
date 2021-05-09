@@ -22,18 +22,11 @@ export class Program {
   constructor() {
     this.services = container;
 
-    this.configureServices();
     this.start();
   }
 
   private start() {
     this.services.resolve(App).start();
-  }
-
-  private configureServices() {
-    // this.services.register(WindowManager, { useClass: WindowManager });
-    // this.services.register(WondersAPI, { useClass: WondersAPI });
-    // this.services.register(App, { useClass: App });
   }
 }
 
