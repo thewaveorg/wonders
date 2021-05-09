@@ -56,15 +56,8 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
 */
   const onClick = async (checked: boolean) => {
     setWidgetEnabled(checked);
-    ipcRenderer.callMain(messages.GET_ACTIVE_WIDGET, widget.id).then(async (w: any) => {
-      if (!!w) {
-        await ipcRenderer.callMain(messages.DEACTIVATE_WIDGET, widget.id);
-        setWidgetEnabled(false);
-      } else {
-        await ipcRenderer.callMain(messages.ACTIVATE_WIDGET, widget.id);
-        setWidgetEnabled(true);
-      }
-    });
+    ipcRenderer.callMain(isWidgetEnabled ? messages.DEACTIVATE_WIDGET : messages.ACTIVATE_WIDGET, widget.id)
+
   }
 
   return (
