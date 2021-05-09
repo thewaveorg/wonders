@@ -29,7 +29,7 @@ export class App {
     this.registerEvents();
 
 		await this.widgetManager.loadWidgetsFromDirectory(undefined, true);
-    this.widgetManager.getAllLoadedWidgets().forEach((w) => this.widgetManager.activateWidget(w.id));
+  //  this.widgetManager.getAllLoadedWidgets().forEach((w) => this.widgetManager.activateWidget(w.id));
 
     await this.createTrayIcon();
 	}
@@ -148,7 +148,7 @@ export class App {
         click: () => this.createMainWindow(),
         type: "normal"
       },
-      { 
+      {
         label: "💾 Widgets",
         type: "submenu",
         submenu: submenu,

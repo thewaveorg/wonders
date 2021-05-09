@@ -5,7 +5,6 @@ import { delay, inject, injectable, singleton } from "tsyringe";
 import { WondersAPI } from "./WondersAPI";
 
 import { Widget } from "../api/Widget";
-import { Console } from "console";
 
 @injectable()
 @singleton()
@@ -95,7 +94,8 @@ export class WidgetManager {
 
     const widgetObjectFactory: any =
       typeof imported === 'function' ? imported : imported.WONDERS;
-
+    console.log(imported + pluginInfo.name)
+    console.log(widgetObjectFactory + pluginInfo.name);
     if (typeof widgetObjectFactory !== 'function') {
       console.log("Widget doesn't have any entry point for Wonders.");
       return null;
