@@ -23,6 +23,14 @@ export class WidgetManager {
 		this.widgetsDirectory  = "";
 	}
 
+  public isActive(id: string): Boolean {
+    if(this.activeWidgets.has(id)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 	public getAllActiveWidgets(): Map<string, Widget> {
 		return this.activeWidgets;
 	}

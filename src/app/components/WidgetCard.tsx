@@ -46,10 +46,11 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   const [isWidgetEnabled, setWidgetEnabled] = useState(false);
 
   const channel = Constants.ipcChannels.MAIN_CHANNEL_ASYNC;
+  const messages = Constants.ipcMessages;
 
-  ipcRenderer.send(channel, Constants.ipcMessages.GET_ACTIVE_WIDGET, widget.id);
+  ipcRenderer.send(channel, [ messages.GET_ACTIVE_WIDGET, widget.id ]);
   ipcRenderer.on(channel, (event, args) => {
-    if (args.shift() != Constants.ipcMessages.RECEIVE_ACTIVE_WIDGET)
+    if (args.shift() != messages.RECEIVE_ACTIVE_WIDGET)
       return;
 
     if (args[0]?.id == widget.id)
@@ -67,7 +68,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
         <Switch
           checkedIcon={false}
           uncheckedIcon={false}
-          onChange={onClick} 
+          onChange={onClick}
           checked={isWidgetEnabled} />
       </WidgetHeader>
     </WidgetBox>
