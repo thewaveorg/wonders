@@ -31,6 +31,7 @@ export class WidgetManager {
 	public setDefaultWidgetsDirectory(p: string) {
     if (!fs.existsSync(p)) {
       console.log("Provided widgets directory doesn't exist.");
+      return;
     }
 		this.widgetsDirectory = p;
 	};

@@ -3,7 +3,8 @@ import React from "react";
 export const Widgets: React.FC = () =>{
   return (
     <>
-      <p style={{ fontSize: '4.25rem' }}>Widgets WIP</p>
+      <h1 style={{ fontSize: '4.25rem', paddingBottom: '.1em' }}>Widgets</h1>
+      <p style={{ fontSize: '2.125rem' }}>WIP</p>
     </>
   );
 }

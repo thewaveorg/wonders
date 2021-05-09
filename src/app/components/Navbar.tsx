@@ -11,11 +11,14 @@ const NavStyle = styled.div`
   display: flex;
 	flex-wrap: wrap;
 	background-color: var(--main-background-color);
-	/* border-bottom: 1px solid var(--border-color); */
+	border-bottom: 1px solid var(--border-color);
   justify-content: space-between;
+  max-height: 40px;
 
+  /* Border with a margin */
+  /*
   &::after {
-    content : "";
+    content: "";
     position: relative;
     left: 1%;
     bottom: 0;
@@ -23,6 +26,7 @@ const NavStyle = styled.div`
     width: 98%;
     border-bottom: 1px solid var(--border-color);
   }
+  */
 `;
 
 const NavLinkStyle = styled(NavLink)`
@@ -30,10 +34,12 @@ const NavLinkStyle = styled(NavLink)`
   cursor: pointer;
   font-family: 'Karla';
   font-size: 1em;
-  font-weight: 100;
-  margin: 0 0 0 16px;
+  font-weight: 300;
+  margin: 0 0 0 0;
   padding: 10px 10px;
   text-align: center;
+  height: 100%;
+  width: 80px;
 
   &:hover {
     background-color: rgba(255, 255, 255, .1);
@@ -46,7 +52,7 @@ const NavLinkStyle = styled(NavLink)`
 
 const TrafficLights = styled.div`
   align-self: center;
-  margin: 0 16px 0 0;
+  margin: 0 1.25% 0 0;
 `;
 
 const TrafficLight = styled.button`
@@ -116,11 +122,11 @@ interface INavbarProps {
 }
 
 export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((props, ref) => {
-  const activeStyle = { color: '#bbb' };
+  const activeStyle = { color: '#888' };
 
   return (
     <NavStyle ref={ref}>
-      <NavLinkStyle activeStyle={activeStyle} to="/" exact style={{ marginLeft: '1%' }}>Home</NavLinkStyle>
+      <NavLinkStyle activeStyle={activeStyle} to="/" exact style={{ marginLeft: '0' }}>Home</NavLinkStyle>
       <NavLinkStyle activeStyle={activeStyle} to="/widgets">Widgets</NavLinkStyle>
       <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>

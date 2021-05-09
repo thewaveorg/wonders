@@ -50,6 +50,7 @@ a {
   height: fit-content;
   width: fit-content;
   margin: 10px;
+  -webkit-user-drag: none;
 }
 
 a:hover {
