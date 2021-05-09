@@ -6,6 +6,7 @@ import Switch from 'react-switch';
 
 import Constants from '../../api/Constants';
 import { Widget } from '../../api/Widget';
+import { getIpcArguments } from '../../utils/getIpcArguments';
 
 const WidgetBox = styled.div`
   height: auto;
@@ -48,13 +49,17 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   const channel = Constants.ipcChannels.MAIN_CHANNEL_ASYNC;
   const messages = Constants.ipcMessages;
 
-  ipcRenderer.on(channel, (_, args) => {
-    if (args.shift() != messages.RECEIVE_ACTIVE_WIDGET)
+  ipcRenderer.on(channel, (_, a) => {
+    const { messageType, args } = getIpcArguments(a);
+
+    if (messageType != messages.RECEIVE_ACTIVE_WIDGET)
       return;
+
     console.log("received widget info")
-    console.log(args[0]);
-    if (args[0]?.id == widget.id)
-      setWidgetEnabled(!!args[0]);
+    console.log(args![0]);
+
+    if (args![0]?.id == widget.id)
+      setWidgetEnabled(!!args![0]);
   });
   ipcRenderer.send(channel, [ messages.GET_ACTIVE_WIDGET, widget.id ]);
 

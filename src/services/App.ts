@@ -15,6 +15,7 @@ import { WidgetManager } from './WidgetManager';
 import { WindowManager } from './WindowManager';
 
 import constants from '../api/Constants';
+import { getIpcArguments } from '../utils/getIpcArguments';
 
 @injectable()
 @singleton()
@@ -178,20 +179,10 @@ export class App {
 
   private linkIpcEvents() {
     const channel = constants.ipcChannels.MAIN_CHANNEL_ASYNC;
-    ipcMain.on(channel, (event, args) => {
-      if (!Array.isArray(args)) {
-        console.log(
-          `IPC events have to pass an array of args. (Got ${args})`
-          + "The array's first entry must be a string representing the message type.");
+    ipcMain.on(channel, (event, a) => {
+      const { messageType, args } = getIpcArguments(a);
+      if (!messageType)
         return;
-      }
-
-      let messageType = args.shift();
-      if (!messageType) {
-        console.log("No IPC message type given. Ignoring...");
-      }
-
-      console.log("RECEIVED "+messageType);
 
       let msgs = constants.ipcMessages;
 
@@ -222,25 +213,25 @@ export class App {
 
         case msgs.GET_LOADED_WIDGET:
           {
-            event.reply(channel, this.widgetManager.getAllLoadedWidgets().get(args[0]));
+            event.reply(channel, this.widgetManager.isActive(args![0]));
           }
           break;
 
         case msgs.GET_ACTIVE_WIDGET:
           {
-            event.reply(channel, this.widgetManager.getAllActiveWidgets().get(args[0]));
+            event.reply(channel, this.widgetManager.getAllActiveWidgets().get(args![0]!));
           }
           break;
 
         case msgs.ACTIVATE_WIDGET:
           {
-            this.widgetManager.activateWidget(args[0]);
+            this.widgetManager.activateWidget(args![0]);
           }
           break;
 
         case msgs.DEACTIVATE_WIDGET:
           {
-            this.widgetManager.deactivateWidget(args[0]);
+            this.widgetManager.deactivateWidget(args![0]);
           }
           break
 

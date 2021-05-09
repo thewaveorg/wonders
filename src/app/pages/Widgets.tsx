@@ -5,6 +5,7 @@ const { ipcRenderer } = window.require("electron");
 import { WidgetCard } from "../components/WidgetCard";
 
 import constants from "../../api/Constants";
+import { getIpcArguments } from "../../utils/getIpcArguments";
 
 const CardWrapper = styled.div`
   height: 100%;
@@ -20,12 +21,10 @@ export const Widgets: React.FC = () => {
 
   React.useEffect(() => {
     ipcRenderer.on(constants.ipcChannels.MAIN_CHANNEL_ASYNC, (_, ar) => {
-      if (!Array.isArray(ar))
-        return;
+      const { messageType, args } = getIpcArguments(ar);
 
-      let messageType = ar.shift();
       if (messageType == constants.ipcMessages.RECEIVE_WIDGETS)
-        setWidgets(ar[0]);
+        setWidgets(args![0]);
     })
 
     ipcRenderer.send(constants.ipcChannels.MAIN_CHANNEL_ASYNC, [ constants.ipcMessages.GET_WIDGETS ]);
