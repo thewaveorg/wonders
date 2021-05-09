@@ -1,18 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 const { ipcRenderer } = window.require("electron-better-ipc");
 
 import { WidgetCard } from "../components/WidgetCard";
 
 import constants from "../../api/Constants";
-
-const CardWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-`;
 
 export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState<object[]>([]);

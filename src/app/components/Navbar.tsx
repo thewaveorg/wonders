@@ -6,7 +6,6 @@ const { ipcRenderer } = window.require("electron-better-ipc");
 
 import constants from "../../api/Constants";
 
-const ipcChannels = constants.ipcChannels;
 const ipcMessages = constants.ipcMessages;
 
 /* Styles */
@@ -126,7 +125,7 @@ interface INavbarProps {
   [key: string]: any
 }
 
-export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((props, ref) => {
+export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) => {
   const activeStyle = { color: '#888' };
 
   return (
