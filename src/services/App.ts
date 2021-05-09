@@ -49,6 +49,12 @@ export class App {
       return path.join(RESOURCES_PATH, ...paths);
     };
 
+    if (manager.getMainWindow())
+    {
+      manager.getMainWindow()?.focus();
+      return;
+    }
+
 		const windowState = windowStateKeeper({
 			defaultHeight: 728,
 			defaultWidth: 1024,
