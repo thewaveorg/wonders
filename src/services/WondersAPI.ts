@@ -5,7 +5,7 @@ import { App } from "./App";
 import { BrowserOptions, WindowManager } from "./WindowManager";
 import { WidgetManager } from "./WidgetManager";
 
-import { IWidget } from "../api/IWidget";
+import { Widget } from "../api/Widget";
 
 @injectable()
 @singleton()
@@ -45,7 +45,11 @@ export class WondersAPI {
 		return this.trayIcon;
 	}
 
-  public getRegisteredWidgets(): Map<string, IWidget> {
+  public getLoadedWidgets(): Map<string, Widget> {
+    return this.widgetManager.getAllLoadedWidgets();
+  }
+
+  public getActiveWidgets(): Map<string, Widget> {
     return this.widgetManager.getAllActiveWidgets();
   }
 

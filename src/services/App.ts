@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Menu, shell, Tray } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, MenuItemConstructorOptions, shell, Tray } from "electron";
 import windowStateKeeper from "electron-window-state";
 import path from "path";
 import { injectable, singleton } from "tsyringe";
@@ -23,13 +23,15 @@ export class App {
 		this.trayIcon = null;
 	}
 
-	public start() {
+	public async start() {
 		this.widgetManager.setDefaultWidgetsDirectory(path.resolve(app.getAppPath(), '../widgets'));
 
     this.registerEvents();
-    this.createTrayIcon();
 
-		this.widgetManager.loadWidgetsFromDirectory();
+		await this.widgetManager.loadWidgetsFromDirectory();
+    this.widgetManager.getAllLoadedWidgets().forEach((w) => this.widgetManager.activateWidget(w.id));
+
+    await this.createTrayIcon();
 	}
 
 	public getTrayIcon(): Tray | null {
@@ -113,11 +115,32 @@ export class App {
   private async createTrayIcon() {
     await app.whenReady();
 
+    let submenu: MenuItemConstructorOptions[] = [];
+    this.widgetManager.getAllLoadedWidgets().forEach((lw) => {
+      submenu.push({
+        label: lw.name,
+        type: "checkbox",
+        click: () => {
+          if (this.widgetManager.getAllActiveWidgets().has(lw.id))
+            this.widgetManager.deactivateWidget(lw.id);
+          else
+            this.widgetManager.activateWidget(lw.id);
+        },
+        checked: this.widgetManager.getAllActiveWidgets().has(lw.id),
+      });
+    });
+
     this.trayIcon = new Tray(path.resolve(app.getAppPath(), "../assets/icon.ico"));
-    const contextMenu = Menu.buildFromTemplate([{
+    const contextMenu = Menu.buildFromTemplate([
+      {
         label: "⚙️ Settings",
         click: () => this.createMainWindow(),
         type: "normal"
+      },
+      { 
+        label: "💾 Widgets",
+        type: "submenu",
+        submenu: submenu,
       },
       {
         type: "separator"
