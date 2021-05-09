@@ -23,8 +23,7 @@ export const Widgets: React.FC = () => {
     });
   }, [])
 
-  console.log("Retrieved widgets:");
-  console.log(widgets);
+  console.log("Retrieved widgets:", widgets);
 
   if(widgets.length === 0) {
     return (
