@@ -28,7 +28,7 @@ export class App {
 
     this.registerEvents();
 
-		await this.widgetManager.loadWidgetsFromDirectory();
+		await this.widgetManager.loadWidgetsFromDirectory(undefined, true);
     this.widgetManager.getAllLoadedWidgets().forEach((w) => this.widgetManager.activateWidget(w.id));
 
     await this.createTrayIcon();
@@ -115,6 +115,18 @@ export class App {
   private async createTrayIcon() {
     await app.whenReady();
 
+    this.trayIcon = new Tray(path.resolve(app.getAppPath(), "../assets/icon.ico"));
+    const contextMenu = this.createTrayMenu();
+
+    this.trayIcon.setTitle("Wonders");
+    this.trayIcon.setToolTip("Wonders");
+    this.trayIcon.setContextMenu(contextMenu);
+
+    this.trayIcon.on("click", () => this.createMainWindow());
+    this.trayIcon.on("right-click", () => this.trayIcon?.popUpContextMenu());
+  }
+
+  private createTrayMenu() {
     let submenu: MenuItemConstructorOptions[] = [];
     this.widgetManager.getAllLoadedWidgets().forEach((lw) => {
       submenu.push({
@@ -130,8 +142,7 @@ export class App {
       });
     });
 
-    this.trayIcon = new Tray(path.resolve(app.getAppPath(), "../assets/icon.ico"));
-    const contextMenu = Menu.buildFromTemplate([
+    let menu = Menu.buildFromTemplate([
       {
         label: "⚙️ Settings",
         click: () => this.createMainWindow(),
@@ -152,12 +163,7 @@ export class App {
       }
     ]);
 
-    this.trayIcon.setTitle("Wonders");
-    this.trayIcon.setToolTip("Wonders");
-    this.trayIcon.setContextMenu(contextMenu);
-
-    this.trayIcon.on("click", () => this.createMainWindow());
-    this.trayIcon.on("right-click", () => this.trayIcon?.popUpContextMenu());
+    return menu;
   }
 
   private linkIpcEvents() {

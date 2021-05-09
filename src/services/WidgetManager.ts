@@ -42,7 +42,7 @@ export class WidgetManager {
 		this.widgetsDirectory = p;
 	};
 
-	public async loadWidgetsFromDirectory(dir?: string): Promise<void> {
+	public async loadWidgetsFromDirectory(dir?: string, activate: boolean = false): Promise<void> {
     dir = dir || this.widgetsDirectory;
 
     const widgetFolders: string[] = readdirSync(dir, { withFileTypes: true })
@@ -50,7 +50,7 @@ export class WidgetManager {
       .map((folder) => path.resolve(dir!, folder.name));
 
     for await (const wpath of widgetFolders) {
-      await this.loadWidget(wpath);
+      await this.loadWidget(wpath, activate);
     }
   }
 
@@ -59,7 +59,7 @@ export class WidgetManager {
    * @param p Path to wonder widget
    * @returns Promise<IWidget|null> A promise that resolves to the IWidget object.
    */
-  public async loadWidget(p: string): Promise<Widget | null> {
+  public async loadWidget(p: string, activate: boolean = false): Promise<Widget | null> {
     let pluginInfo;
     try {
       pluginInfo = require(path.resolve(p, './wonders.json'));
@@ -94,6 +94,10 @@ export class WidgetManager {
     const widget = new Widget(pluginInfo.id, pluginInfo.name, widgetObject);
 
     this.loadedWidgets.set(pluginInfo.id, widget);
+
+    if (activate)
+      this.activateWidget(pluginInfo.id);
+
     return widget;
   }
 
