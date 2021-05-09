@@ -1,12 +1,12 @@
 import {
   app,
   BrowserWindow,
-  ipcMain,
   Menu,
   MenuItemConstructorOptions,
   shell,
   Tray,
 } from 'electron';
+import { ipcMain } from 'electron-better-ipc';
 import windowStateKeeper from 'electron-window-state';
 import path from 'path';
 import { injectable, singleton } from 'tsyringe';
@@ -178,7 +178,62 @@ export class App {
   }
 
   private linkIpcEvents() {
-    const channel = constants.ipcChannels.MAIN_CHANNEL_ASYNC;
+    const msgs = constants.ipcMessages;
+
+    ipcMain.answerRenderer(msgs.GET_WIDGETS, async () => {
+      let arrToPush: any = [];
+      for (let w of this.widgetManager.getAllLoadedWidgets().values()) {
+        arrToPush.push({
+          id: w.id,
+          name: w.name,
+          description: w.manifest.description,
+          version: w.manifest.version,
+          author: w.manifest.author,
+          enabled: this.widgetManager.isActive(w.id)
+        });
+      }
+
+      return arrToPush;
+    });
+
+    ipcMain.answerRenderer(msgs.GET_LOADED_WIDGET, async (id: any) => {
+      return this.widgetManager.getAllLoadedWidgets().get(id)?.info;
+    });
+
+    ipcMain.answerRenderer(msgs.GET_ACTIVE_WIDGET, async (id: any) => {
+      return this.widgetManager.getAllActiveWidgets().get(id)?.info;
+    });
+
+    ipcMain.answerRenderer(msgs.ACTIVATE_WIDGET, async (id: any) => {
+      this.widgetManager.activateWidget(id);
+    });
+
+    ipcMain.answerRenderer(msgs.DEACTIVATE_WIDGET, async (id: any) => {
+      this.widgetManager.deactivateWidget(id);
+    });
+
+    ipcMain.answerRenderer(msgs.CLOSE_MAIN_WINDOW, async () => {
+      this.windowManager.getMainWindow()?.close();
+    });
+
+    ipcMain.answerRenderer(msgs.MAXIMIZE_MAIN_WINDOW, async () => {
+      let mainWindow = this.windowManager.getMainWindow();
+      if (!mainWindow?.maximizable)
+        return;
+
+      if (mainWindow.isMaximized())
+        mainWindow.restore(); // Doesn't work as I expected.
+      else (!mainWindow.isMaximized())
+        mainWindow.maximize();
+    });
+
+    ipcMain.answerRenderer(msgs.MINIMIZE_MAIN_WINDOW, async () => {
+      let mainWindow = this.windowManager.getMainWindow();
+      if (mainWindow?.minimizable)
+        mainWindow.minimize();
+    });
+
+    /*
     ipcMain.on(channel, (event, a) => {
       const { messageType, args } = getIpcArguments(a);
       if (!messageType)
@@ -195,7 +250,7 @@ export class App {
 
         case msgs.GET_WIDGETS:
           {
-            var arrToPush: any = [];
+            let arrToPush: any = [];
             for (let w of this.widgetManager.getAllLoadedWidgets().values()) {
               arrToPush.push({
                 id: w.id,
@@ -263,6 +318,7 @@ export class App {
           break
       }
     });
+    */
   }
 
   private registerEvents() {

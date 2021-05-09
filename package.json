@@ -241,6 +241,7 @@
   },
   "dependencies": {
     "@abraham/reflection": "^0.7.0",
+    "electron-better-ipc": "^2.0.0",
     "electron-debug": "^3.1.0",
     "electron-log": "^4.2.4",
     "electron-titlebar": "^0.0.3",

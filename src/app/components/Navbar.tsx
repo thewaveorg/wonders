@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-const { ipcRenderer } = window.require("electron");
+const { ipcRenderer } = window.require("electron-better-ipc");
 
 import constants from "../../api/Constants";
 
@@ -137,13 +137,13 @@ export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((props, ref
       <ElectronDrag/>
       <TrafficLights>
         <RedTrafficLight
-          onClick={ () => ipcRenderer.send(ipcChannels.MAIN_CHANNEL_ASYNC, [ipcMessages.CLOSE_MAIN_WINDOW]) }
+          onClick={ () => ipcRenderer.callMain(ipcMessages.CLOSE_MAIN_WINDOW) }
         />
         <YellowTrafficLight
-          onClick={ () => ipcRenderer.send(ipcChannels.MAIN_CHANNEL_ASYNC, [ipcMessages.MAXIMIZE_MAIN_WINDOW]) }
+          onClick={ () => ipcRenderer.callMain(ipcMessages.MAXIMIZE_MAIN_WINDOW) }
         />
         <GreenTrafficLight
-          onClick={ () => ipcRenderer.send(ipcChannels.MAIN_CHANNEL_ASYNC, [ipcMessages.MINIMIZE_MAIN_WINDOW]) }
+          onClick={ () => ipcRenderer.callMain(ipcMessages.MINIMIZE_MAIN_WINDOW) }
         />
       </TrafficLights>
     </NavStyle>

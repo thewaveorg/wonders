@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-const { ipcRenderer } = window.require('electron');
+const { ipcRenderer } = window.require('electron-better-ipc');
 
 import Switch from 'react-switch';
 
 import Constants from '../../api/Constants';
 import { Widget } from '../../api/Widget';
-import { getIpcArguments } from '../../utils/getIpcArguments';
 
 const WidgetBox = styled.div`
   height: auto;
@@ -46,26 +45,25 @@ interface IWidgetCard {
 export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   const [isWidgetEnabled, setWidgetEnabled] = useState(widget.enabled ?? false);
 
-  const channel = Constants.ipcChannels.MAIN_CHANNEL_ASYNC;
   const messages = Constants.ipcMessages;
-
-  
+/*
   useEffect(() => {
-    ipcRenderer.on(channel, (_, a) => {
-      const { messageType, args } = getIpcArguments(a);
-  
-      if (messageType != messages.RECEIVE_WIDGET_UPDATES)
-        return;
-  
-      setWidgetEnabled(!!args![0]);
+    ipcRenderer.callMain(messages.GET_ACTIVE_WIDGET, widget.id).then((w: any) => {
+      setWidgetEnabled(!!w);
     });
-
-    ipcRenderer.send(channel, [ messages.GET_ACTIVE_WIDGET, widget.id ]);
   });
-
-  const onClick = (checked: boolean) => {
+*/
+  const onClick = async (checked: boolean) => {
     setWidgetEnabled(checked);
-    // Still have to implement the actual toggling.
+    ipcRenderer.callMain(messages.GET_ACTIVE_WIDGET, widget.id).then(async (w: any) => {
+      if (!!w) {
+        await ipcRenderer.callMain(messages.DEACTIVATE_WIDGET, widget.id);
+        setWidgetEnabled(false);
+      } else {
+        await ipcRenderer.callMain(messages.ACTIVATE_WIDGET, widget.id);
+        setWidgetEnabled(true);
+      }
+    });
   }
 
   console.log(widget);
