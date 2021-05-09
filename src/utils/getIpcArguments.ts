@@ -1,22 +1,32 @@
 export interface IpcArguments {
-    messageType: string | null;
-    args: any[] | null;
+  messageType: string | null;
+  args: any[] | null;
 }
 
 export const getIpcArguments = (args: any): IpcArguments => {
-    if (!Array.isArray(args)) {
-        console.log(
-          `IPC events have to pass an array of args. (Got ${args})`
-          + "The array's first entry must be a string representing the message type.");
+  // args = [ messageType, ...arguments ];
 
-        return { messageType: null, args: null };
-      }
+  if (!Array.isArray(args)) {
+    console.log(
+      `IPC events must send an array of args with the format [ messageType, ...arguments ]. (Got ${args})`);
 
-    let messageType = args.shift();
-    if (!messageType) {
-        console.log("No IPC message type given. Ignoring...");
-        return { messageType: null, args: null };
-    }
+    return {
+      messageType: null,
+      args: null
+    };
+  }
 
-    return { messageType, args: args[0] };
+  let messageType = args.shift();
+  if (!messageType) {
+    console.log(`No IPC message type given. Ignoring... (Got ${args})`);
+    return {
+      messageType: null,
+      args: null
+    };
+  }
+
+  return {
+    messageType,
+    args: args[0]
+  };
 }

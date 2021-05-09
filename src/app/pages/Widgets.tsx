@@ -16,20 +16,20 @@ const CardWrapper = styled.div`
 `;
 
 export const Widgets: React.FC = () => {
-
-  const [ widgets, setWidgets ] = React.useState([])
+  const [ widgets, setWidgets ] = React.useState<object[]>([]);
 
   React.useEffect(() => {
     ipcRenderer.on(constants.ipcChannels.MAIN_CHANNEL_ASYNC, (_, ar) => {
       const { messageType, args } = getIpcArguments(ar);
 
-      if (messageType == constants.ipcMessages.RECEIVE_WIDGETS)
-        setWidgets(args![0]);
+      if (messageType != constants.ipcMessages.RECEIVE_WIDGETS)
+        return;
+
+      setWidgets(args as Array<any>);
     })
 
     ipcRenderer.send(constants.ipcChannels.MAIN_CHANNEL_ASYNC, [ constants.ipcMessages.GET_WIDGETS ]);
   }, [])
-
 
   return (
     <>

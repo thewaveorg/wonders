@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 const { ipcRenderer } = window.require('electron');
 
@@ -44,27 +44,28 @@ interface IWidgetCard {
 }
 
 export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
-  const [isWidgetEnabled, setWidgetEnabled] = useState(false);
+  const [isWidgetEnabled, setWidgetEnabled] = useState(widget.enabled ?? false);
 
   const channel = Constants.ipcChannels.MAIN_CHANNEL_ASYNC;
   const messages = Constants.ipcMessages;
 
-  ipcRenderer.on(channel, (_, a) => {
-    const { messageType, args } = getIpcArguments(a);
-
-    if (messageType != messages.RECEIVE_ACTIVE_WIDGET)
-      return;
-
-    console.log("received widget info")
-    console.log(args![0]);
-
-    if (args![0]?.id == widget.id)
+  
+  useEffect(() => {
+    ipcRenderer.on(channel, (_, a) => {
+      const { messageType, args } = getIpcArguments(a);
+  
+      if (messageType != messages.RECEIVE_WIDGET_UPDATES)
+        return;
+  
       setWidgetEnabled(!!args![0]);
+    });
+
+    ipcRenderer.send(channel, [ messages.GET_ACTIVE_WIDGET, widget.id ]);
   });
-  ipcRenderer.send(channel, [ messages.GET_ACTIVE_WIDGET, widget.id ]);
 
   const onClick = (checked: boolean) => {
     setWidgetEnabled(checked);
+    // Still have to implement the actual toggling.
   }
 
   console.log(widget);

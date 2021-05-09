@@ -196,31 +196,30 @@ export class App {
         case msgs.GET_WIDGETS:
           {
             var arrToPush: any = [];
-            Array.from(this.widgetManager.getAllLoadedWidgets().entries()).forEach(
-              (f) => {
-                arrToPush.push({
-                  id: f[1].id,
-                  name: f[1].name,
-                  description: f[1].manifest.description,
-                  version: f[1].manifest.version,
-                  author: f[1].manifest.author,
-                  enabled: this.widgetManager.isActive(f[1].id)
-                });
-              }
-            );
+            for (let w of this.widgetManager.getAllLoadedWidgets().values()) {
+              arrToPush.push({
+                id: w.id,
+                name: w.name,
+                description: w.manifest.description,
+                version: w.manifest.version,
+                author: w.manifest.author,
+                enabled: this.widgetManager.isActive(w.id)
+              });
+            }
+
             event.reply(channel, [constants.ipcMessages.RECEIVE_WIDGETS, arrToPush]);
           }
           break;
 
         case msgs.GET_LOADED_WIDGET:
           {
-            event.reply(channel, this.widgetManager.isActive(args![0]));
+            event.reply(channel, [msgs.RECEIVE_LOADED_WIDGET, this.widgetManager.getAllLoadedWidgets().get(args![0])?.info]);
           }
           break;
 
         case msgs.GET_ACTIVE_WIDGET:
           {
-            event.reply(channel, this.widgetManager.getAllActiveWidgets().get(args![0]!));
+            event.reply(channel, [msgs.RECEIVE_ACTIVE_WIDGET, this.widgetManager.getAllActiveWidgets().get(args![0])?.info]);
           }
           break;
 

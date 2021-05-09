@@ -1,31 +1,5 @@
 import { IWidgetFormat } from "./IWidgetFormat";
-
-// export class Widget {
-//     private _id: string;
-//     private _name: string;
-//     private _manifest: any;
-//     private _object: IWidgetFormat;
-
-    // get manifest() { return this._manifest }
-
-    // get id() { return this._id };
-    // // @ts-ignore
-    // set id(id: string) { };
-
-    // get name() { return this._name };
-    // // @ts-ignore
-    // set name(name: string) { };
-
-    // get object() { return this._object };
-    // // @ts-ignore
-    // set object(object: IWidgetFormat) { };
-
-//     constructor(id: string, name: string, object: IWidgetFormat) {
-//         this._id = id;
-//         this._name = name;
-//         this._object = object;
-//     }
-// }
+import { IWidgetInfo } from "./IWidgetInfo";
 
 export class Widget {
   private _id: string;
@@ -34,17 +8,35 @@ export class Widget {
   private _object: IWidgetFormat;
   public enabled?: boolean;
 
-  get manifest() { return this._manifest }
+  get info() {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.manifest.description,
+      version: this.manifest.version,
+      author: this.manifest.author,
+    } as IWidgetInfo;
+  }
 
-  get id() { return this._id };
+  get manifest(): any {
+    return this._manifest;
+  }
+
+  get id(): string {
+    return this._id;
+  };
   // @ts-ignore
   set id(id: string) { };
 
-  get name() { return this._name };
+  get name(): string {
+    return this._name;
+  };
   // @ts-ignore
   set name(name: string) { };
 
-  get object() { return this._object };
+  get object(): IWidgetFormat {
+    return this._object;
+  };
   // @ts-ignore
   set object(object: IWidgetFormat) { };
 
