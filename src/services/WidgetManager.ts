@@ -14,7 +14,7 @@ export class WidgetManager {
   private activeWidgets: Map<string, Widget>;
   private loadedWidgets: Map<string, Widget>;
   private widgetsDirectory: string;
-	
+
 	constructor(@inject(delay(() => WondersAPI)) _wondersApi: WondersAPI) {
 		this.wondersApi = _wondersApi;
 
@@ -119,7 +119,7 @@ export class WidgetManager {
     if (!widget)
       return;
 
-    widget?.object.start();
+    await widget?.object.start();
     this.activeWidgets.set(id, widget!);
   }
 
