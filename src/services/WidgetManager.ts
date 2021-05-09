@@ -137,7 +137,7 @@ export class WidgetManager {
     if (!widget)
       return;
 
-    await widget?.object.start();
+    await widget.object?.start();
     this.activeWidgets.set(id, widget!);
   }
 
@@ -146,7 +146,7 @@ export class WidgetManager {
     if (!widget)
       return;
 
-    widget?.object.stop();
+    widget.object?.stop?.();
     this.activeWidgets.delete(id);
   }
 }
