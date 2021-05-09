@@ -23,13 +23,11 @@ export const Widgets: React.FC = () => {
     });
   }, [])
 
-  console.log("Retrieved widgets:", widgets);
-
   if(widgets.length === 0) {
     return (
       <>
-        <h1 style={{ fontSize: '4.25rem', paddingBottom: '.1em' }}>No widgets available.</h1>
-        <p style={{ fontSize: '2.125rem' }}>Are you sure you have any widgets installed?</p>
+        <h1 style={{ fontSize: '4rem', paddingBottom: '1rem' }}>No widgets available.</h1>
+        <p style={{ fontSize: '1.25rem' }}>Are you sure you have any widgets installed?</p>
       </>
     );
   } else {
