@@ -8,8 +8,6 @@ import { Widgets as WidgetsPage } from './pages/Widgets';
 import { Navbar } from "./components/Navbar";
 import { Page } from './components/Page';
 
-import { useResize } from '../util/useResize';
-
 import './ReactApp.global.css';
 import './styles/normalize.css';
 
