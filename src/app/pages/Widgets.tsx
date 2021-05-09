@@ -19,7 +19,7 @@ export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState<object[]>([]);
 
   React.useEffect(() => {
-    ipcRenderer.on(constants.ipcChannels.MAIN_CHANNEL_ASYNC, (_, ar) => {
+    ipcRenderer.once(constants.ipcChannels.MAIN_CHANNEL_ASYNC, (_, ar) => {
       const { messageType, args } = getIpcArguments(ar);
 
       if (messageType != constants.ipcMessages.RECEIVE_WIDGETS)
@@ -33,7 +33,7 @@ export const Widgets: React.FC = () => {
 
   return (
     <>
-      {widgets.map((f: any) => <WidgetCard widget={f} />)}
+      {widgets.map((f: any) => <WidgetCard key={f.id} widget={f} />)}
     </>
   );
 }

@@ -25,6 +25,14 @@ export const getIpcArguments = (args: any): IpcArguments => {
     };
   }
 
+	if (typeof(messageType) != "string") {
+		console.log(`IPC message wasn't a string. (Got ${args})`);
+    return {
+      messageType: null,
+      args: null
+    };
+	}
+
   return {
     messageType,
     args: args[0]

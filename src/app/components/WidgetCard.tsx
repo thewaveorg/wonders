@@ -70,7 +70,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
 
   console.log(widget);
   return (
-    <WidgetBox id={widget.id} key={widget.id}>
+    <WidgetBox id={widget.id}>
       <WidgetHeader>
         <WidgetTitle>{widget.name}</WidgetTitle>
         <Switch
