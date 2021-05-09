@@ -177,7 +177,8 @@ export class App {
   }
 
   private linkIpcEvents() {
-    ipcMain.on(constants.ipcChannels.MAIN_CHANNEL_ASYNC, (event, args) => {
+    const channel = constants.ipcChannels.MAIN_CHANNEL_ASYNC;
+    ipcMain.on(channel, (event, args) => {
       if (!Array.isArray(args)) {
         console.log(
           `IPC events have to pass an array of args. (Got ${args})`
@@ -189,6 +190,8 @@ export class App {
       if (!messageType) {
         console.log("No IPC message type given. Ignoring...");
       }
+
+      console.log("RECEIVED "+messageType);
 
       let msgs = constants.ipcMessages;
 
@@ -214,19 +217,19 @@ export class App {
                 });
               }
             );
-            event.reply([constants.ipcMessages.RECEIVE_WIDGETS, arrToPush]);
+            event.reply(channel, [constants.ipcMessages.RECEIVE_WIDGETS, arrToPush]);
           }
           break;
 
         case msgs.GET_LOADED_WIDGET:
           {
-            event.reply(this.widgetManager.getAllLoadedWidgets().get(args[0]));
+            event.reply(channel, this.widgetManager.getAllLoadedWidgets().get(args[0]));
           }
           break;
 
         case msgs.GET_ACTIVE_WIDGET:
           {
-            event.reply(this.widgetManager.getAllActiveWidgets().get(args[0]));
+            event.reply(channel, this.widgetManager.getAllActiveWidgets().get(args[0]));
           }
           break;
 

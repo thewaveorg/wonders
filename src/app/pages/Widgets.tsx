@@ -19,11 +19,16 @@ export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState([])
 
   React.useEffect(() => {
-    ipcRenderer.on(constants.ipcMessages.RECEIVE_WIDGETS, (_, ar) => {
-      setWidgets(ar);
+    ipcRenderer.on(constants.ipcChannels.MAIN_CHANNEL_ASYNC, (_, ar) => {
+      if (!Array.isArray(ar))
+        return;
+
+      let messageType = ar.shift();
+      if (messageType == constants.ipcMessages.RECEIVE_WIDGETS)
+        setWidgets(ar[0]);
     })
 
-    ipcRenderer.send(constants.ipcMessages.GET_WIDGETS)
+    ipcRenderer.send(constants.ipcChannels.MAIN_CHANNEL_ASYNC, [ constants.ipcMessages.GET_WIDGETS ]);
   }, [])
 
 
