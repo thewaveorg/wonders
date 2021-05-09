@@ -46,7 +46,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   const [isWidgetEnabled, setWidgetEnabled] = useState(false);
 
   ipcRenderer.send(Constants.ipcMessages.GET_ACTIVE_WIDGET, widget.id);
-  ipcRenderer.on(Constants.ipcMessages.RECEIVE_ACTIVE_WIDGET, (event, arg) => {
+  ipcRenderer.once(Constants.ipcMessages.RECEIVE_ACTIVE_WIDGET, (event, arg) => {
     setWidgetEnabled(!!arg);
   });
 
@@ -61,7 +61,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
         <Switch
           checkedIcon={false}
           uncheckedIcon={false}
-          onChange={onClick} 
+          onChange={onClick}
           checked={isWidgetEnabled} />
       </WidgetHeader>
     </WidgetBox>
