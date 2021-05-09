@@ -39,7 +39,6 @@ export class App {
     this.registerEvents();
 
     await this.widgetManager.loadWidgetsFromDirectory(undefined, true);
-    //  this.widgetManager.getAllLoadedWidgets().forEach((w) => this.widgetManager.activateWidget(w.id));
 
     await this.createTrayIcon();
   }
@@ -127,41 +126,12 @@ export class App {
     this.trayIcon = new Tray(
       path.resolve(app.getAppPath(), '../assets/icon.ico')
     );
-    const contextMenu = this.createTrayMenu();
 
-    this.trayIcon.setTitle('Wonders');
-    this.trayIcon.setToolTip('Wonders');
-    this.trayIcon.setContextMenu(contextMenu);
-
-    this.trayIcon.on('click', () => this.createMainWindow());
-    this.trayIcon.on('right-click', () => this.trayIcon?.popUpContextMenu());
-  }
-
-  private createTrayMenu() {
-    let submenu: MenuItemConstructorOptions[] = [];
-    this.widgetManager.getAllLoadedWidgets().forEach((lw) => {
-      submenu.push({
-        label: lw.name,
-        type: 'checkbox',
-        click: () => {
-          if (this.widgetManager.getAllActiveWidgets().has(lw.id))
-            this.widgetManager.deactivateWidget(lw.id);
-          else this.widgetManager.activateWidget(lw.id);
-        },
-        checked: this.widgetManager.getAllActiveWidgets().has(lw.id),
-      });
-    });
-
-    let menu = Menu.buildFromTemplate([
+    const menu = Menu.buildFromTemplate([
       {
         label: '⚙️ Settings',
         click: () => this.createMainWindow(),
         type: 'normal',
-      },
-      {
-        label: '💾 Widgets',
-        type: 'submenu',
-        submenu: submenu,
       },
       {
         type: 'separator',
@@ -171,9 +141,14 @@ export class App {
         click: () => app.quit(),
         type: 'normal',
       },
-    ]);
+    ]);;
 
-    return menu;
+    this.trayIcon.setTitle('Wonders');
+    this.trayIcon.setToolTip('Wonders');
+    this.trayIcon.setContextMenu(menu);
+
+    this.trayIcon.on('click', () => this.createMainWindow());
+    this.trayIcon.on('right-click', () => this.trayIcon?.popUpContextMenu());
   }
 
   private linkIpcEvents() {
