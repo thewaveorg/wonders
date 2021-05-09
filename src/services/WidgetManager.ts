@@ -94,8 +94,6 @@ export class WidgetManager {
 
     const widgetObjectFactory: any =
       typeof imported === 'function' ? imported : imported.WONDERS;
-    console.log(imported + pluginInfo.name)
-    console.log(widgetObjectFactory + pluginInfo.name);
     if (typeof widgetObjectFactory !== 'function') {
       console.log("Widget doesn't have any entry point for Wonders.");
       return null;
@@ -103,7 +101,7 @@ export class WidgetManager {
 
     const widgetObject = widgetObjectFactory(this.wondersApi);
 
-    const widget = new Widget(pluginInfo.id, pluginInfo.name, widgetObject);
+    const widget = new Widget(pluginInfo, widgetObject);
 
     this.loadedWidgets.set(pluginInfo.id, widget);
 

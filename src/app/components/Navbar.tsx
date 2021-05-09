@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const { ipcRenderer } = window.require("electron");
 
+
 import constants from "../../api/Constants";
 
 /* Styles */

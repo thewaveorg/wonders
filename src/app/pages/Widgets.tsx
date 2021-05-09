@@ -1,10 +1,25 @@
 import React from "react";
+const { ipcRenderer } = window.require("electron");
+import constants from "../../api/Constants";
 
-export const Widgets: React.FC = () =>{
+import {WidgetCard} from "../components/WidgetCard";
+
+export const Widgets: React.FC = () => {
+
+  const [ widgets, setWidgets ] = React.useState([])
+
+  React.useEffect(() => {
+    ipcRenderer.on(constants.ipcMessages.RECEIVE_WIDGETS, (_, ar) => {
+      setWidgets(ar);
+    })
+
+    ipcRenderer.send(constants.ipcMessages.GET_WIDGETS)
+  }, [])
+
+
   return (
     <>
-      <h1 style={{ fontSize: '4.25rem', paddingBottom: '.1em' }}>Widgets</h1>
-      <p style={{ fontSize: '2.125rem' }}>WIP</p>
+      {widgets.map((f) => <WidgetCard widget={f} />)}
     </>
   );
 }

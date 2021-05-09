@@ -28,7 +28,7 @@ export default () => {
       <HashRouter>
         {/* @ts-ignore shut the up */}
         <Navbar ref={navbarRef}/>
-        <Page style={{ height: `calc(100% - ${navbarHeight}px)` }}>
+        <Page id="pageLay" style={{ height: `calc(100% - ${navbarHeight}px)` }}>
           <AnimatePresence exitBeforeEnter initial={false}>
             <Switch>
               <Route exact path="/" component={() => <LandingPage/>} />
