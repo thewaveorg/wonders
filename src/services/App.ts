@@ -43,7 +43,7 @@ export class App {
 
     const RESOURCES_PATH = app.isPackaged ?
       path.join(process.resourcesPath, 'assets') :
-      path.join(__dirname, '../assets');
+      path.join(app.getAppPath(), '../assets');
 
     const getAssetPath = (...paths: string[]): string => {
       return path.join(RESOURCES_PATH, ...paths);
@@ -70,7 +70,7 @@ export class App {
 			minWidth: 1000,
 			frame: false,
 			transparent: true,
-			icon: path.resolve(app.getAppPath(), "../assets"),
+			icon: getAssetPath('icon.ico'),
 			webPreferences: {
 				nodeIntegration: true,
 				enableRemoteModule: true,
