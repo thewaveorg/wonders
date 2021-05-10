@@ -6,6 +6,9 @@ import { WondersAPI } from "./WondersAPI";
 
 import { Widget } from "../api/Widget";
 
+import { validateWondersJson } from "../utils/validateWondersJson";
+import { validateWidgetExport } from "../utils/validateWidgetExport";
+
 @injectable()
 @singleton()
 export class WidgetManager {
@@ -82,6 +85,14 @@ export class WidgetManager {
     let pluginInfo;
     try {
       pluginInfo = require(path.resolve(p, './wonders.json'));
+
+      let check = validateWondersJson(pluginInfo);
+      if (check !== true)
+      {
+        console.log(check);
+        return null;
+      }
+
       pluginInfo.id = this.hashID(pluginInfo.name);
     } catch {
       console.log(`Found no wonders.json at ${p}. Ignoring...`);
@@ -100,15 +111,22 @@ export class WidgetManager {
 
     const imported = require(path.resolve(p, pluginInfo.entry));
 
+    /*
     const widgetObjectFactory: any =
       typeof imported === 'function' ? imported : imported.WONDERS;
     if (typeof widgetObjectFactory !== 'function') {
       console.log("Widget doesn't have any entry point for Wonders.");
       return null;
     }
+    */
 
-    const widgetObject = widgetObjectFactory(this.wondersApi);
+    let check = validateWidgetExport(imported);
+    if (check !== true) {
+      console.log(check);
+      return null;
+    }
 
+    const widgetObject = imported(this.wondersApi);
     const widget = new Widget(pluginInfo, widgetObject);
 
     this.loadedWidgets.set(pluginInfo.id, widget);
