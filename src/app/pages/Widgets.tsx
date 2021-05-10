@@ -16,6 +16,8 @@ const WidgetCardContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: min-content;
+  grid-auto-flow: dense;
+  grid-auto-rows: min-content;
   grid-row-gap: none;
 
   @media only screen and (min-width : 1330px) {
