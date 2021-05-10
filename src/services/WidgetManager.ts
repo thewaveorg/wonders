@@ -111,15 +111,6 @@ export class WidgetManager {
 
     const imported = require(path.resolve(p, pluginInfo.entry));
 
-    /*
-    const widgetObjectFactory: any =
-      typeof imported === 'function' ? imported : imported.WONDERS;
-    if (typeof widgetObjectFactory !== 'function') {
-      console.log("Widget doesn't have any entry point for Wonders.");
-      return null;
-    }
-    */
-
     let check = validateWidgetExport(imported);
     if (check !== true) {
       console.log(check);

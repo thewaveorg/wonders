@@ -8,6 +8,7 @@ import { faCodeBranch, faCog } from '@fortawesome/free-solid-svg-icons';
 
 import Constants from '../../api/Constants';
 import { Widget } from '../../api/Widget';
+import { IWidgetInfo } from '../../api/IWidgetInfo';
 
 /* Styles */
 const WidgetBox = styled.div`
@@ -110,10 +111,11 @@ const WidgetAuthor = styled.p`
 
 /* Main Component */
 interface IWidgetCard {
-  widget: Widget;
+  widget: IWidgetInfo;
 }
 
 export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
+  // @ts-ignore shut the up: electric boogaloo
   const [isWidgetEnabled, setWidgetEnabled] = useState(widget.enabled ?? false);
   const messages = Constants.ipcMessages;
 
@@ -144,13 +146,10 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
         />
       </WidgetHeader>
       <WidgetInformation>
-        {/* @ts-ignore SHUT */}
         <WidgetDescription>{widget.description}</WidgetDescription>
         <WidgetOtherInfo>
-          {/* @ts-ignore THE */}
-          <WidgetAuthor><b>@</b> {widget.author}</WidgetAuthor>
-          {/* @ts-ignore UP */}
-          <p><FontAwesomeIcon icon={faCodeBranch}/> {widget.version}</p>
+          <WidgetAuthor><b>@</b>{widget.author}</WidgetAuthor>
+          <p><b>v{widget.version}</b></p>
           <p><FontAwesomeIcon icon={faCog}/></p>
         </WidgetOtherInfo>
       </WidgetInformation>
