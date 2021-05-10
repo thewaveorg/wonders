@@ -44,7 +44,6 @@ interface IWidgetCard {
 
 export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   const [isWidgetEnabled, setWidgetEnabled] = useState(widget.enabled ?? false);
-
   const messages = Constants.ipcMessages;
 
 /*
