@@ -36,7 +36,6 @@ const NavLinkStyle = styled(NavLink)`
   width: 80px;
 
   transition: .125s ease;
-  transition-property: border-color 0s ease;
 
   &:hover {
     background-color: rgba(255, 255, 255, .1);
@@ -134,13 +133,13 @@ export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) =>
       <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
-        <RedTrafficLight
+        <GreenTrafficLight
           onClick={ () => ipcRenderer.callMain(ipcMessages.CLOSE_MAIN_WINDOW) }
         />
         <YellowTrafficLight
           onClick={ () => ipcRenderer.callMain(ipcMessages.MAXIMIZE_MAIN_WINDOW) }
         />
-        <GreenTrafficLight
+        <RedTrafficLight
           onClick={ () => ipcRenderer.callMain(ipcMessages.MINIMIZE_MAIN_WINDOW) }
         />
       </TrafficLights>
