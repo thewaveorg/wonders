@@ -3,7 +3,7 @@
 
 :root {
   --main-background-color: #090909;
-  --different-background-color: #111111;
+  --different-background-color: rgba(255, 255, 255, .025);
   --border-color: rgba(123, 123, 123, 0.15);
   --accent-color: #06f;
 }

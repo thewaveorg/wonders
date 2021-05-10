@@ -10,9 +10,10 @@ import { Widget } from '../../api/Widget';
 const WidgetBox = styled.div`
   height: auto;
   width: 18rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--different-background-color);
   padding: 12px;
   border-radius: 10px;
+  border: 1.5px solid var(--border-color);
   margin-top: 20px;
 `;
 

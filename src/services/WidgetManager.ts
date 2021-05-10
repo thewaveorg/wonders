@@ -123,30 +123,42 @@ export class WidgetManager {
    * Unload a widget
    * @param id ID of wonder widget
    */
-  public async unloadWidget(id: string): Promise<void> {
+  public async unloadWidget(id: string): Promise<boolean> {
     const widget = this.loadedWidgets.get(id);
     if (!widget)
-      return;
+      return false;
 
     this.deactivateWidget(id);
     this.loadedWidgets.delete(id);
+
+    return true;
   }
 
-  public async activateWidget(id: string): Promise<void> {
+  public async activateWidget(id: string): Promise<boolean> {
     const widget = this.loadedWidgets.get(id);
     if (!widget)
-      return;
+      return false;
+
+    if (!widget.object?.start)
+      return false;
 
     await widget.object?.start();
     this.activeWidgets.set(id, widget!);
+
+    return true;
   }
 
-  public async deactivateWidget(id: string): Promise<void> {
+  public async deactivateWidget(id: string): Promise<boolean> {
     const widget = this.activeWidgets.get(id);
     if (!widget)
-      return;
+      return false;
+
+    if (!widget.object?.stop)
+      return false;
 
     widget.object?.stop?.();
     this.activeWidgets.delete(id);
+
+    return true;
   }
 }
