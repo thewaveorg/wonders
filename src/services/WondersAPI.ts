@@ -59,7 +59,7 @@ export class WondersAPI {
     return this.widgetManager.getAllActiveWidgets().has(id);
   }
 
-  public getRegisteredWindows(): Map <string, BrowserWindow> {
+  public getRegisteredWindows(): Map<string, BrowserWindow> {
     return this.windowManager.getAllWindows();
   }
   public getRegisteredWindow(id: string): BrowserWindow | undefined {
@@ -73,7 +73,7 @@ export class WondersAPI {
     return this.widgetManager.getDefaultWidgetsDirectory();
   }
 
-  public async createWidgetWindowAsync(id: string, options?: BrowserOptions): Promise <BrowserWindow> {
+  public async createWidgetWindowAsync(id: string, options?: BrowserOptions): Promise<BrowserWindow> {
 		return this.windowManager.createWindowAsync(id, options);
 	};
 }
