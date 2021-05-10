@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 const { ipcRenderer } = window.require('electron-better-ipc');
 
@@ -10,9 +10,10 @@ import { Widget } from '../../api/Widget';
 const WidgetBox = styled.div`
   height: auto;
   width: 18rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--different-background-color);
   padding: 12px;
   border-radius: 10px;
+  border: 1.5px solid var(--border-color);
   margin-top: 20px;
 `;
 
@@ -46,17 +47,17 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   const [isWidgetEnabled, setWidgetEnabled] = useState(widget.enabled ?? false);
   const messages = Constants.ipcMessages;
 
-/*
-  useEffect(() => {
-    ipcRenderer.callMain(messages.GET_ACTIVE_WIDGET, widget.id).then((w: any) => {
-      setWidgetEnabled(!!w);
-    });
-  });
-*/
   const onClick = async (checked: boolean) => {
     setWidgetEnabled(checked);
-    ipcRenderer.callMain(isWidgetEnabled ? messages.DEACTIVATE_WIDGET : messages.ACTIVATE_WIDGET, widget.id)
-
+    ipcRenderer.callMain(messages.GET_ACTIVE_WIDGET, widget.id).then(async (w: any) => {
+      if (!!w) {
+        await ipcRenderer.callMain(messages.DEACTIVATE_WIDGET, widget.id);
+        setWidgetEnabled(false);
+      } else {
+        await ipcRenderer.callMain(messages.ACTIVATE_WIDGET, widget.id);
+        setWidgetEnabled(true);
+      }
+    });
   }
 
   return (

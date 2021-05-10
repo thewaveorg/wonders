@@ -48,9 +48,15 @@ export class WondersAPI {
   public getLoadedWidgets(): Map<string, Widget> {
     return this.widgetManager.getAllLoadedWidgets();
   }
+  public isLoaded(id: string): boolean {
+    return this.widgetManager.getAllLoadedWidgets().has(id);
+  }
 
   public getActiveWidgets(): Map<string, Widget> {
     return this.widgetManager.getAllActiveWidgets();
+  }
+  public isActive(id: string): boolean {
+    return this.widgetManager.getAllActiveWidgets().has(id);
   }
 
   public getRegisteredWindows(): Map <string, BrowserWindow> {
