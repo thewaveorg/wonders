@@ -52,11 +52,11 @@ export class WondersAPI {
     return this.widgetManager.getAllLoadedWidgets().has(id);
   }
 
-  public getActiveWidgets(): Map<string, Widget> {
-    return this.widgetManager.getAllActiveWidgets();
+  public getEnabledWidgets(): Map<string, Widget> {
+    return this.widgetManager.getAllEnabledWidgets();
   }
-  public isActive(id: string): boolean {
-    return this.widgetManager.getAllActiveWidgets().has(id);
+  public isEnabled(id: string): boolean {
+    return this.widgetManager.getAllEnabledWidgets().has(id);
   }
 
   public getRegisteredWindows(): Map<string, BrowserWindow> {

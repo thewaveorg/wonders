@@ -153,7 +153,7 @@ export class App {
   private linkIpcEvents() {
     const msgs = constants.ipcMessages;
 
-    ipcMain.answerRenderer(msgs.GET_WIDGETS, async () => {
+    const getAllWidgetsInfo = () => {
       let arrToPush: any = [];
       for (let w of this.widgetManager.getAllLoadedWidgets().values()) {
         arrToPush.push({
@@ -162,27 +162,41 @@ export class App {
           description: w.manifest.description,
           version: w.manifest.version,
           author: w.manifest.author,
-          enabled: this.widgetManager.isActive(w.id)
+          enabled: this.widgetManager.isEnabled(w.id)
         });
       }
 
       return arrToPush;
+    }
+
+    ipcMain.answerRenderer(msgs.GET_WIDGETS, async () => {
+      return getAllWidgetsInfo();
     });
 
     ipcMain.answerRenderer(msgs.GET_LOADED_WIDGET, async (id: any) => {
       return this.widgetManager.getAllLoadedWidgets().get(id)?.info;
     });
 
-    ipcMain.answerRenderer(msgs.GET_ACTIVE_WIDGET, async (id: any) => {
-      return this.widgetManager.getAllActiveWidgets().get(id)?.info;
+    ipcMain.answerRenderer(msgs.GET_ENABLED_WIDGET, async (id: any) => {
+      return this.widgetManager.getAllEnabledWidgets().get(id)?.info;
     });
 
-    ipcMain.answerRenderer(msgs.ACTIVATE_WIDGET, async (id: any) => {
-      this.widgetManager.activateWidget(id);
+    ipcMain.answerRenderer(msgs.ENABLE_WIDGET, async (id: any) => {
+      this.widgetManager.enableWidget(id);
     });
 
-    ipcMain.answerRenderer(msgs.DEACTIVATE_WIDGET, async (id: any) => {
-      this.widgetManager.deactivateWidget(id);
+    ipcMain.answerRenderer(msgs.DISABLE_WIDGET, async (id: any) => {
+      this.widgetManager.disableWidget(id);
+    });
+
+    ipcMain.answerRenderer(msgs.ENABLE_ALL_WIDGETS, async () => {
+      await this.widgetManager.disableAllWidgets();
+      return getAllWidgetsInfo();
+    });
+
+    ipcMain.answerRenderer(msgs.DISABLE_ALL_WIDGETS, async () => {
+      await this.widgetManager.enableAllWidgets();
+      return getAllWidgetsInfo();
     });
 
     ipcMain.answerRenderer(msgs.CLOSE_MAIN_WINDOW, async () => {
@@ -205,101 +219,6 @@ export class App {
       if (mainWindow?.minimizable)
         mainWindow.minimize();
     });
-
-    /*
-    ipcMain.on(channel, (event, a) => {
-      const { messageType, args } = getIpcArguments(a);
-      if (!messageType)
-        return;
-      }
-
-      let messageType = args.shift();
-      if (!messageType) {
-        console.log("No IPC message type given. Ignoring...");
-      }
-
-      console.log("RECEIVED "+messageType);
-
-      let msgs = constants.ipcMessages;
-
-      switch (messageType) {
-        default:
-          {
-            console.log(`Unknown IPC message type "${messageType}"`);
-          }
-          break;
-
-        case msgs.GET_WIDGETS:
-          {
-            let arrToPush: any = [];
-            for (let w of this.widgetManager.getAllLoadedWidgets().values()) {
-              arrToPush.push({
-                id: w.id,
-                name: w.name,
-                description: w.manifest.description,
-                version: w.manifest.version,
-                author: w.manifest.author,
-                enabled: this.widgetManager.isActive(w.id)
-              });
-            }
-
-            event.reply(channel, [constants.ipcMessages.RECEIVE_WIDGETS, arrToPush]);
-          }
-          break;
-
-        case msgs.GET_LOADED_WIDGET:
-          {
-            event.reply(channel, this.widgetManager.getAllLoadedWidgets().get(args[0]));
-          }
-          break;
-
-        case msgs.GET_ACTIVE_WIDGET:
-          {
-            event.reply(channel, this.widgetManager.getAllActiveWidgets().get(args[0]));
-          }
-          break;
-
-        case msgs.ACTIVATE_WIDGET:
-          {
-            this.widgetManager.activateWidget(args[0]);
-          }
-          break;
-
-        case msgs.DEACTIVATE_WIDGET:
-          {
-            this.widgetManager.deactivateWidget(args[0]);
-          }
-          break
-
-        case msgs.CLOSE_MAIN_WINDOW:
-          {
-            this.windowManager.getMainWindow()?.close();
-          }
-          break
-
-        case msgs.MAXIMIZE_MAIN_WINDOW:
-          {
-            let mainWindow = this.windowManager.getMainWindow();
-            if (!mainWindow?.maximizable)
-              return;
-
-            if (mainWindow.isMaximized())
-              mainWindow.restore(); // Doesn't work as I expected.
-            else (!mainWindow.isMaximized())
-              mainWindow.maximize();
-          }
-          break
-
-        case msgs.MINIMIZE_MAIN_WINDOW:
-          {
-            let mainWindow = this.windowManager.getMainWindow();
-            if (mainWindow?.minimizable)
-              mainWindow.minimize();
-          }
-          break
-      }
-    });
-    */
   }
 
   private registerEvents() {

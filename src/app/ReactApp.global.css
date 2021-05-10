@@ -5,7 +5,9 @@
   --main-background-color: #090909;
   --different-background-color: #0f0f0f;
   --border-color: rgba(123, 123, 123, 0.15);
-  --accent-color: #06f;
+  --accent-color: #FF5A00;
+  --secondary-accent-color: #FF2652;
+  --blue-accent-color: rgb(201, 216, 238);
   --wonders-gradient: linear-gradient(-45deg, #FF5A00, #FF2652 75%);
 }
 

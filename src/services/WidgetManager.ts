@@ -14,28 +14,24 @@ import { validateWidgetExport } from "../utils/validateWidgetExport";
 export class WidgetManager {
 	private wondersApi: WondersAPI;
 
-  private activeWidgets: Map<string, Widget>;
+  private enabledWidgets: Map<string, Widget>;
   private loadedWidgets: Map<string, Widget>;
   private widgetsDirectory: string;
 
 	constructor(@inject(delay(() => WondersAPI)) _wondersApi: WondersAPI) {
 		this.wondersApi = _wondersApi;
 
-    this.activeWidgets = new Map();
+    this.enabledWidgets = new Map();
 		this.loadedWidgets = new Map();
 		this.widgetsDirectory  = "";
 	}
 
-  public isActive(id: string): Boolean {
-    if(this.activeWidgets.has(id)) {
-      return true;
-    } else {
-      return false;
-    }
+  public isEnabled(id: string): Boolean {
+    return this.enabledWidgets.has(id);
   }
 
-	public getAllActiveWidgets(): Map<string, Widget> {
-		return this.activeWidgets;
+	public getAllEnabledWidgets(): Map<string, Widget> {
+		return this.enabledWidgets;
 	}
 
   public getAllLoadedWidgets(): Map<string, Widget> {
@@ -53,7 +49,7 @@ export class WidgetManager {
 		this.widgetsDirectory = p;
 	};
 
-	public async loadWidgetsFromDirectory(dir?: string, activate: boolean = false): Promise<void> {
+	public async loadWidgetsFromDirectory(dir?: string, enable: boolean = false): Promise<void> {
     dir = dir || this.widgetsDirectory;
 
     const widgetFolders: string[] = readdirSync(dir, { withFileTypes: true })
@@ -61,7 +57,7 @@ export class WidgetManager {
       .map((folder) => path.resolve(dir!, folder.name));
 
     for await (const wpath of widgetFolders) {
-      await this.loadWidget(wpath, activate);
+      await this.loadWidget(wpath, enable);
     }
   }
 
@@ -81,7 +77,7 @@ export class WidgetManager {
    * @param p Path to wonder widget
    * @returns Promise<IWidget|null> A promise that resolves to the IWidget object.
    */
-  public async loadWidget(p: string, activate: boolean = false): Promise<Widget | null> {
+  public async loadWidget(p: string, enable: boolean = false): Promise<Widget | null> {
     let pluginInfo;
     try {
       pluginInfo = require(path.resolve(p, './wonders.json'));
@@ -122,8 +118,8 @@ export class WidgetManager {
 
     this.loadedWidgets.set(pluginInfo.id, widget);
 
-    if (activate)
-      this.activateWidget(pluginInfo.id);
+    if (enable)
+      this.enableWidget(pluginInfo.id);
 
     return widget;
   }
@@ -137,13 +133,13 @@ export class WidgetManager {
     if (!widget)
       return false;
 
-    this.deactivateWidget(id);
+    this.disableWidget(id);
     this.loadedWidgets.delete(id);
 
     return true;
   }
 
-  public async activateWidget(id: string): Promise<boolean> {
+  public async enableWidget(id: string): Promise<boolean> {
     const widget = this.loadedWidgets.get(id);
     if (!widget)
       return false;
@@ -152,13 +148,22 @@ export class WidgetManager {
       return false;
 
     await widget.object?.start();
-    this.activeWidgets.set(id, widget!);
+    this.enabledWidgets.set(id, widget!);
 
     return true;
   }
 
-  public async deactivateWidget(id: string): Promise<boolean> {
-    const widget = this.activeWidgets.get(id);
+  public async enableAllWidgets(): Promise<boolean> {
+    for (let widget of this.loadedWidgets.values()) {
+      if (!this.isEnabled(widget.id))
+        this.enableWidget(widget.id);
+    }
+
+    return true;
+  }
+
+  public async disableWidget(id: string): Promise<boolean> {
+    const widget = this.enabledWidgets.get(id);
     if (!widget)
       return false;
 
@@ -166,7 +171,16 @@ export class WidgetManager {
       return false;
 
     widget.object?.stop?.();
-    this.activeWidgets.delete(id);
+    this.enabledWidgets.delete(id);
+
+    return true;
+  }
+
+  public async disableAllWidgets(): Promise<boolean> {
+    for (let widget of this.loadedWidgets.values()) {
+      if (this.isEnabled(widget.id))
+        this.enableWidget(widget.id);
+    }
 
     return true;
   }
