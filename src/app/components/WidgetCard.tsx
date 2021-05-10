@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 const { ipcRenderer } = window.require('electron-better-ipc');
 
 import Switch from 'react-switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCodeBranch, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 import Constants from '../../api/Constants';
-import { Widget } from '../../api/Widget';
 import { IWidgetInfo } from '../../api/IWidgetInfo';
 
 /* Styles */
@@ -117,6 +116,7 @@ interface IWidgetCard {
 export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
   // @ts-ignore shut the up: electric boogaloo
   const [isWidgetEnabled, setWidgetEnabled] = useState(widget.enabled ?? false);
+
   const messages = Constants.ipcMessages;
 
   const onClick = async (checked: boolean) => {

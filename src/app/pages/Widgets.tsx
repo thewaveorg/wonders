@@ -10,15 +10,12 @@ import constants from "../../api/Constants";
 const WidgetCardContainer = styled.div`
   height: 100%;
   width: 100%;
-  //display: flex;
-  //flex-wrap: wrap;
-  //align-content: flex-start;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: min-content;
   grid-auto-flow: dense;
   grid-auto-rows: min-content;
-  grid-row-gap: none;
+  grid-row-gap: 0;
 
   @media only screen and (min-width : 1330px) {
     & {

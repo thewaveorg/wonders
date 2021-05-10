@@ -6,6 +6,7 @@
   --different-background-color: #0f0f0f;
   --border-color: rgba(123, 123, 123, 0.15);
   --accent-color: #06f;
+  --wonders-gradient: linear-gradient(-45deg, #FF5A00, #FF2652 75%);
 }
 
 * {
