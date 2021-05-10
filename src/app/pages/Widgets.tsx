@@ -1,9 +1,19 @@
 import React from "react";
+import styled from "styled-components";
 const { ipcRenderer } = window.require("electron-better-ipc");
 
 import { WidgetCard } from "../components/WidgetCard";
 
 import constants from "../../api/Constants";
+
+
+const WidgetCardContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: 1;
+`;
 
 export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState<object[]>([]);
@@ -23,9 +33,9 @@ export const Widgets: React.FC = () => {
     );
   } else {
     return (
-      <>
+      <WidgetCardContainer>
         { widgets.map((f: any) => <WidgetCard key={f.id} widget={f} />) }
-      </>
+      </WidgetCardContainer>
     );
   }
 }

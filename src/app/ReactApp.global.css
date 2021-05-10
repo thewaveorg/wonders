@@ -11,7 +11,8 @@
 * {
   -webkit-app-region: no-drag;
   user-select: none;
-  -webkit-font-smoothing: antialiased;
+  font-smooth: always;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 html,
