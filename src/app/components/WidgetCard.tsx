@@ -85,6 +85,7 @@ const WidgetDescription = styled.p`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  padding-bottom: .25rem !important;
 `;
 
 const WidgetOtherInfo = styled.div`
@@ -95,7 +96,7 @@ const WidgetOtherInfo = styled.div`
   border-left: 1px solid var(--border-color);
 
   & p {
-    padding: 0 1rem;
+    padding: 0 1rem 0.25rem 1rem;
   }
 `;
 
