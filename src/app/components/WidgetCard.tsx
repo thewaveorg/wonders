@@ -105,7 +105,7 @@ const WidgetAuthor = styled.p`
   white-space: nowrap;
   overflow: hidden;
   padding: 0.25rem .5rem 0.25rem 1rem !important;
-  width: 5em !important;
+  max-width: 5em !important;
 `;
 
 /* Main Component */
