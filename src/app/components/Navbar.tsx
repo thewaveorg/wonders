@@ -13,25 +13,17 @@ const NavStyle = styled.div`
   display: flex;
 	flex-wrap: wrap;
 	background-color: var(--main-background-color);
-	border-bottom: 1px solid var(--border-color);
+	// border-bottom: 1px solid var(--border-color);
   justify-content: space-between;
   max-height: 40px;
-
-  /* Border with a margin */
-  /*
-  &::after {
-    content: "";
-    position: relative;
-    left: 1%;
-    bottom: 0;
-    height: 0px;
-    width: 98%;
-    border-bottom: 1px solid var(--border-color);
-  }
-  */
 `;
 
 const NavLinkStyle = styled(NavLink)`
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border-color);
+  border-left-width: 0;
+  border-top-width: 0;
   color: #ffffff;
   cursor: pointer;
   font-family: 'Karla';
@@ -55,8 +47,10 @@ const NavLinkStyle = styled(NavLink)`
 `;
 
 const TrafficLights = styled.div`
-  align-self: center;
-  margin: 0 1.25% 0 0;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 1.25% 0 0;
+  display: flex;
+  align-items: center;
 `;
 
 const TrafficLight = styled.button`
@@ -117,6 +111,7 @@ const GreenTrafficLight = styled(TrafficLight)`
 const ElectronDrag = styled.div`
   flex-grow: 1;
   -webkit-app-region: drag;
+  border-bottom: 1px solid var(--border-color);
 `;
 
 
@@ -126,7 +121,10 @@ interface INavbarProps {
 }
 
 export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) => {
-  const activeStyle = { color: '#888' };
+  const activeStyle = {
+    borderBottomWidth: '0px',
+    color: '#888'
+  };
 
   return (
     <NavStyle ref={ref}>
@@ -135,13 +133,13 @@ export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) =>
       <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
-        <RedTrafficLight
+        <GreenTrafficLight
           onClick={ () => ipcRenderer.callMain(ipcMessages.CLOSE_MAIN_WINDOW) }
         />
         <YellowTrafficLight
           onClick={ () => ipcRenderer.callMain(ipcMessages.MAXIMIZE_MAIN_WINDOW) }
         />
-        <GreenTrafficLight
+        <RedTrafficLight
           onClick={ () => ipcRenderer.callMain(ipcMessages.MINIMIZE_MAIN_WINDOW) }
         />
       </TrafficLights>
