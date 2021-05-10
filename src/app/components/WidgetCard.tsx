@@ -4,7 +4,7 @@ const { ipcRenderer } = window.require('electron-better-ipc');
 
 import Switch from 'react-switch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCodeBranch } from '@fortawesome/free-solid-svg-icons';
+import { faCodeBranch, faCog } from '@fortawesome/free-solid-svg-icons';
 
 import Constants from '../../api/Constants';
 import { Widget } from '../../api/Widget';
@@ -49,7 +49,7 @@ const WidgetTitle = styled.h1`
 
   /* This creates a gradient for long widget names. */
   background-color: #fff;
-  background-image: linear-gradient(90deg, #fff, #fff 50%, var(--different-background-color));
+  background-image: linear-gradient(90deg, #fff, #fff 50%, var(--different-background-color) 95%);
   background-size: 100%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -67,7 +67,6 @@ const WidgetInformation = styled.div`
   margin-top: 20px;
 
   & p {
-    padding: 0 1rem 0 1rem;
     width: fit-content;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -80,12 +79,12 @@ const WidgetDescription = styled.p`
   flex-grow: 1;
   font-family: 'Karla';
   font-size: 1rem;
-  text-align: center;
+  text-align: start;
   min-width: 50%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  padding-bottom: .25rem !important;
+  padding: 0.25rem 1rem 0.25rem 1rem;
 `;
 
 const WidgetOtherInfo = styled.div`
@@ -96,8 +95,15 @@ const WidgetOtherInfo = styled.div`
   border-left: 1px solid var(--border-color);
 
   & p {
-    padding: 0 1rem 0.25rem 1rem;
+    padding: 0.25rem .5rem 0.25rem .5rem;
   }
+`;
+
+const WidgetAuthor = styled.p`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0.25rem .5rem 0.25rem 1rem !important;
 `;
 
 /* Main Component */
@@ -140,9 +146,10 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
         <WidgetDescription>{widget.description}</WidgetDescription>
         <WidgetOtherInfo>
           {/* @ts-ignore THE */}
-          <p><b>@</b> {widget.author}</p>
+          <WidgetAuthor><b>@</b> {widget.author}</WidgetAuthor>
           {/* @ts-ignore UP */}
           <p><FontAwesomeIcon icon={faCodeBranch}/> {widget.version}</p>
+          <p><FontAwesomeIcon icon={faCog}/></p>
         </WidgetOtherInfo>
       </WidgetInformation>
     </WidgetBox>
