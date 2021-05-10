@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: You're having technical issues. 🐞
+about: You're having technical issues with Wonders. 🐞
 labels: 'bug'
 ---
 
@@ -11,10 +11,7 @@ labels: 'bug'
 <!-- If the following boxes are not ALL checked, your issue is likely to be closed -->
 
 - [ ] Using yarn
-- [ ] Using an up-to-date [`master` branch](https://github.com/electron-react-boilerplate/electron-react-boilerplate/tree/master)
-- [ ] Using latest version of devtools. [Check the docs for how to update](https://electron-react-boilerplate.js.org/docs/dev-tools/)
-- [ ] Tried solutions mentioned in [#400](https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues/400)
-- [ ] For issue in production release, add devtools output of `DEBUG_PROD=true yarn build && yarn start`
+- [ ] Using an up-to-date [`master` branch](https://github.com/gspalato/wonders)
 
 ## Expected Behavior
 
@@ -51,17 +48,7 @@ labels: 'bug'
 
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 
-- Node version :
-- electron-react-boilerplate version or branch :
-- Operating System and version :
-- Link to your project :
+- Node version:
+- Wonders version or branch:
+- Operating System and version:
 
-<!---
-❗️❗️ Also, please consider donating (https://opencollective.com/electron-react-boilerplate-594) ❗️❗️
-
-Donations will ensure the following:
-
-🔨 Long term maintenance of the project
-🛣 Progress on the roadmap
-🐛 Quick responses to bug reports and help requests
- -->
