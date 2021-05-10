@@ -91,8 +91,9 @@ const WidgetOtherInfo = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   border-left: 1px solid var(--border-color);
+  width: 11rem;
 
   & p {
     padding: 0.25rem .5rem 0.25rem .5rem;
