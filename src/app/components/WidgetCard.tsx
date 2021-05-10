@@ -40,7 +40,22 @@ const WidgetTitle = styled.h1`
   font-size: 3rem;
   font-weight: 700;
   margin-left: 0.5%;
-  padding-top: 0px;
+  padding: 1rem;
+  flex: 1;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  /* This creates a gradient for long widget names. */
+  background-color: #fff;
+  background-image: linear-gradient(90deg, #fff, #fff 50%, var(--different-background-color));
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-text-fill-color: transparent;
 `;
 
 const WidgetInformation = styled.div`
@@ -52,30 +67,35 @@ const WidgetInformation = styled.div`
   margin-top: 20px;
 
   & p {
-    width: 50%;
     padding: 0 1rem 0 1rem;
     width: fit-content;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 `;
 
 const WidgetDescription = styled.p`
   color: rgba(255, 255, 255, .5);
-  // flex-grow: 1;
+  flex-grow: 1;
   font-family: 'Karla';
   font-size: 1rem;
   text-align: center;
-  width: 50% !important;
+  min-width: 50%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const WidgetOtherInfo = styled.div`
   align-items: center;
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
-  justify-content: center;
+  justify-content: flex-end;
+  border-left: 1px solid var(--border-color);
 
   & p {
-    padding: 0 1rem 0 0;
+    padding: 0 1rem;
   }
 `;
 

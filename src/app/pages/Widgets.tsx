@@ -10,9 +10,19 @@ import constants from "../../api/Constants";
 const WidgetCardContainer = styled.div`
   height: 100%;
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: 1;
+  //display: flex;
+  //flex-wrap: wrap;
+  //align-content: flex-start;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: min-content;
+  grid-row-gap: none;
+
+  @media only screen and (min-width : 1330px) {
+    & {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 `;
 
 export const Widgets: React.FC = () => {
