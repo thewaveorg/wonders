@@ -9,7 +9,7 @@ import { Widget } from '../../api/Widget';
 
 const WidgetBox = styled.div`
   height: auto;
-  width: 18rem;
+  width: 80%;
   background-color: var(--different-background-color);
   padding: 12px;
   border-radius: 10px;
@@ -27,6 +27,8 @@ const WidgetHeader = styled.div`
   text-align: center;
   vertical-align: middle;
   padding: 0 0.25%;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--border-color);
 `;
 
 const WidgetTitle = styled.h1`
@@ -35,6 +37,12 @@ const WidgetTitle = styled.h1`
   font-weight: 700;
   margin-left: 0.5%;
   padding-top: 0px;
+`;
+
+const WidgetInformation = styled.div`
+  margin: 1%;
+  width: 98%;
+  margin-top: 20px;
 `;
 
 /* Main Component */
@@ -49,17 +57,18 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
 
   const onClick = async (checked: boolean) => {
     setWidgetEnabled(checked);
-    ipcRenderer.callMain(messages.GET_ACTIVE_WIDGET, widget.id).then(async (w: any) => {
-      if (!!w) {
-        await ipcRenderer.callMain(messages.DEACTIVATE_WIDGET, widget.id);
-        setWidgetEnabled(false);
-      } else {
-        await ipcRenderer.callMain(messages.ACTIVATE_WIDGET, widget.id);
-        setWidgetEnabled(true);
-      }
-    });
-  }
-
+    ipcRenderer
+      .callMain(messages.GET_ACTIVE_WIDGET, widget.id)
+      .then(async (w: any) => {
+        if (!!w) {
+          await ipcRenderer.callMain(messages.DEACTIVATE_WIDGET, widget.id);
+          setWidgetEnabled(false);
+        } else {
+          await ipcRenderer.callMain(messages.ACTIVATE_WIDGET, widget.id);
+          setWidgetEnabled(true);
+        }
+      });
+  };
   return (
     <WidgetBox id={widget.id}>
       <WidgetHeader>
@@ -69,8 +78,17 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
           uncheckedIcon={false}
           onChange={onClick}
           checked={isWidgetEnabled}
+          onColor="#FF5A00"
         />
       </WidgetHeader>
+      <WidgetInformation>
+        {/* @ts-ignore SHUT */}
+        <p>Description: {widget.description}</p>
+        {/* @ts-ignore THE */}
+        <p>Author: {widget.author}</p>
+        {/* @ts-ignore UP */}
+        <p>Version: {widget.version}</p>
+      </WidgetInformation>
     </WidgetBox>
   );
 };
