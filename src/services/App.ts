@@ -12,6 +12,7 @@ import { injectable, singleton } from 'tsyringe';
 
 import { WidgetManager } from './WidgetManager';
 import { WindowManager } from './WindowManager';
+import { SettingsManager } from "./SettingsManager";
 
 import constants from '../api/Constants';
 
@@ -20,26 +21,30 @@ import constants from '../api/Constants';
 export class App {
   private widgetManager: WidgetManager;
   private windowManager: WindowManager;
-
+  private settingsManager: SettingsManager;
   private trayIcon: Tray | null;
 
-  constructor(_widgetManager: WidgetManager, _windowManager: WindowManager) {
+  constructor(_widgetManager: WidgetManager, _windowManager: WindowManager, _settingsManager: SettingsManager) {
     this.widgetManager = _widgetManager;
     this.windowManager = _windowManager;
+    this.settingsManager = _settingsManager
 
     this.trayIcon = null;
   }
 
   public async start() {
+    await this.settingsManager.start()
     this.widgetManager.setDefaultWidgetsDirectory(
       path.resolve(app.getAppPath(), '../widgets')
     );
-
     this.registerEvents();
 
     await this.widgetManager.loadWidgetsFromDirectory(undefined, true);
 
     await this.createTrayIcon();
+    setTimeout(() => {
+      console.log(this.settingsManager.cache)
+    }, 5000)
   }
 
   public getTrayIcon(): Tray | null {
