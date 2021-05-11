@@ -30,7 +30,7 @@ Your widget folder needs a `wonders.json` file, such as below:
     "description": "👀",
     "author": "spalato",
     "version": 1.0,
-    "entry": "./index.js" // Here's the entry file for your widget.
+    "entry": "./index.js"
 }
 ```
 
