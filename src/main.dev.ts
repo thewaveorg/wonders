@@ -7,6 +7,7 @@ import log from 'electron-log';
 import { container, DependencyContainer } from "tsyringe";
 
 import { App } from './services/App';
+import { SettingsManager } from './services/SettingsManager';
 
 export class AppUpdater {
   constructor() {
@@ -26,6 +27,7 @@ export class Program {
   }
 
   private start() {
+    this.services.resolve(SettingsManager).start();
     this.services.resolve(App).start();
   }
 }
