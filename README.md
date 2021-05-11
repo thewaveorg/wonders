@@ -14,13 +14,25 @@ A rainmeter-like widget platform powered by Electron.
 - [ ] Documentation;
 
 ## How widgets work (for now)
-
-A widget is, basically, a NPM package, which returns a factory function for the main class.
-The function must take the WondersAPI object as well as the UID generated for your widget each time your widget is loaded. You'll need both to interact with Wonders and register windows.
+### How to interact?
+A widget should return a factory function for the main class.
+The function must take the WondersAPI object as well as the UID generated for it each time it's loaded.
+You'll need both to interact with Wonders and register windows.
 ```js
-module.exports = (WondersAPI, uid) => new WidgetClass(WondersAPI, uid);
+module.exports = (api, uid) => new WidgetClass(api, uid);
 ```
-The main widget class has to implement the IWidget interface, although it's not currently enforced via linting.
+The exported object has to implement the IWidget interface, although it's not currently enforced via linting.
+### Configuration
+Your widget folder needs a `wonders.json` file, such as below:
+```json
+{
+    "name": "Lady Dimitrescu",
+    "description": "👀",
+    "author": "spalato",
+    "version": 1.0,
+    "entry": "./index.js" // Here's the entry file for your widget.
+}
+```
 
 ## Installation
 
