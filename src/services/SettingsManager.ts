@@ -1,18 +1,26 @@
 import { injectable, singleton } from 'tsyringe';
 import fs from 'fs';
 import lodash from 'lodash';
+import { app } from 'electron';
+import path from 'path';
 
 @injectable()
 @singleton()
 export class SettingsManager {
+  private settingsPath: string;
   private currentSettings: Map<string, object>;
 
   constructor() {
+    this.settingsPath = path.resolve(app.getAppPath(), "./settings");
     this.currentSettings = new Map();
   }
 
   public async start() {
-    fs.readdir('./src/settings', (err, files) => {
+    if (!fs.existsSync(this.settingsPath)) {
+      fs.mkdirSync(this.settingsPath);
+    }
+
+    fs.readdir(this.settingsPath, (err, files) => {
       if (err)
         throw new Error(err.message);
 
@@ -30,11 +38,11 @@ export class SettingsManager {
   }
 
   public initSettings(name: string, settings: any) {
-    if (fs.existsSync(`./src/settings/${name}.json`)) {
+    if (fs.existsSync(path.resolve(this.settingsPath, `${name}.json`))) {
       console.log('File already exists');
     } else {
       fs.writeFile(
-        `./src/settings/${name}.json`,
+        path.resolve(this.settingsPath, `${name}.json`),
         JSON.stringify(settings),
         (e: any) => {
           if (e) console.log('An error occured creating settings', e);
@@ -58,7 +66,7 @@ export class SettingsManager {
     var newObj = lodash.merge(obj, settings);
     this.currentSettings.set(name, newObj);
     fs.writeFile(
-      `./src/settings/${name}.json`,
+      path.resolve(this.settingsPath, `${name}.json`),
       JSON.stringify(newObj),
       (e: any) => {
         if (e) console.error(e);
