@@ -2,44 +2,24 @@ import React from "react";
 import styled from "styled-components";
 const { ipcRenderer } = window.require("electron-better-ipc");
 
+import { BaseButton } from "../components/BaseButton";
 import { WidgetCard } from "../components/WidgetCard";
 
 import constants from "../../api/Constants";
-import { IWidgetInfo } from "../../api/IWidgetInfo";
+
 
 const ButtonContainer = styled.div`
   height: fit-content;
   width: auto;
-  padding: 1rem 1rem 0 1rem;
+  margin: 1rem 1rem 0 1rem;
+  // padding: .5rem;
+  // border: 1px solid var(--border-color);
+  border-radius: 7px;
+  flex-grow: 1;
 `;
 
-const OptionButton = styled.button`
-  align-items: center;
-	background: var(--different-background-color);
-  border: 1px solid var(--border-color);
-	border-radius: 4px;
-	color: #fff;
-	display: inline-flex;
-	font-family: 'Inter';
-	font-size: .75em;
-	font-weight: 50;
-	justify-content: center;
-	line-height: 1;
-	padding: .5rem .75rem;
-	text-align: center;
-	text-decoration: none;
-	transition: .07s linear;
-	user-select: none;
-	vertical-align: middle;
-  margin: 0 1rem 0 0;
-
-	&:active {
-		filter: brightness(60%);
-	}
-
-	&:focus {
-		outline: none;
-	}
+const OptionButton = styled(BaseButton)`
+  min-width: 5rem;
 `;
 
 const WidgetCardContainer = styled.div`
