@@ -12,8 +12,8 @@ const ButtonContainer = styled.div`
   height: fit-content;
   width: auto;
   margin: 1rem 1rem 0 1rem;
-  // padding: .5rem;
-  // border: 1px solid var(--border-color);
+  //padding: .25rem;
+  //border: 1px solid var(--border-color);
   border-radius: 7px;
   flex-grow: 1;
 `;
@@ -48,40 +48,30 @@ const PageWrapper = styled.div`
 `;
 
 /* Main Component */
+// stil doesn't fucking update.
 export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState<object[]>([]);
 
   const loadWidgets = () => {
-    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then((ws: any) => {
-      setWidgets(ws);
-      console.log(`GET_WIDGETS: Loaded ${widgets.length} widgets.`);
-      console.log(ws);
-    });
+    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then(setWidgets);
   }
 
   const enableAll = () => {
-    ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then((ws: any) => {
-      setWidgets(ws);
-      console.log(`ENABLE_ALL refresh: Loaded ${widgets.length} widgets.`);
-      console.log(ws);
-    });
+    ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then(setWidgets);
   }
 
   const disableAll = () => {
-    ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then((ws: any) => {
-      setWidgets(ws);
-      console.log(`DISABLE_ALL refresh: Loaded ${widgets.length} widgets.`);
-      console.log(ws);
-    });
+    ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then(setWidgets);
   }
 
   React.useEffect(() => {
-    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then((ws: any) => {
-      setWidgets(ws);
-      console.log(`Initial GET_WIDGETS: Loaded ${widgets.length} widgets.`);
-      console.log(ws);
-    });
+    loadWidgets();
   }, [])
+
+  React.useEffect(() => {
+    console.log(`Effect Update: Loaded ${widgets.length} widgets.`);
+    console.log(widgets);
+  }, [ widgets ]);
 
   if(widgets.length === 0) {
     return (

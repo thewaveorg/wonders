@@ -1,5 +1,5 @@
 import { app, BrowserWindow, ipcMain, shell, Tray } from "electron";
-import { delay, inject, injectable, singleton } from "tsyringe";
+import { delay, inject, injectable, Lifecycle, scoped } from "tsyringe";
 
 import { App } from "./App";
 import { BrowserOptions, WindowManager } from "./WindowManager";
@@ -8,7 +8,7 @@ import { WidgetManager } from "./WidgetManager";
 import { Widget } from "../api/Widget";
 
 @injectable()
-@singleton()
+@scoped(Lifecycle.ResolutionScoped)
 export class WondersAPI {
   private app: Electron.App = app;
   private ipcMain: Electron.IpcMain = ipcMain;
@@ -55,16 +55,19 @@ export class WondersAPI {
   public getEnabledWidgets(): Map<string, Widget> {
     return this.widgetManager.getAllEnabledWidgets();
   }
+
   public isEnabled(id: string): boolean {
     return this.widgetManager.getAllEnabledWidgets().has(id);
   }
 
-  public getRegisteredWindows(): Map<string, BrowserWindow> {
+  public getAllRegisteredWindows(): Map<string, BrowserWindow> {
     return this.windowManager.getAllWindows();
   }
-  public getRegisteredWindow(id: string): BrowserWindow | undefined {
-    return this.windowManager.getWindow(id);
+
+  public getRegisteredWindow(widgetId: string, windowId: string): BrowserWindow | undefined {
+    return this.windowManager.getWindow(widgetId, windowId);
   }
+
   public removeRegisteredWindow(id: string): void {
     this.windowManager.endWindow(id);
   }
@@ -73,7 +76,11 @@ export class WondersAPI {
     return this.widgetManager.getDefaultWidgetsDirectory();
   }
 
-  public async createWidgetWindowAsync(id: string, options?: BrowserOptions): Promise<BrowserWindow> {
-		return this.windowManager.createWindowAsync(id, options);
+  public async createWidgetWindowAsync(
+    widgetId: string,
+    windowId: string,
+    options?: BrowserOptions
+  ): Promise<BrowserWindow> {
+		return this.windowManager.createWindowAsync(widgetId, windowId, options);
 	};
 }

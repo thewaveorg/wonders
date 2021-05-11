@@ -11,12 +11,12 @@ export class WindowManager {
 	private mainWindow: BrowserWindow | null;
   private mainWindowState: windowStateKeeper.State | null;
 
-	private widgetWindows: Map<string, BrowserWindow>;
+	private widgetWindows: Map<string, Map<string, BrowserWindow>>;
 
 	constructor() {
 		this.mainWindow = null;
 		this.mainWindowState = null;
-		this.widgetWindows = new Map<string, BrowserWindow>();
+		this.widgetWindows = new Map();
 	}
 
 	public getMainWindow(): BrowserWindow | null {
@@ -37,16 +37,31 @@ export class WindowManager {
 	}
 
 	public getAllWindows(): Map<string, BrowserWindow> {
-		return this.widgetWindows;
+		let windows = new Map<string, BrowserWindow>();
+    for (let w of this.widgetWindows.values())
+      for (let [ id, window ] of w)
+        windows.set(id, window);
+
+    return windows;
 	}
-	public getWindow(id: string): BrowserWindow | undefined {
-		return this.widgetWindows.get(id);
+
+  public getAllWidgetWindows(widgetId: string): Map<string, BrowserWindow> {
+    if (!this.widgetWindows.has(widgetId)) {
+      this.widgetWindows.set(widgetId, new Map());
+    }
+
+    return this.widgetWindows.get(widgetId)!;
+  }
+
+	public getWindow(widgetId: string, windowId: string): BrowserWindow | undefined {
+		return this.widgetWindows.get(widgetId)?.get(windowId);
 	}
+
 	public endWindow(id: string): void {
 		this.widgetWindows.delete(id);
 	}
 
-  public async createWindowAsync(id: string, options?: BrowserOptions): Promise<BrowserWindow> {
+  public async createWindowAsync(widgetId: string, windowId: string, options?: BrowserOptions): Promise<BrowserWindow> {
     await app.whenReady();
 
     // Override certain options.
@@ -59,7 +74,12 @@ export class WindowManager {
     } ?? {};
 
     const window = new BrowserWindow(options);
-    this.widgetWindows.set(id, window);
+    // We need some way to retrieve the widget's id here.
+    if (!this.widgetWindows.has(widgetId)) {
+      this.widgetWindows.set(widgetId, new Map());
+    }
+
+    this.widgetWindows.get(widgetId)?.set(windowId, window);
 
     window.webContents.on('did-finish-load', () => {
       if (!window) {
@@ -74,7 +94,7 @@ export class WindowManager {
     });
 
     window.on('closed', () => {
-      this.widgetWindows.delete(id);
+      this.widgetWindows.get(widgetId)?.delete(windowId);
     });
 
     window.webContents.on('new-window', (event, url) => {

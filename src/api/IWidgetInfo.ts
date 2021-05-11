@@ -4,4 +4,5 @@ export interface IWidgetInfo {
     description: string;
     version: string;
     author: string;
+    entry?: string;
 }

@@ -1,10 +1,12 @@
 import fs, { readdirSync } from "fs";
 import path from "path";
-import { delay, inject, injectable, singleton } from "tsyringe";
+import { container, delay, inject, injectable, singleton } from "tsyringe";
 
 import { WondersAPI } from "./WondersAPI";
+import { WindowManager } from "./WindowManager";
 
 import { Widget } from "../api/Widget";
+import { IWidgetInfo } from "../api/IWidgetInfo";
 
 import { validateWondersJson } from "../utils/validateWondersJson";
 import { validateWidgetExport } from "../utils/validateWidgetExport";
@@ -12,14 +14,14 @@ import { validateWidgetExport } from "../utils/validateWidgetExport";
 @injectable()
 @singleton()
 export class WidgetManager {
-	private wondersApi: WondersAPI;
+  private windowManager: WindowManager;
 
   private enabledWidgets: Map<string, Widget>;
   private loadedWidgets: Map<string, Widget>;
   private widgetsDirectory: string;
-
-	constructor(@inject(delay(() => WondersAPI)) _wondersApi: WondersAPI) {
-		this.wondersApi = _wondersApi;
+  
+	constructor(_windowManager: WindowManager) {
+    this.windowManager = _windowManager;
 
     this.enabledWidgets = new Map();
 		this.loadedWidgets = new Map();
@@ -75,37 +77,37 @@ export class WidgetManager {
   /**
    * Load a widget
    * @param p Path to wonder widget
-   * @returns Promise<IWidget|null> A promise that resolves to the IWidget object.
+   * @returns Promise<IWidget|null> A promise that resolves to the Widget object.
    */
   public async loadWidget(p: string, enable: boolean = false): Promise<Widget | null> {
-    let pluginInfo;
+    let widgetInfo: IWidgetInfo;
     try {
-      pluginInfo = require(path.resolve(p, './wonders.json'));
+      widgetInfo = require(path.resolve(p, './wonders.json'));
 
-      let check = validateWondersJson(pluginInfo);
+      let check = validateWondersJson(widgetInfo);
       if (check !== true)
       {
         console.log(check);
         return null;
       }
 
-      pluginInfo.id = this.hashID(pluginInfo.name);
+      widgetInfo.id = this.hashID(widgetInfo.name).toString();
     } catch {
       console.log(`Found no wonders.json at ${p}. Ignoring...`);
       return null;
     }
 
-    if (!pluginInfo) {
+    if (!widgetInfo) {
       console.log(`Failed to read wonders.json.`);
       return null;
     }
-    if (this.loadedWidgets.has(pluginInfo.id))
+    if (this.loadedWidgets.has(widgetInfo.id))
     {
-      console.log(`Plugin ${pluginInfo.name} at ${p} has the same ID as another plugin. Ignoring...`);
+      console.log(`Widget ${widgetInfo.name} at ${p} has the same ID as another widget. Ignoring...`);
       return null;
     }
 
-    const imported = require(path.resolve(p, pluginInfo.entry));
+    const imported = require(path.resolve(p, widgetInfo.entry!));
 
     let check = validateWidgetExport(imported);
     if (check !== true) {
@@ -113,13 +115,14 @@ export class WidgetManager {
       return null;
     }
 
-    const widgetObject = imported(this.wondersApi);
-    const widget = new Widget(pluginInfo, widgetObject);
+    var scopedApi = container.resolve(WondersAPI);
+    const widgetObject = imported(scopedApi, widgetInfo.id);
+    const widget = new Widget(widgetInfo, widgetObject);
 
-    this.loadedWidgets.set(pluginInfo.id, widget);
+    this.loadedWidgets.set(widgetInfo.id, widget);
 
     if (enable)
-      this.enableWidget(pluginInfo.id);
+      this.enableWidget(widgetInfo.id);
 
     return widget;
   }
@@ -176,6 +179,20 @@ export class WidgetManager {
     this.enabledWidgets.delete(id);
 
     return true;
+  }
+
+  public async nukeWidget(id: string): Promise<void> {
+    const widget = this.enabledWidgets.get(id);
+    if (!widget)
+      return;
+
+    widget.object?.stop?.();
+
+    for (let window of this.windowManager.getAllWidgetWindows(id).values()) {
+      window.close();
+    }
+
+    this.enabledWidgets.delete(id);
   }
 
   public async disableAllWidgets(): Promise<boolean> {
