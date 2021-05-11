@@ -62,8 +62,7 @@ export const Widgets: React.FC = () => {
   const enableAll = () => {
     ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then((ws: any) => {
       setWidgets(ws);
-      var currentDate = '[' + new Date().toUTCString() + '] ';
-      console.log(currentDate, `ENABLE_ALL refresh: Loaded ${widgets.length} widgets.`);
+      console.log(`ENABLE_ALL refresh: Loaded ${widgets.length} widgets.`);
       console.log(ws);
     });
   }
@@ -71,8 +70,7 @@ export const Widgets: React.FC = () => {
   const disableAll = () => {
     ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then((ws: any) => {
       setWidgets(ws);
-      var currentDate = '[' + new Date().toUTCString() + '] ';
-      console.log(currentDate, `DISABLE_ALL refresh: Loaded ${widgets.length} widgets.`);
+      console.log(`DISABLE_ALL refresh: Loaded ${widgets.length} widgets.`);
       console.log(ws);
     });
   }

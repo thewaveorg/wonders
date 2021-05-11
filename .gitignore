@@ -2,6 +2,13 @@
 logs
 *.log
 
+
+# Ignore settings
+src/settings/
+
+# Ignore Yarn
+yarn.lock
+
 # Runtime data
 pids
 *.pid
