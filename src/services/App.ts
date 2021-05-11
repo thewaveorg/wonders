@@ -190,12 +190,16 @@ export class App {
     });
 
     ipcMain.answerRenderer(msgs.ENABLE_ALL_WIDGETS, async () => {
-      await this.widgetManager.disableAllWidgets();
+      var currentDate = '[' + new Date().toUTCString() + '] ';
+      console.log(currentDate, "got ENABLE_ALL_WIDGETS")
+      await this.widgetManager.enableAllWidgets();
       return getAllWidgetsInfo();
     });
 
     ipcMain.answerRenderer(msgs.DISABLE_ALL_WIDGETS, async () => {
-      await this.widgetManager.enableAllWidgets();
+      var currentDate = '[' + new Date().toUTCString() + '] ';
+      console.log(currentDate, "got DISABLE_ALL_WIDGETS")
+      await this.widgetManager.disableAllWidgets();
       return getAllWidgetsInfo();
     });
 

@@ -133,7 +133,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
         }
       });
   };
-  
+
   return (
     <WidgetBox id={widget.id}>
       <WidgetHeader>

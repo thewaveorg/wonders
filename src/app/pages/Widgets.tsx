@@ -71,29 +71,38 @@ const PageWrapper = styled.div`
 export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState<object[]>([]);
 
-  const loadWidgets = (list?: IWidgetInfo[]) => {
-    const load = (l: any) => {
-      setWidgets(l);
-      console.log(`Loaded ${widgets.length} widgets.`);
-      console.log(l);
-    }
-
-    if (list)
-      load(list);
-    else
-      ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then(load);
+  const loadWidgets = () => {
+    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then((ws: any) => {
+      setWidgets(ws);
+      console.log(`GET_WIDGETS: Loaded ${widgets.length} widgets.`);
+      console.log(ws);
+    });
   }
 
   const enableAll = () => {
-    ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then((ws: any) => loadWidgets(ws));
+    ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then((ws: any) => {
+      setWidgets(ws);
+      var currentDate = '[' + new Date().toUTCString() + '] ';
+      console.log(currentDate, `ENABLE_ALL refresh: Loaded ${widgets.length} widgets.`);
+      console.log(ws);
+    });
   }
 
   const disableAll = () => {
-    ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then((ws: any) => loadWidgets(ws));
+    ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then((ws: any) => {
+      setWidgets(ws);
+      var currentDate = '[' + new Date().toUTCString() + '] ';
+      console.log(currentDate, `DISABLE_ALL refresh: Loaded ${widgets.length} widgets.`);
+      console.log(ws);
+    });
   }
 
   React.useEffect(() => {
-    loadWidgets();
+    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then((ws: any) => {
+      setWidgets(ws);
+      console.log(`Initial GET_WIDGETS: Loaded ${widgets.length} widgets.`);
+      console.log(ws);
+    });
   }, [])
 
   if(widgets.length === 0) {
