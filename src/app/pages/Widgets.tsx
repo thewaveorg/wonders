@@ -52,25 +52,20 @@ export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState<object[]>([]);
 
   const loadWidgets = () => {
-    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then((ws: any) => setWidgets([ ...ws ]));
+    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then((ws: any) => setWidgets(ws));
   }
 
   const enableAll = () => {
-    ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then((ws: any) => setWidgets([ ...ws ]));
+    ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then((ws: any) => setWidgets(ws));
   }
 
   const disableAll = () => {
-    ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then((ws: any) => setWidgets([ ...ws ]));
+    ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then((ws: any) => setWidgets(ws));
   }
 
   React.useEffect(() => {
     loadWidgets();
   }, [])
-
-  React.useEffect(() => {
-    console.log(`Effect Update: Loaded ${widgets.length} widgets.`);
-    console.log(widgets);
-  }, [ widgets ]);
 
   if (widgets.length === 0) {
     return (
