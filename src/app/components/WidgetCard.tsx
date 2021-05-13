@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 const { ipcRenderer } = window.require('electron-better-ipc');
 
@@ -8,6 +8,7 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 import Constants from '../../api/Constants';
 import { IWidgetInfo } from '../../api/IWidgetInfo';
+import { ToggleButton } from './ToggleButton';
 
 /* Styles */
 const WidgetBox = styled.div`
@@ -110,16 +111,19 @@ const WidgetAuthor = styled.p`
 
 /* Main Component */
 interface IWidgetCard {
-  widget: IWidgetInfo;
+  widget: IWidgetInfo & { enabled: boolean };
 }
 
 export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
-  // @ts-ignore shut the up: electric boogaloo
-  const [isWidgetEnabled, setWidgetEnabled] = useState(widget.enabled ?? false);
+  const [isWidgetEnabled, setWidgetEnabled] = useState<boolean>(widget.enabled ?? false);
 
   const messages = Constants.ipcMessages;
 
-  const onClick = async (checked: boolean) => {
+  useEffect(() => {
+    setWidgetEnabled(widget.enabled);
+  });
+
+  const onClick = (checked: boolean) => {
     setWidgetEnabled(checked);
     ipcRenderer
       .callMain(messages.GET_ENABLED_WIDGET, widget.id)

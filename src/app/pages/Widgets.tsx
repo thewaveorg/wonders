@@ -48,20 +48,19 @@ const PageWrapper = styled.div`
 `;
 
 /* Main Component */
-// stil doesn't fucking update.
 export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState<object[]>([]);
 
   const loadWidgets = () => {
-    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then(setWidgets);
+    ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then((ws: any) => setWidgets([ ...ws ]));
   }
 
   const enableAll = () => {
-    ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then(setWidgets);
+    ipcRenderer.callMain(constants.ipcMessages.ENABLE_ALL_WIDGETS).then((ws: any) => setWidgets([ ...ws ]));
   }
 
   const disableAll = () => {
-    ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then(setWidgets);
+    ipcRenderer.callMain(constants.ipcMessages.DISABLE_ALL_WIDGETS).then((ws: any) => setWidgets([ ...ws ]));
   }
 
   React.useEffect(() => {
@@ -73,7 +72,7 @@ export const Widgets: React.FC = () => {
     console.log(widgets);
   }, [ widgets ]);
 
-  if(widgets.length === 0) {
+  if (widgets.length === 0) {
     return (
       <>
         <h1 style={{ fontSize: '4rem', paddingBottom: '1rem' }}>No widgets available.</h1>

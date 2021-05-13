@@ -122,7 +122,7 @@ export class WidgetManager {
     this.loadedWidgets.set(widgetInfo.id, widget);
 
     if (enable)
-      this.enableWidget(widgetInfo.id);
+      await this.enableWidget(widgetInfo.id);
 
     return widget;
   }
@@ -136,7 +136,7 @@ export class WidgetManager {
     if (!widget)
       return false;
 
-    this.disableWidget(id);
+    await this.disableWidget(id);
     this.loadedWidgets.delete(id);
 
     return true;
@@ -159,7 +159,7 @@ export class WidgetManager {
   public async enableAllWidgets(): Promise<boolean> {
     for (let widget of this.loadedWidgets.values()) {
       if (!this.isEnabled(widget.id)) {
-        this.enableWidget(widget.id);
+        await this.enableWidget(widget.id);
         console.log(`enabled widget ${widget.name}. (post-check) is it enabled? ${this.isEnabled(widget.id)}`)
       }
     }
@@ -198,7 +198,7 @@ export class WidgetManager {
   public async disableAllWidgets(): Promise<boolean> {
     for (let widget of this.loadedWidgets.values()) {
       if (this.isEnabled(widget.id)) {
-        this.disableWidget(widget.id);
+        await this.disableWidget(widget.id);
         console.log(`disabled widget ${widget.name}. (post-check) is it enabled? ${this.isEnabled(widget.id)}`)
       }
     }

@@ -64,8 +64,10 @@ export class App {
       return path.join(RESOURCES_PATH, ...paths);
     };
 
-    if (manager.getMainWindow()) {
-      manager.getMainWindow()?.focus();
+    let existing = manager.getMainWindow();
+    if (existing) {
+      existing?.show();
+      existing?.focus();
       return;
     }
 
@@ -195,21 +197,17 @@ export class App {
     });
 
     ipcMain.answerRenderer(msgs.ENABLE_ALL_WIDGETS, async () => {
-      var currentDate = '[' + new Date().toUTCString() + '] ';
-      console.log(currentDate, "got ENABLE_ALL_WIDGETS")
       await this.widgetManager.enableAllWidgets();
       return getAllWidgetsInfo();
     });
 
     ipcMain.answerRenderer(msgs.DISABLE_ALL_WIDGETS, async () => {
-      var currentDate = '[' + new Date().toUTCString() + '] ';
-      console.log(currentDate, "got DISABLE_ALL_WIDGETS")
       await this.widgetManager.disableAllWidgets();
       return getAllWidgetsInfo();
     });
 
     ipcMain.answerRenderer(msgs.CLOSE_MAIN_WINDOW, async () => {
-      this.windowManager.getMainWindow()?.close();
+      this.windowManager.getMainWindow()?.hide();
     });
 
     ipcMain.answerRenderer(msgs.MAXIMIZE_MAIN_WINDOW, async () => {
@@ -236,7 +234,7 @@ export class App {
     });
 
     app.on('activate', () => {
-      if (this.windowManager.getMainWindow() === null) this.createMainWindow();
+      // Nothing, for now.
     });
   }
 }

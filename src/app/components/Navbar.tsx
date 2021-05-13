@@ -134,13 +134,13 @@ export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) =>
       <ElectronDrag/>
       <TrafficLights>
         <GreenTrafficLight
-          onClick={ () => ipcRenderer.callMain(ipcMessages.CLOSE_MAIN_WINDOW) }
+          onClick={ () => ipcRenderer.callMain(ipcMessages.MINIMIZE_MAIN_WINDOW) }
         />
         <YellowTrafficLight
           onClick={ () => ipcRenderer.callMain(ipcMessages.MAXIMIZE_MAIN_WINDOW) }
         />
         <RedTrafficLight
-          onClick={ () => ipcRenderer.callMain(ipcMessages.MINIMIZE_MAIN_WINDOW) }
+          onClick={ () => ipcRenderer.callMain(ipcMessages.CLOSE_MAIN_WINDOW) }
         />
       </TrafficLights>
     </NavStyle>
