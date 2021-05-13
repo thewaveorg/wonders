@@ -111,10 +111,11 @@ const WidgetAuthor = styled.p`
 
 /* Main Component */
 interface IWidgetCard {
+  click: () => void;
   widget: IWidgetInfo & { enabled: boolean };
 }
 
-export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
+export const WidgetCard: React.FC<IWidgetCard> = ({ click, widget }) => {
   const [isWidgetEnabled, setWidgetEnabled] = useState<boolean>(widget.enabled ?? false);
 
   const messages = Constants.ipcMessages;
@@ -123,18 +124,30 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ widget }) => {
     setWidgetEnabled(widget.enabled);
   });
 
-  const onClick = (checked: boolean) => {
-    setWidgetEnabled(checked);
+  const onClick = async (checked: boolean) => {
+    console.log(checked);
     ipcRenderer
       .callMain(messages.GET_ENABLED_WIDGET, widget.id)
       .then(async (w: any) => {
-        if (!!w) {
-          await ipcRenderer.callMain(messages.DISABLE_WIDGET, widget.id);
-          setWidgetEnabled(false);
-        } else {
-          await ipcRenderer.callMain(messages.ENABLE_WIDGET, widget.id);
-          setWidgetEnabled(true);
+        if (!!w == checked) {
+          // If this happens, the widget and the switch state are out of sync.
+          // We should try to set the app's state and re-render the page.
+          setWidgetEnabled(!!w);
+          click();
+          return;
         }
+
+        // For some reason, updating the state doesn't work at all...
+        if (checked) {
+          let state = await ipcRenderer.callMain(messages.ENABLE_WIDGET, widget.id);
+          setWidgetEnabled(state);
+        } else {
+          let state = await ipcRenderer.callMain(messages.DISABLE_WIDGET, widget.id);
+          setWidgetEnabled(state);
+        }
+
+        // ...and we're forced to make the page re-render.
+        click();
       });
   };
 

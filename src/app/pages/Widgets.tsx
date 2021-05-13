@@ -83,7 +83,7 @@ export const Widgets: React.FC = () => {
           <OptionButton onClick={() => loadWidgets()}>Reload</OptionButton>
         </ButtonContainer>
         <WidgetCardContainer>
-          { widgets.map((f: any) => <WidgetCard key={f.id} widget={f} />) }
+          { widgets.map((f: any) => <WidgetCard key={f.id} click={loadWidgets} widget={f} />) }
         </WidgetCardContainer>
       </PageWrapper>
     );

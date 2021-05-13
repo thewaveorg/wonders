@@ -28,7 +28,7 @@ export class WidgetManager {
 		this.widgetsDirectory  = "";
 	}
 
-  public isEnabled(id: string): Boolean {
+  public isEnabled(id: string): boolean {
     return this.enabledWidgets.has(id);
   }
 

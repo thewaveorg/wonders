@@ -189,11 +189,13 @@ export class App {
     });
 
     ipcMain.answerRenderer(msgs.ENABLE_WIDGET, async (id: any) => {
-      this.widgetManager.enableWidget(id);
+      await this.widgetManager.enableWidget(id);
+      return this.widgetManager.isEnabled(id);
     });
 
     ipcMain.answerRenderer(msgs.DISABLE_WIDGET, async (id: any) => {
-      this.widgetManager.disableWidget(id);
+      await this.widgetManager.disableWidget(id);
+      return this.widgetManager.isEnabled(id);
     });
 
     ipcMain.answerRenderer(msgs.ENABLE_ALL_WIDGETS, async () => {
