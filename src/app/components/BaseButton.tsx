@@ -1,7 +1,9 @@
-import styled from "styled-components";
+import React, { ButtonHTMLAttributes } from 'react';
+import { HTMLMotionProps, motion } from 'framer-motion';
+import styled from 'styled-components';
 
-
-export const BaseButton = styled.button`
+/* Styles */
+const StyledButton = styled(motion.button)`
   align-items: center;
   background: var(--different-background-color);
   border: 1px solid var(--border-color);
@@ -21,11 +23,23 @@ export const BaseButton = styled.button`
   vertical-align: middle;
   margin: 0 1rem 0 0;
 
-  &:active {
-      filter: brightness(60%);
-  }
-
   &:focus {
       outline: none;
   }
 `;
+
+/* Main Component */
+interface IBaseButton extends HTMLMotionProps<"button"> { }
+
+export const BaseButton: React.FC<IBaseButton> = (props) => {
+  props = { ...props };
+  props.transition ??= { duration: 0.025 };
+  props.whileHover ??= { scale: 1.05 };
+  props.whileTap ??= { scale: 0.95, filter: 'brightness(60%)' };
+  // This disables hardware acceleration, so buttons don't get blurry.
+  props.transformTemplate = ({ scale }) => `scale(${scale})`;
+
+  return (
+    <StyledButton {...props} />
+  );
+}
