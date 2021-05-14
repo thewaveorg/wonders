@@ -20,6 +20,7 @@ const ButtonContainer = styled.div`
 
 const OptionButton = styled(BaseButton)`
   min-width: 5rem;
+  transition: .125s ease;
 `;
 
 const WidgetCardContainer = styled.div`

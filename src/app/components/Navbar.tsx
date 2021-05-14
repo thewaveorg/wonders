@@ -122,8 +122,14 @@ interface INavbarProps {
 
 export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) => {
   const activeStyle = {
-    borderBottomWidth: '0px',
-    color: '#888'
+    borderBottomColor: 'transparent',
+    color: 'var(--secondary-accent-color)',
+    // If we choose --accent-color, it's better to set brightness to 75%.
+    filter: 'brightness(100%)',
+
+    background: 'var(--wonders-gradient)',
+    '-webkit-background-clip': 'text',
+    '-webkit-text-fill-color': 'transparent',
   };
 
   return (

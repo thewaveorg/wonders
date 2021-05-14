@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 const { ipcRenderer } = window.require('electron-better-ipc');
 
@@ -8,7 +8,6 @@ import { faCog } from '@fortawesome/free-solid-svg-icons';
 
 import Constants from '../../api/Constants';
 import { IWidgetInfo } from '../../api/IWidgetInfo';
-import { ToggleButton } from './ToggleButton';
 
 /* Styles */
 const WidgetBox = styled.div`

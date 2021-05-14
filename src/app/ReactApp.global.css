@@ -12,6 +12,7 @@
 }
 
 * {
+  border-color: var(--border-color);
   -webkit-app-region: no-drag;
   user-select: none;
   font-smooth: always;
