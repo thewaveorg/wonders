@@ -7,7 +7,7 @@
   --border-color: rgba(123, 123, 123, 0.15);
   --accent-color: #FF5A00;
   --secondary-accent-color: #FF2652;
-  --blue-accent-color: rgb(201, 216, 238);
+  --blue-accent-color: #06f;
   --wonders-gradient: linear-gradient(-45deg, #FF5A00, #FF2652 75%);
 }
 
@@ -17,6 +17,7 @@
   user-select: none;
   font-smooth: always;
   -webkit-font-smoothing: subpixel-antialiased;
+  transition: .25s ease;
 }
 
 html,
