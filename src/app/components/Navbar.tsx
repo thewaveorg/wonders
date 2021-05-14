@@ -2,38 +2,40 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-const { ipcRenderer } = window.require("electron");
+const { ipcRenderer } = window.require("electron-better-ipc");
 
-import constants from "../../util/constants";
+import constants from "../../api/Constants";
+
+const ipcMessages = constants.ipcMessages;
 
 /* Styles */
 const NavStyle = styled.div`
   display: flex;
 	flex-wrap: wrap;
 	background-color: var(--main-background-color);
-	/* border-bottom: 1px solid var(--border-color); */
+	// border-bottom: 1px solid var(--border-color);
   justify-content: space-between;
-
-  &::after {
-    content : "";
-    position: relative;
-    left: 1%;
-    bottom: 0;
-    height: 0px;
-    width: 98%;
-    border-bottom: 1px solid var(--border-color);
-  }
+  max-height: 40px;
 `;
 
 const NavLinkStyle = styled(NavLink)`
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border-color);
+  border-left-width: 0;
+  border-top-width: 0;
   color: #ffffff;
   cursor: pointer;
   font-family: 'Karla';
   font-size: 1em;
-  font-weight: 100;
-  margin: 0 0 0 16px;
+  font-weight: 300;
+  margin: 0 0 0 0;
   padding: 10px 10px;
   text-align: center;
+  height: 100%;
+  width: 80px;
+
+  transition: .125s ease;
 
   &:hover {
     background-color: rgba(255, 255, 255, .1);
@@ -45,8 +47,10 @@ const NavLinkStyle = styled(NavLink)`
 `;
 
 const TrafficLights = styled.div`
-  align-self: center;
-  margin: 0 16px 0 0;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 1.25% 0 0;
+  display: flex;
+  align-items: center;
 `;
 
 const TrafficLight = styled.button`
@@ -107,28 +111,38 @@ const GreenTrafficLight = styled(TrafficLight)`
 const ElectronDrag = styled.div`
   flex-grow: 1;
   -webkit-app-region: drag;
+  border-bottom: 1px solid var(--border-color);
 `;
 
 
 /* Main Component */
 interface INavbarProps {
-  ref: React.MutableRefObject<HTMLDivElement> | React.RefObject<HTMLDivElement>;
+  [key: string]: any
 }
 
-export const Navbar: React.FC<INavbarProps> = ({ ref }) => {
-  const activeStyle = { color: '#bbb' };
+export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) => {
+  const activeStyle = {
+    borderBottomWidth: '0px',
+    color: '#888'
+  };
 
   return (
     <NavStyle ref={ref}>
-      <NavLinkStyle activeStyle={activeStyle} to="/" style={{ marginLeft: '1%' }}>Home</NavLinkStyle>
+      <NavLinkStyle activeStyle={activeStyle} to="/" exact style={{ marginLeft: '0' }}>Home</NavLinkStyle>
       <NavLinkStyle activeStyle={activeStyle} to="/widgets">Widgets</NavLinkStyle>
       <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
       <ElectronDrag/>
       <TrafficLights>
-        <RedTrafficLight onClick={() => ipcRenderer.send(constants.CLOSE_MAIN_WINDOW)} />
-        <YellowTrafficLight onClick={() => ipcRenderer.send(constants.MAXIMIZE_MAIN_WINDOW)} />
-        <GreenTrafficLight onClick={() => ipcRenderer.send(constants.MINIMIZE_MAIN_WINDOW)} />
+        <GreenTrafficLight
+          onClick={ () => ipcRenderer.callMain(ipcMessages.MINIMIZE_MAIN_WINDOW) }
+        />
+        <YellowTrafficLight
+          onClick={ () => ipcRenderer.callMain(ipcMessages.MAXIMIZE_MAIN_WINDOW) }
+        />
+        <RedTrafficLight
+          onClick={ () => ipcRenderer.callMain(ipcMessages.CLOSE_MAIN_WINDOW) }
+        />
       </TrafficLights>
     </NavStyle>
   );
-}
+});

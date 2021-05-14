@@ -2,7 +2,10 @@
 logs
 *.log
 
-# Unignore Yarn.lock when you need to push;
+# Ignore settings
+src/settings/
+
+# Ignore Yarn
 yarn.lock
 
 # Runtime data
