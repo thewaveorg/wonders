@@ -36,6 +36,12 @@ const WidgetHeader = styled.div`
   border-bottom: 1px solid var(--border-color);
 `;
 
+const WidgetIcon = styled.img`
+height: 64px;
+width: 64px;
+border-radius: 8px;
+`;
+
 const WidgetTitle = styled.h1`
   font-family: 'Inter';
   font-size: 3rem;
@@ -116,6 +122,7 @@ interface IWidgetCard {
 }
 
 export const WidgetCard: React.FC<IWidgetCard> = ({ click, widget }) => {
+  console.log(widget);
   const [isWidgetEnabled, setWidgetEnabled] = useState<boolean>(widget.enabled ?? false);
 
   const messages = Constants.ipcMessages;
@@ -154,6 +161,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ click, widget }) => {
   return (
     <WidgetBox id={widget.id}>
       <WidgetHeader>
+        <WidgetIcon alt={widget.name} src={widget.icon}></WidgetIcon>
         <WidgetTitle>{widget.name}</WidgetTitle>
         <Switch
           checkedIcon={false}

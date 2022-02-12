@@ -168,6 +168,7 @@ export class App {
           version: w.manifest.version,
           author: w.manifest.author,
           enabled: this.widgetManager.isEnabled(w.id),
+          icon: w.manifest.icon,
         });
       }
 

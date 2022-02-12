@@ -124,6 +124,8 @@ export class WidgetManager {
     if (enable)
       await this.enableWidget(widgetInfo.id);
 
+    console.log(`[WONDERS] \x1b[32mLoaded widget ${widgetInfo.name} (${widgetInfo.version}) by ${widgetInfo.author}\x1b[39m`);
+
     return widget;
   }
 

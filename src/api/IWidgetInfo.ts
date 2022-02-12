@@ -5,4 +5,5 @@ export interface IWidgetInfo {
     version: string;
     author: string;
     entry?: string;
+    icon?: string;
 }
