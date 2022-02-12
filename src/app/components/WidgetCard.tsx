@@ -20,6 +20,7 @@ const WidgetBox = styled.div`
   border-radius: 10px;
   border: 1.5px solid var(--border-color);
   margin: 1rem;
+  transition: 0.5s ease-in-out;
 `;
 
 const WidgetHeader = styled.div`
@@ -37,9 +38,13 @@ const WidgetHeader = styled.div`
 `;
 
 const WidgetIcon = styled.img`
-height: 64px;
-width: 64px;
-border-radius: 8px;
+  height: 64px;
+  width: 64px;
+  border-radius: 8px;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  transition: 0.5s ease-in-out;
 `;
 
 const WidgetTitle = styled.h1`
@@ -63,6 +68,8 @@ const WidgetTitle = styled.h1`
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent; 
   -moz-text-fill-color: transparent;
+
+  transition: 0.5s ease-in-out;
 `;
 
 const WidgetInformation = styled.div`
@@ -87,7 +94,8 @@ const WidgetDescription = styled.p`
   font-family: 'Karla';
   font-size: 1rem;
   text-align: center;
-  min-width: 50%;
+  min-width: 20%;
+  max-width: 40%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -161,7 +169,7 @@ export const WidgetCard: React.FC<IWidgetCard> = ({ click, widget }) => {
   return (
     <WidgetBox id={widget.id}>
       <WidgetHeader>
-        <WidgetIcon alt={widget.name} src={widget.icon}></WidgetIcon>
+        { widget.icon?.length !== 0 ? <WidgetIcon alt={widget.name} src={widget.icon}></WidgetIcon> : <></> }
         <WidgetTitle>{widget.name}</WidgetTitle>
         <Switch
           checkedIcon={false}

@@ -19,7 +19,7 @@ export class WindowManager {
 		this.mainWindowState = null;
 		this.widgetWindows = new Map();
 
-    // (async () => WindowsNativeManager.Initialize())();
+    // WindowsNativeManager.Initialize();
 	}
 
 	public getMainWindow(): BrowserWindow | null {
@@ -58,10 +58,6 @@ export class WindowManager {
 
 	public getWindow(widgetId: string, windowId: string): BrowserWindow | undefined {
 		return this.widgetWindows.get(widgetId)?.get(windowId);
-	}
-
-	public endWindow(id: string): void {
-		this.widgetWindows.delete(id);
 	}
 
   public clearUnregisteredWindows(): void {

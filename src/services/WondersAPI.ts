@@ -68,10 +68,6 @@ export class WondersAPI {
     return this.windowManager.getWindow(widgetId, windowId);
   }
 
-  public removeRegisteredWindow(id: string): void {
-    this.windowManager.endWindow(id);
-  }
-
   public getWidgetsDirectory(): string {
     return this.widgetManager.getDefaultWidgetsDirectory();
   }

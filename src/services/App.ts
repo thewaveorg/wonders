@@ -207,6 +207,12 @@ export class App {
       return getAllWidgetsInfo();
     });
 
+    ipcMain.answerRenderer(msgs.RELOAD_WIDGETS, async () => {
+      await this.widgetManager.unloadAllWidgets();
+      await this.widgetManager.loadWidgetsFromDirectory(undefined, true);
+      return getAllWidgetsInfo();
+    });
+
     ipcMain.answerRenderer(msgs.CLOSE_MAIN_WINDOW, async () => {
       this.windowManager.getMainWindow()?.hide();
     });

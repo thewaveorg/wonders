@@ -53,8 +53,12 @@ const PageWrapper = styled(motion.div)`
 export const Widgets: React.FC = () => {
   const [ widgets, setWidgets ] = React.useState<object[]>([]);
 
-  const loadWidgets = () => {
+  const getWidgets = () => {
     ipcRenderer.callMain(constants.ipcMessages.GET_WIDGETS).then((ws: any) => setWidgets(ws));
+  }
+
+  const reloadWidgets = () => {
+    ipcRenderer.callMain(constants.ipcMessages.RELOAD_WIDGETS).then((ws: any) => setWidgets(ws));
   }
 
   const enableAll = () => {
@@ -66,7 +70,7 @@ export const Widgets: React.FC = () => {
   }
 
   React.useEffect(() => {
-    loadWidgets();
+    getWidgets();
   }, [])
 
   if (widgets.length === 0) {
@@ -82,10 +86,20 @@ export const Widgets: React.FC = () => {
         <ButtonContainer>
           <OptionButton onClick={() => enableAll()}>Enable All</OptionButton>
           <OptionButton onClick={() => disableAll()}>Disable All</OptionButton>
-          <OptionButton onClick={() => loadWidgets()}>Reload</OptionButton>
+          <OptionButton onClick={() => getWidgets()}>Refresh</OptionButton>
+          <OptionButton onClick={() => reloadWidgets()}>Reload</OptionButton>
         </ButtonContainer>
         <WidgetCardContainer>
-          { widgets.map((f: any) => <WidgetCard key={f.id} click={loadWidgets} widget={f} />) }
+          {
+            widgets.length === 0
+            ? (
+                <>
+                  <h1 style={{ fontSize: '4rem', paddingBottom: '1rem' }}>No widgets available.</h1>
+                  <p style={{ fontSize: '1.25rem' }}>Are you sure you have any widgets installed?</p>
+                </>
+              )
+            : widgets.map((f: any) => <WidgetCard key={f.id} click={getWidgets} widget={f} />)
+          }
         </WidgetCardContainer>
       </PageWrapper>
     );

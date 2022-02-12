@@ -11,6 +11,8 @@ import { IWidgetInfo } from "../api/IWidgetInfo";
 import { validateWondersJson } from "../utils/validateWondersJson";
 import { validateWidgetExport } from "../utils/validateWidgetExport";
 
+const WindowsNativeManager = require('../build/Release/wnatman.node');
+
 @injectable()
 @singleton()
 export class WidgetManager {
@@ -82,7 +84,10 @@ export class WidgetManager {
   public async loadWidget(p: string, enable: boolean = false): Promise<Widget | null> {
     let widgetInfo: IWidgetInfo;
     try {
-      widgetInfo = require(path.resolve(p, './wonders.json'));
+      let manifestPath = path.resolve(p, './wonders.json');
+
+      delete require.cache[require.resolve(manifestPath)];
+      widgetInfo = require(path.resolve(manifestPath));
 
       let check = validateWondersJson(widgetInfo);
       if (check !== true)
@@ -107,6 +112,8 @@ export class WidgetManager {
       return null;
     }
 
+    let entryPath = path.resolve(p, widgetInfo.entry!);
+    delete require.cache[require.resolve(entryPath)];
     const imported = require(path.resolve(p, widgetInfo.entry!));
 
     let check = validateWidgetExport(imported);
@@ -144,6 +151,13 @@ export class WidgetManager {
     return true;
   }
 
+  public async unloadAllWidgets(): Promise<void> {
+    for (let [ id, _ ] of this.loadedWidgets) {
+      await this.disableWidget(id);
+      this.loadedWidgets.delete(id);
+    }
+  }
+
   public async enableWidget(id: string): Promise<boolean> {
     const widget = this.loadedWidgets.get(id);
     if (!widget)
@@ -169,31 +183,18 @@ export class WidgetManager {
   public async disableWidget(id: string): Promise<boolean> {
     const widget = this.enabledWidgets.get(id);
     if (!widget)
-      return false;
+      return true;
 
-    if (!widget.object?.stop)
-      return false;
-
-    widget.object?.stop?.();
-    this.enabledWidgets.delete(id);
-
-    return true;
-  }
-
-  public async nukeWidget(id: string): Promise<void> {
-    const widget = this.enabledWidgets.get(id);
-    if (!widget)
-      return;
-
-    widget.object?.stop?.();
+    await widget.object?.stop?.();
 
     for (let window of this.windowManager.getAllWidgetWindows(id).values()) {
+      WindowsNativeManager.ReleaseWindow(window.getNativeWindowHandle());
       window.close();
     }
 
     this.enabledWidgets.delete(id);
 
-    this.windowManager.clearUnregisteredWindows();
+    return true;
   }
 
   public async disableAllWidgets(): Promise<boolean> {
