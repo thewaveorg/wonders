@@ -2,19 +2,23 @@ import { app, BrowserWindow, shell } from "electron";
 import windowStateKeeper from "electron-window-state";
 import { injectable, singleton } from "tsyringe";
 
-const WindowsNativeManager = require('../build/Release/wnatman.node');
+import { NativeManager } from "./NativeManager";
 
 export type BrowserOptions = Electron.BrowserWindowConstructorOptions | undefined;
 
 @injectable()
 @singleton()
 export class WindowManager {
+  private nativeManager: NativeManager;
+
 	private mainWindow: BrowserWindow | null;
   private mainWindowState: windowStateKeeper.State | null;
 
 	private widgetWindows: Map<string, Map<string, BrowserWindow>>;
 
-	constructor() {
+	constructor(_nativeManager: NativeManager) {
+    this.nativeManager = _nativeManager;
+
 		this.mainWindow = null;
 		this.mainWindowState = null;
 		this.widgetWindows = new Map();
@@ -85,7 +89,7 @@ export class WindowManager {
     }
 
     this.widgetWindows.get(widgetId)?.set(windowId, window);
-    WindowsNativeManager.HandleWindow(window.getNativeWindowHandle());
+    this.nativeManager.handleWindow(window.getNativeWindowHandle());
 
     window.webContents.on('did-finish-load', () => {
       if (!window) {

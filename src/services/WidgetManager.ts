@@ -3,6 +3,7 @@ import path from "path";
 import { container, injectable, singleton } from "tsyringe";
 
 import { WondersAPI } from "./WondersAPI";
+import { NativeManager } from "./NativeManager";
 import { WindowManager } from "./WindowManager";
 
 import { Widget } from "../api/Widget";
@@ -11,18 +12,19 @@ import { IWidgetInfo } from "../api/IWidgetInfo";
 import { validateWondersJson } from "../utils/validateWondersJson";
 import { validateWidgetExport } from "../utils/validateWidgetExport";
 
-const WindowsNativeManager = require('../build/Release/wnatman.node');
 
 @injectable()
 @singleton()
 export class WidgetManager {
+  private nativeManager: NativeManager;
   private windowManager: WindowManager;
 
   private enabledWidgets: Map<string, Widget>;
   private loadedWidgets: Map<string, Widget>;
   private widgetsDirectory: string;
 
-	constructor(_windowManager: WindowManager) {
+	constructor(_nativeManager: NativeManager, _windowManager: WindowManager) {
+    this.nativeManager = _nativeManager;
     this.windowManager = _windowManager;
 
     this.enabledWidgets = new Map();
@@ -188,7 +190,7 @@ export class WidgetManager {
     await widget.object?.stop?.();
 
     for (let window of this.windowManager.getAllWidgetWindows(id).values()) {
-      WindowsNativeManager.ReleaseWindow(window.getNativeWindowHandle());
+      this.nativeManager.releaseWindow(window.getNativeWindowHandle());
       window.close();
     }
 

@@ -10,6 +10,7 @@ import { SettingsManager } from './SettingsManager';
 
 import constants from '../api/Constants';
 
+
 @injectable()
 @singleton()
 export class App {

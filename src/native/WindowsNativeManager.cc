@@ -26,48 +26,33 @@ bool l_contains(list<T> & elist, const T & el)
 }
 
 // WINAPI related functions.
-/// Windows Message Loop (events)
-void StartMessageLoop() 
+VOID CALLBACK WinEventProcCallback(HWINEVENTHOOK hWinEventHook, DWORD dwEvent, HWND hwnd, LONG idObject, LONG idChild, DWORD dwEventThread, DWORD dwmsEventTime)
 {
-    // Run the message loop.
-
-    MSG msg = { };
-    while (GetMessage(&msg, NULL, 0, 0))
+    switch (dwEvent) 
     {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-
-    return;
-}
-
-/// Window event handler, we only care about WM_WINDOWPOSCHANGING.
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-    switch (uMsg)
-    {
-    case WM_WINDOWPOSCHANGING:
+        case EVENT_OBJECT_LOCATIONCHANGE:
+        case EVENT_SYSTEM_MOVESIZESTART:
+        case EVENT_SYSTEM_MOVESIZEEND:
+        case EVENT_OBJECT_REORDER:
         {
-            WINDOWPOS* pos = (WINDOWPOS*)lParam;
-
-            // If changed window is not being handled, ignore.
-            //if (!l_contains(handledWindows, pos->hwnd))
-            //    return 0;
-            
-            // Show desktop (Windows + D) results in the window moved to -32000, -32000 and size changed
-            if (pos->x == -32000) {
-                // Set the flags to prevent this and "survive" to the desktop toggle
-                pos->flags |= SWP_NOMOVE | SWP_NOSIZE;
+            //fmt_output("Detected window movement.");
+            if (l_contains(handledWindows, hwnd)) // seems like it's not working. at least we can detect all events now.
+            {
+                fmt_output("Window changed is being handled.");
+                for (const auto& win : handledWindows) {
+                    SetWindowPos(win, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                }
+                
             }
-            // Also force the z order to ensure the window is always on bottom
-            pos->hwndInsertAfter = HWND_BOTTOM;
-            return 0;
         }
         break;
     }
-
-    return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
+
+HWINEVENTHOOK hEvent = SetWinEventHook(
+    EVENT_MIN, EVENT_MAX, NULL, WinEventProcCallback,
+    0, 0, WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNPROCESS
+);
 
 // Window Managing
 HWND ConvertHandle(Napi::Buffer<void *> hwndHandle) {
@@ -78,6 +63,7 @@ void HandleWindow(Napi::Buffer<void *> hwndHandle) {
     HWND win = ConvertHandle(hwndHandle);
 
     handledWindows.push_back(win);
+    SetParent(win, GetDesktopWindow());
     SetWindowPos(win, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
 
     fmt_output("Valid HandleWindow() call for " + hwndHandle.ToString().Utf8Value());
@@ -93,10 +79,9 @@ void ReleaseWindow(Napi::Buffer<void *> hwndHandle) {
 }
 
 // Node Addon API
-static void Initialize(const Napi::CallbackInfo &info)
+void Initialize(const Napi::CallbackInfo &info)
 {
     fmt_output("Initialized. Starting Windows message loop asynchronously.");
-    thread wmsgloop(StartMessageLoop);
 }
 
 /// What I understood is that exported functions must take a Napi::CallbackInfo
@@ -120,7 +105,6 @@ void ReleaseWindowWrapper(const Napi::CallbackInfo &info)
 }
 
 Napi::Object InitAll(Napi::Env env, Napi::Object exports) {
-    // methods here
     exports.Set(Napi::String::New(env, "Initialize"),
                 Napi::Function::New(env, Initialize));
 
