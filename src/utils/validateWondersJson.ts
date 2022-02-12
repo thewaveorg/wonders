@@ -12,8 +12,9 @@ export const validateWondersJson = (obj: object): true | string => {
     name: "string",
     description: "string",
     author: "string",
-    version: "number",
+    version: "string",
     entry: "string",
+    icon: "string",
   };
 
   let keys = Object.keys(obj);

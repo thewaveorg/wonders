@@ -18,7 +18,6 @@ export class Widget {
     } as IWidgetInfo;
   }
 
-
   get manifest(): any {
     return this._manifest;
   }
