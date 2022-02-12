@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "module": "CommonJS",
+    "jsx": "react",
+    "moduleResolution": "Node",
+    "noImplicitAny": true,
+    "outDir": "out",
+    "strict": true,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+  },
+  "include": [
+    "src"
+  ]
+}
