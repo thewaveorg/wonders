@@ -2,7 +2,7 @@ import { app, BrowserWindow, shell } from "electron";
 import windowStateKeeper from "electron-window-state";
 import { injectable, singleton } from "tsyringe";
 
-const WindowsNativeManager = require('../build/Release/binding.node');
+const WindowsNativeManager = require('../build/Release/wnatman.node');
 
 export type BrowserOptions = Electron.BrowserWindowConstructorOptions | undefined;
 
@@ -18,6 +18,8 @@ export class WindowManager {
 		this.mainWindow = null;
 		this.mainWindowState = null;
 		this.widgetWindows = new Map();
+
+    // (async () => WindowsNativeManager.Initialize())();
 	}
 
 	public getMainWindow(): BrowserWindow | null {
@@ -87,6 +89,7 @@ export class WindowManager {
     }
 
     this.widgetWindows.get(widgetId)?.set(windowId, window);
+    WindowsNativeManager.HandleWindow(window.getNativeWindowHandle());
 
     window.webContents.on('did-finish-load', () => {
       if (!window) {
@@ -108,8 +111,6 @@ export class WindowManager {
       event.preventDefault();
       shell.openExternal(url);
     });
-
-    WindowsNativeManager.HandleWindow(window);
 
     return window;
   }

@@ -1,13 +1,17 @@
 #include <napi.h>
 #include <windows.h>
+#include <chrono>
+#include <thread>
+#include <future>
 #include <iostream>
+#include <fstream>
 #include <iterator>
 #include <list>
-
 
 using namespace std;
 
 list<HWND> handledWindows;
+ofstream debugLog;
 
 // Utilities
 template <typename T>
@@ -57,7 +61,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         {
             WINDOWPOS* pos = (WINDOWPOS*)lParam;
 
-            // If changed window is being handled, then move back.
+            // If changed window is not being handled, ignore.
             if (!l_contains(handledWindows, pos->hwnd))
                 return 0;
             
@@ -86,18 +90,25 @@ void HandleWindow(Napi::Buffer<void *> hwndHandle) {
 
     handledWindows.push_back(win);
     SetWindowPos(win, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER);
+
+    debugLog << ("HandleWindow called for HWND:" + hwndHandle.ToString().Utf8Value() + "\n");
+    debugLog << ("Now the handledWindows array has " + to_string(static_cast<int>(handledWindows.size())) + "items.\n");
 }
 
 void ReleaseWindow(Napi::Buffer<void *> hwndHandle) {
     HWND win = ConvertHandle(hwndHandle);
 
     handledWindows.remove(win);
+    debugLog << ("ReleaseWindow called for HWND:" + hwndHandle.ToString().Utf8Value() + "\n");
+    debugLog << ("Now the handledWindows array has " + to_string(static_cast<int>(handledWindows.size())) + "items.\n");
 }
 
 // Node Addon API
 static void Initialize(const Napi::CallbackInfo &info)
 {
-    StartMessageLoop();
+    debugLog.open("debug.log");
+    debugLog << "Initialized WindowsNativeManager.";
+    std::async(std::launch::async, StartMessageLoop);
 }
 
 /// What I understood is that exported functions must take a Napi::CallbackInfo
@@ -132,4 +143,4 @@ Napi::Object InitAll(Napi::Env env, Napi::Object exports) {
     return exports;
 }
 
-NODE_API_MODULE(addon, InitAll)
+NODE_API_MODULE(NODE_GYP_MODULE_NAME, InitAll)
