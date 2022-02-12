@@ -124,10 +124,10 @@ Napi::Object InitAll(Napi::Env env, Napi::Object exports) {
                 Napi::Function::New(env, Initialize));
 
     exports.Set(Napi::String::New(env, "HandleWindow"),
-                Napi::Function::New(env, HandleWindow));
+                Napi::Function::New(env, HandleWindowExpose));
 
     exports.Set(Napi::String::New(env, "ReleaseWindow"),
-                Napi::Function::New(env, ReleaseWindow));
+                Napi::Function::New(env, ReleaseWindowExpose));
 
     return exports;
 }
