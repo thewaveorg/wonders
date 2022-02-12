@@ -2,6 +2,7 @@ import { app, BrowserWindow, shell } from "electron";
 import windowStateKeeper from "electron-window-state";
 import { injectable, singleton } from "tsyringe";
 
+const WindowsNativeManager = require('../build/Release/binding.node');
 
 export type BrowserOptions = Electron.BrowserWindowConstructorOptions | undefined;
 
@@ -61,6 +62,13 @@ export class WindowManager {
 		this.widgetWindows.delete(id);
 	}
 
+  public clearUnregisteredWindows(): void {
+    for (let window of BrowserWindow.getAllWindows()) {
+      if (![...this.getAllWindows().values()].includes(window))
+        window?.close();
+    }
+  }
+
   public async createWindowAsync(widgetId: string, windowId: string, options?: BrowserOptions): Promise<BrowserWindow> {
     await app.whenReady();
 
@@ -74,7 +82,6 @@ export class WindowManager {
     } ?? {};
 
     const window = new BrowserWindow(options);
-    // We need some way to retrieve the widget's id here.
     if (!this.widgetWindows.has(widgetId)) {
       this.widgetWindows.set(widgetId, new Map());
     }
@@ -101,6 +108,8 @@ export class WindowManager {
       event.preventDefault();
       shell.openExternal(url);
     });
+
+    WindowsNativeManager.HandleWindow(window);
 
     return window;
   }

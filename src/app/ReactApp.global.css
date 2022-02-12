@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600&display=swap');
 
@@ -8,7 +9,7 @@
   --accent-color: #FF5A00;
   --secondary-accent-color: #FF2652;
   --blue-accent-color: #06f;
-  --wonders-gradient: linear-gradient(-45deg, #FF5A00, #FF2652 75%);
+  --wonders-gradient: linear-gradient(135deg, #FF5A00, #FF2652 60%);
 }
 
 * {
@@ -17,13 +18,13 @@
   user-select: none;
   font-smooth: always;
   -webkit-font-smoothing: subpixel-antialiased;
-  transition: .25s ease;
 }
 
 html,
 body {
   background: transparent;
   -webkit-scroll-behaviour: smooth;
+  border-radius: 5px;
 }
 
 body {

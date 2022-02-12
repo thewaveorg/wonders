@@ -16,6 +16,8 @@ const NavStyle = styled.div`
 	// border-bottom: 1px solid var(--border-color);
   justify-content: space-between;
   max-height: 40px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
 const NavLinkStyle = styled(NavLink)`
@@ -29,13 +31,14 @@ const NavLinkStyle = styled(NavLink)`
   font-family: 'Karla';
   font-size: 1em;
   font-weight: 300;
+  line-height: 1;
   margin: 0 0 0 0;
   padding: 10px 10px;
   text-align: center;
   height: 100%;
   width: 80px;
 
-  transition: .125s ease;
+  transition: .25s ease;
 
   &:hover {
     background-color: rgba(255, 255, 255, .1);
@@ -120,13 +123,12 @@ interface INavbarProps {
   [key: string]: any
 }
 
-export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) => {
+export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>(({ children }, ref) => {
   const activeStyle = {
     borderBottomColor: 'transparent',
     color: 'var(--secondary-accent-color)',
-    // If we choose --accent-color, it's better to set brightness to 75%.
+    cursor: 'default',
     filter: 'brightness(100%)',
-
     background: 'var(--wonders-gradient)',
     '-webkit-background-clip': 'text',
     '-webkit-text-fill-color': 'transparent',
@@ -137,7 +139,7 @@ export const Navbar = React.forwardRef<HTMLDivElement, INavbarProps>((_, ref) =>
       <NavLinkStyle activeStyle={activeStyle} to="/" exact style={{ marginLeft: '0' }}>Home</NavLinkStyle>
       <NavLinkStyle activeStyle={activeStyle} to="/widgets">Widgets</NavLinkStyle>
       <NavLinkStyle activeStyle={activeStyle} to="/settings">Settings</NavLinkStyle>
-      <ElectronDrag/>
+      <ElectronDrag>{children}</ElectronDrag>
       <TrafficLights>
         <GreenTrafficLight
           onClick={ () => ipcRenderer.callMain(ipcMessages.MINIMIZE_MAIN_WINDOW) }

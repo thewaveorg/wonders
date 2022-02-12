@@ -1,6 +1,6 @@
 import fs, { readdirSync } from "fs";
 import path from "path";
-import { container, delay, inject, injectable, singleton } from "tsyringe";
+import { container, injectable, singleton } from "tsyringe";
 
 import { WondersAPI } from "./WondersAPI";
 import { WindowManager } from "./WindowManager";
@@ -19,7 +19,7 @@ export class WidgetManager {
   private enabledWidgets: Map<string, Widget>;
   private loadedWidgets: Map<string, Widget>;
   private widgetsDirectory: string;
-  
+
 	constructor(_windowManager: WindowManager) {
     this.windowManager = _windowManager;
 
@@ -190,6 +190,8 @@ export class WidgetManager {
     }
 
     this.enabledWidgets.delete(id);
+
+    this.windowManager.clearUnregisteredWindows();
   }
 
   public async disableAllWidgets(): Promise<boolean> {

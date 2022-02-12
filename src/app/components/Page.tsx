@@ -6,5 +6,6 @@ export const Page = styled(motion.div)`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
+  border-radius: 5px;
 `;

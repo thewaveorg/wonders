@@ -33,6 +33,8 @@ interface IBaseButton extends HTMLMotionProps<"button"> { }
 
 export const BaseButton: React.FC<IBaseButton> = (props) => {
   props = { ...props };
+  props.initial ??= { opacity: 0 };
+  props.animate ??= { opacity: 1 };
   props.transition ??= { duration: 0.025 };
   props.whileHover ??= { scale: 1.05 };
   props.whileTap ??= { scale: 0.95, filter: 'brightness(60%)' };

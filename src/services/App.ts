@@ -1,10 +1,4 @@
-import {
-  app,
-  BrowserWindow,
-  Menu,
-  shell,
-  Tray,
-} from 'electron';
+import { app, BrowserWindow, Menu, shell, Tray } from 'electron';
 import { ipcMain } from 'electron-better-ipc';
 import windowStateKeeper from 'electron-window-state';
 import path from 'path';
@@ -12,7 +6,7 @@ import { injectable, singleton } from 'tsyringe';
 
 import { WidgetManager } from './WidgetManager';
 import { WindowManager } from './WindowManager';
-import { SettingsManager } from "./SettingsManager";
+import { SettingsManager } from './SettingsManager';
 
 import constants from '../api/Constants';
 
@@ -24,16 +18,20 @@ export class App {
   private settingsManager: SettingsManager;
   private trayIcon: Tray | null;
 
-  constructor(_widgetManager: WidgetManager, _windowManager: WindowManager, _settingsManager: SettingsManager) {
+  constructor(
+    _widgetManager: WidgetManager,
+    _windowManager: WindowManager,
+    _settingsManager: SettingsManager
+  ) {
     this.widgetManager = _widgetManager;
     this.windowManager = _windowManager;
-    this.settingsManager = _settingsManager
+    this.settingsManager = _settingsManager;
 
     this.trayIcon = null;
   }
 
   public async start() {
-    await this.settingsManager.start()
+    await this.settingsManager.start();
     this.widgetManager.setDefaultWidgetsDirectory(
       path.resolve(app.getAppPath(), '../widgets')
     );
@@ -43,8 +41,8 @@ export class App {
 
     await this.createTrayIcon();
     setTimeout(() => {
-      console.log(this.settingsManager.cache)
-    }, 5000)
+      console.log(this.settingsManager.cache);
+    }, 5000);
   }
 
   public getTrayIcon(): Tray | null {
@@ -64,7 +62,7 @@ export class App {
       return path.join(RESOURCES_PATH, ...paths);
     };
 
-    let existing = manager.getMainWindow();
+    const existing = manager.getMainWindow();
     if (existing) {
       existing?.show();
       existing?.focus();
@@ -147,7 +145,7 @@ export class App {
         click: () => app.quit(),
         type: 'normal',
       },
-    ]);;
+    ]);
 
     this.trayIcon.setTitle('Wonders');
     this.trayIcon.setToolTip('Wonders');
@@ -161,20 +159,20 @@ export class App {
     const msgs = constants.ipcMessages;
 
     const getAllWidgetsInfo = () => {
-      let arrToPush: any = [];
-      for (let w of this.widgetManager.getAllLoadedWidgets().values()) {
+      const arrToPush: any = [];
+      for (const w of this.widgetManager.getAllLoadedWidgets().values()) {
         arrToPush.push({
           id: w.id,
           name: w.name,
           description: w.manifest.description,
           version: w.manifest.version,
           author: w.manifest.author,
-          enabled: this.widgetManager.isEnabled(w.id)
+          enabled: this.widgetManager.isEnabled(w.id),
         });
       }
 
       return arrToPush;
-    }
+    };
 
     ipcMain.answerRenderer(msgs.GET_WIDGETS, async () => {
       return getAllWidgetsInfo();
@@ -213,20 +211,18 @@ export class App {
     });
 
     ipcMain.answerRenderer(msgs.MAXIMIZE_MAIN_WINDOW, async () => {
-      let mainWindow = this.windowManager.getMainWindow();
-      if (!mainWindow?.maximizable)
-        return;
+      const mainWindow = this.windowManager.getMainWindow();
+      if (!mainWindow?.maximizable) return;
 
-      if (mainWindow.isMaximized())
-        mainWindow.restore(); // Doesn't work as I expected.
-      else (!mainWindow.isMaximized())
-        mainWindow.maximize();
+      if (mainWindow.isMaximized()) mainWindow.restore();
+      // Doesn't work as I expected.
+      else !mainWindow.isMaximized();
+      mainWindow.maximize();
     });
 
     ipcMain.answerRenderer(msgs.MINIMIZE_MAIN_WINDOW, async () => {
-      let mainWindow = this.windowManager.getMainWindow();
-      if (mainWindow?.minimizable)
-        mainWindow.minimize();
+      const mainWindow = this.windowManager.getMainWindow();
+      if (mainWindow?.minimizable) mainWindow.minimize();
     });
   }
 

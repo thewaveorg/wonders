@@ -10,8 +10,12 @@
   },
   "scripts": {
     "electron-rebuild": "node -r ../.erb/scripts/BabelRegister.js ../.erb/scripts/ElectronRebuild.js",
-    "postinstall": "yarn electron-rebuild"
+    "postinstall": "yarn electron-rebuild",
+    "gyp:clean_configure": "node-gyp clean && node-gyp configure",
+    "gyp:build_native": "node-gyp clean && node-gyp configure && node-gyp build"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "node-addon-api": "^4.3.0"
+  }
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 const { ipcRenderer } = window.require('electron-better-ipc');
 
@@ -79,7 +80,7 @@ const WidgetDescription = styled.p`
   flex-grow: 1;
   font-family: 'Karla';
   font-size: 1rem;
-  text-align: start;
+  text-align: center;
   min-width: 50%;
   text-overflow: ellipsis;
   white-space: nowrap;

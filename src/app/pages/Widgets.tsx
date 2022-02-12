@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 const { ipcRenderer } = window.require("electron-better-ipc");
 
@@ -7,7 +8,7 @@ import { WidgetCard } from "../components/WidgetCard";
 
 import constants from "../../api/Constants";
 
-
+/* Styles */
 const ButtonContainer = styled.div`
   height: fit-content;
   width: auto;
@@ -40,7 +41,7 @@ const WidgetCardContainer = styled.div`
   }
 `;
 
-const PageWrapper = styled.div`
+const PageWrapper = styled(motion.div)`
   height: 100%;
   width: 100%;
   display: flex;
